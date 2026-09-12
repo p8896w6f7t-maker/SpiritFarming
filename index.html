@@ -733,6 +733,50 @@ button{
     font-weight:800;
 }
 
+
+/* =========================
+   SEA DETAILS
+========================= */
+
+.seaBeach{position:absolute;left:0;right:0;bottom:0;height:38%;background:linear-gradient(#d9c184,#c9aa6c);z-index:1;}
+.seaShore{position:absolute;left:0;right:0;bottom:38%;height:8%;background:rgba(255,255,255,.22);z-index:2;border-top:3px solid rgba(255,255,255,.28);}
+.seaSun{position:absolute;right:8%;top:8%;font-size:58px;z-index:2;}
+.seaCloud{position:absolute;font-size:42px;opacity:.65;z-index:2;}
+.cloud1{left:12%;top:10%;}.cloud2{left:38%;top:22%;}
+.boat{position:absolute;left:34%;top:28%;font-size:58px;z-index:3;}
+.lighthouse{position:absolute;right:8%;bottom:31%;font-size:68px;z-index:4;}
+.seaRock{position:absolute;font-size:28px;z-index:5;}.rock1{left:18%;bottom:12%;}.rock2{left:58%;bottom:8%;}.rock3{right:25%;bottom:16%;}
+.shell{position:absolute;font-size:25px;z-index:5;}.shell1{left:35%;bottom:12%;}.shell2{right:40%;bottom:20%;}
+.palm{position:absolute;font-size:65px;z-index:5;}.palm1{left:4%;bottom:18%;}.palm2{right:5%;bottom:12%;}
+.fishingSpot{position:absolute;left:24%;bottom:34%;z-index:6;padding:8px 12px;border-radius:12px;background:rgba(30,75,88,.7);color:white;font-weight:900;text-align:center;}.fishingSpot span{display:block;font-size:10px;margin-top:2px;}
+
+/* =========================
+   NPC HOUSES
+========================= */
+
+.building1,.building2{overflow:visible;}
+.building3{left:69%;top:75%;width:23%;height:20%;}
+.homeSign{position:absolute;top:-30px;left:50%;transform:translateX(-50%);padding:4px 10px;border-radius:7px;background:#e2bd69;color:#382d1d;font-size:11px;font-weight:900;white-space:nowrap;}
+.npcHomeDoor{position:absolute;left:40%;bottom:-1px;width:20%;height:27%;min-width:30px;background:#4b3028;border:4px solid #2e211c;border-radius:6px 6px 0 0;}
+
+/* =========================
+   NPC HOUSE INTERIOR
+========================= */
+
+#npcHouse{background:linear-gradient(#a97858 0 20%,#d5b785 20% 100%);}
+.npcHouseInterior{position:absolute;left:5%;top:15%;width:90%;height:75%;background:#c9a879;border:9px solid #704d3f;border-radius:12px;overflow:hidden;}
+.npcHouseRoofTrim{position:absolute;left:0;right:0;top:0;height:13%;background:#8a5a48;}
+.npcHouseTitle{position:absolute;top:4%;left:50%;transform:translateX(-50%);color:white;font-size:20px;font-weight:900;z-index:3;text-shadow:0 2px 4px #000;white-space:nowrap;}
+.npcHouseBed{position:absolute;left:10%;top:23%;width:25%;height:28%;background:#e5e9ed;border:7px solid #694e4b;border-radius:10px;}
+.npcHouseTable{position:absolute;right:15%;top:28%;width:22%;height:18%;background:#80583e;border:6px solid #573a2c;}
+.npcHouseCabinet{position:absolute;right:13%;bottom:15%;width:20%;height:18%;background:#90623f;border:5px solid #573a2c;}
+.npcHouseDoor{position:absolute;left:45%;bottom:-1px;width:10%;min-width:50px;height:17%;background:#4b3028;border:5px solid #2e211c;z-index:5;}
+.npcHouseOwner{position:absolute;left:50%;top:16%;transform:translateX(-50%);font-size:12px;color:#5a4034;font-weight:900;}
+
+/* tree interaction */
+.farmTree,.forestTree{cursor:pointer;}
+.farmTree.chopped,.forestTree.chopped{display:none;}
+
 /* =========================
    MOBILE CONTROL
 ========================= */
@@ -1275,6 +1319,7 @@ button{
             <div class="hudLeft">
                 <div class="hudItem" id="dayText">1일차</div>
                 <div class="hudItem" id="timeText">08:00</div>
+                <div class="hudItem" id="locationText">농장</div>
             </div>
 
             <div class="hudRight">
@@ -1299,10 +1344,10 @@ button{
 
                     <div class="pond"></div>
 
-                    <div class="farmTree tree1">🌳</div>
-                    <div class="farmTree tree2">🌳</div>
-                    <div class="farmTree tree3">🌳</div>
-                    <div class="farmTree tree4">🌳</div>
+                    <div class="farmTree tree1" data-tree-id="farm-tree1">🌳</div>
+                    <div class="farmTree tree2" data-tree-id="farm-tree2">🌳</div>
+                    <div class="farmTree tree3" data-tree-id="farm-tree3">🌳</div>
+                    <div class="farmTree tree4" data-tree-id="farm-tree4">🌳</div>
 
                 </div>
 
@@ -1311,11 +1356,21 @@ button{
 
                     <div class="townRoad"></div>
 
-                    <div class="townBuilding building1"></div>
-                    <div class="townBuilding building2"></div>
+                    <div class="townBuilding building1 npcHomeBuilding">
+                        <div class="homeSign">미나의 집</div>
+                        <div class="npcHomeDoor"></div>
+                    </div>
+                    <div class="townBuilding building2 npcHomeBuilding">
+                        <div class="homeSign">테오의 집</div>
+                        <div class="npcHomeDoor"></div>
+                    </div>
+                    <div class="townBuilding building3 npcHomeBuilding">
+                        <div class="homeSign">장로의 집</div>
+                        <div class="npcHomeDoor"></div>
+                    </div>
 
                     <div class="townBuilding shopBuilding">
-                        <div class="shopSign">로제 상점</div>
+                        <div class="shopSign">상점</div>
                     </div>
 
                 </div>
@@ -1323,11 +1378,11 @@ button{
                 <!-- FOREST -->
                 <div id="forest" class="location hidden">
 
-                    <div class="forestTree ft1">🌲</div>
-                    <div class="forestTree ft2">🌲</div>
-                    <div class="forestTree ft3">🌲</div>
-                    <div class="forestTree ft4">🌲</div>
-                    <div class="forestTree ft5">🌲</div>
+                    <div class="forestTree ft1" data-tree-id="forest-ft1">🌲</div>
+                    <div class="forestTree ft2" data-tree-id="forest-ft2">🌲</div>
+                    <div class="forestTree ft3" data-tree-id="forest-ft3">🌲</div>
+                    <div class="forestTree ft4" data-tree-id="forest-ft4">🌲</div>
+                    <div class="forestTree ft5" data-tree-id="forest-ft5">🌲</div>
 
                     <div class="shrine">
                         ✨
@@ -1338,14 +1393,43 @@ button{
                 <!-- SEA -->
                 <div id="sea" class="location hidden">
 
-                    <div class="wave w1">〰</div>
-                    <div class="wave w2">〰</div>
-                    <div class="wave w3">〰</div>
-                    <div class="wave w4">〰</div>
-                    <div class="wave w5">〰</div>
+                    <div class="seaSun">☀️</div>
+                    <div class="seaCloud cloud1">☁️</div>
+                    <div class="seaCloud cloud2">☁️</div>
 
+                    <div class="wave w1">〰〰</div>
+                    <div class="wave w2">〰〰</div>
+                    <div class="wave w3">〰〰</div>
+                    <div class="wave w4">〰〰</div>
+                    <div class="wave w5">〰〰</div>
+
+                    <div class="seaBeach"></div>
+                    <div class="seaShore"></div>
                     <div class="dock"></div>
+                    <div class="boat">⛵</div>
+                    <div class="lighthouse">🗼</div>
+                    <div class="seaRock rock1">🪨</div>
+                    <div class="seaRock rock2">🪨</div>
+                    <div class="seaRock rock3">🪨</div>
+                    <div class="shell shell1">🐚</div>
+                    <div class="shell shell2">🐚</div>
+                    <div class="palm palm1">🌴</div>
+                    <div class="palm palm2">🌴</div>
+                    <div class="fishingSpot">🎣<span>낚시터</span></div>
 
+                </div>
+
+                <!-- NPC HOUSE -->
+                <div id="npcHouse" class="location hidden">
+                    <div class="npcHouseInterior">
+                        <div class="npcHouseRoofTrim"></div>
+                        <div class="npcHouseTitle" id="npcHouseTitle">NPC의 집</div>
+                        <div class="npcHouseBed"></div>
+                        <div class="npcHouseTable"></div>
+                        <div class="npcHouseCabinet"></div>
+                        <div class="npcHouseDoor"></div>
+                        <div class="npcHouseOwner" id="npcHouseOwner">집주인</div>
+                    </div>
                 </div>
 
                 <!-- HOUSE -->
@@ -1413,6 +1497,10 @@ button{
 
                 <button class="actionBtn" id="fishButton">
                     🎣 낚시
+                </button>
+
+                <button class="actionBtn" id="chopButton">
+                    🪓 나무 베기
                 </button>
 
                 <button class="actionBtn" id="sleepButton">
@@ -1495,6 +1583,8 @@ const DEFAULT_GAME = {
 
     location:"farm",
     saveSlot:null,
+    npcHome:null,
+    choppedTrees:{},
 
     player:{
         x:50,
@@ -1630,6 +1720,14 @@ const ITEMS = {
         icon:"🪨",
         buy:10,
         sell:5,
+        type:"material"
+    },
+
+    wood:{
+        name:"나무",
+        icon:"🪵",
+        buy:null,
+        sell:18,
         type:"material"
     },
 
@@ -1887,6 +1985,7 @@ let shopMode = "buy";
 let keys = {};
 
 let lastTime = 0;
+let gameClockAccumulator = 0;
 
 let inactivityTimer = null;
 
@@ -2193,6 +2292,9 @@ function enterGame(){
 
     dialogue.classList.add("hidden");
 
+    game.choppedTrees = game.choppedTrees || {};
+    game.npcHome = game.npcHome || null;
+    gameClockAccumulator = 0;
     setLocation(game.location,true);
 
     updateHUD();
@@ -2217,6 +2319,7 @@ function stopGame(){
     currentNPC = null;
 
     keys = {};
+    gameClockAccumulator = 0;
 
     dialogue.classList.add("hidden");
 
@@ -2297,7 +2400,8 @@ const LOCATION_NAMES = {
     town:"마을",
     forest:"숲",
     sea:"바다",
-    house:"집"
+    house:"집",
+    npcHouse:"NPC의 집"
 
 };
 
@@ -2307,6 +2411,8 @@ function setLocation(location,initial=false){
     if(!game) return;
 
     game.location = location;
+
+    if(location !== "npcHouse") game.npcHome = null;
 
     document
         .querySelectorAll(".location")
@@ -2363,6 +2469,11 @@ function placePlayerForLocation(location,initial){
         if(location === "house"){
             game.player.x = 50;
             game.player.y = 72;
+        }
+
+        if(location === "npcHouse"){
+            game.player.x = 50;
+            game.player.y = 74;
         }
 
     }
@@ -2442,13 +2553,74 @@ function leaveHouse(){
     setLocation("farm");
 
     game.player.x = 23;
-    game.player.y = 39;
+    game.player.y = 45;
 
     updatePlayer();
 
     showToast("농장으로 나왔습니다.");
 
     return true;
+
+}
+
+function getTownHomeAtPlayer(){
+
+    if(!game || game.location !== "town") return null;
+
+    const x=game.player.x, y=game.player.y;
+
+    if(x>=14 && x<=25 && y>=34 && y<=46) return "mina";
+    if(x>=76 && x<=87 && y>=34 && y<=46) return "theo";
+    if(x>=76 && x<=87 && y>=91 && y<=98) return "elder";
+    if(x>=46 && x<=55 && y>=34 && y<=46) return "rose";
+
+    return null;
+
+}
+
+function enterNPCHouse(owner){
+
+    if(!game || !NPC_DATA[owner]) return false;
+
+    game.npcHome = owner;
+    setLocation("npcHouse");
+    game.npcHome = owner;
+    game.player.x = 50;
+    game.player.y = 74;
+    updatePlayer();
+    renderNPCHouse();
+    showToast(`${NPC_DATA[owner].name}의 집에 들어왔습니다.`);
+    return true;
+
+}
+
+function leaveNPCHouse(){
+
+    if(!game || game.location !== "npcHouse") return false;
+
+    game.npcHome = null;
+    setLocation("town");
+    game.player.x = 50;
+    game.player.y = 46;
+    updatePlayer();
+    showToast("마을로 나왔습니다.");
+    return true;
+
+}
+
+function renderNPCHouse(){
+
+    const title=document.getElementById("npcHouseTitle");
+    const owner=document.getElementById("npcHouseOwner");
+    if(!title || !owner) return;
+    const npc=game && game.npcHome ? NPC_DATA[game.npcHome] : null;
+    if(npc){
+        title.textContent=`${npc.name}의 집`;
+        owner.textContent=`집주인 · ${npc.name}`;
+    }else{
+        title.textContent="NPC의 집";
+        owner.textContent="집주인";
+    }
 
 }
 
@@ -2498,8 +2670,23 @@ function checkTransitions(){
 
     }
 
+    if(game.location === "npcHouse"){
+
+        if(y >= 86 && x >= 40 && x <= 60){
+            leaveNPCHouse();
+            return;
+        }
+
+    }
+
 
     if(game.location === "town"){
+
+        const homeOwner = getTownHomeAtPlayer();
+        if(homeOwner){
+            enterNPCHouse(homeOwner);
+            return;
+        }
 
         if(
             x <= 3 &&
@@ -2706,6 +2893,20 @@ function canMove(nx,ny){
     }
 
 
+    if(game.location === "npcHouse"){
+
+        if(nx >= 10 && nx <= 35 && ny >= 39 && ny <= 55){
+            return false;
+        }
+        if(nx >= 68 && nx <= 90 && ny >= 43 && ny <= 58){
+            return false;
+        }
+        if(nx >= 67 && nx <= 87 && ny >= 73 && ny <= 88){
+            return false;
+        }
+
+    }
+
     if(game.location === "house"){
 
         /*
@@ -2779,16 +2980,6 @@ function movePlayer(dx,dy){
 
         }
 
-        game.time += 1;
-
-        if(game.time >= 1440){
-
-            game.time = 480;
-
-            nextDay();
-
-        }
-
         updatePlayer();
 
         updateNearby();
@@ -2812,6 +3003,77 @@ function updatePlayer(){
 
 }
 
+
+/* =========================================================
+   TREE CHOPPING
+========================================================= */
+
+function getTreePositions(){
+    return {
+        farm:{
+            "farm-tree1":[7,55],
+            "farm-tree2":[89,22],
+            "farm-tree3":[93,77],
+            "farm-tree4":[27,77]
+        },
+        forest:{
+            "forest-ft1":[8,18],
+            "forest-ft2":[28,35],
+            "forest-ft3":[88,20],
+            "forest-ft4":[70,86],
+            "forest-ft5":[12,84]
+        }
+    };
+}
+
+function updateChoppableTrees(){
+    if(!game) return;
+    document.querySelectorAll("[data-tree-id]").forEach(el=>{
+        const id=el.dataset.treeId;
+        el.classList.toggle("chopped", !!game.choppedTrees[id]);
+    });
+}
+
+function getNearbyTree(){
+    if(!game || !["farm","forest"].includes(game.location)) return null;
+    let closest=null, best=Infinity;
+    const positions=getTreePositions()[game.location] || {};
+    Object.entries(positions).forEach(([id,pos])=>{
+        if(game.choppedTrees[id]) return;
+        const dx=game.player.x-pos[0], dy=game.player.y-pos[1];
+        const d=Math.sqrt(dx*dx+dy*dy);
+        if(d<best){best=d; closest={id,x:pos[0],y:pos[1]};}
+    });
+    return best<=11 ? closest : null;
+}
+
+function chopTree(){
+    if(!game || !["farm","forest"].includes(game.location)){
+        showToast("농장이나 숲에서만 나무를 벨 수 있습니다.");
+        return;
+    }
+    if(game.energy < 5){
+        showToast("에너지가 부족합니다.");
+        return;
+    }
+    const tree=getNearbyTree();
+    if(!tree){
+        showToast("나무 가까이에서 나무 베기를 사용하세요.");
+        return;
+    }
+    game.energy-=5;
+    const amount=game.spirits.forest.contract ? 3 : 2;
+    game.inventory.wood=(game.inventory.wood||0)+amount;
+    game.inventory.stone=(game.inventory.stone||0)+1;
+    game.stats.exp+=8;
+    game.stats.farming++;
+    game.choppedTrees[tree.id]=true;
+    checkLevel();
+    updateChoppableTrees();
+    updateHUD();
+    saveGame();
+    showToast(`나무를 베었습니다. 나무 +${amount}`);
+}
 
 /* =========================================================
    NPC CREATE
@@ -2962,6 +3224,13 @@ function updateNearby(){
 function interactNearby(){
 
     if(!game) return;
+
+    if(game.location === "npcHouse"){
+        if(game.player.y >= 82 && game.player.x >= 38 && game.player.x <= 62){
+            leaveNPCHouse();
+            return;
+        }
+    }
 
     const nearby =
         getNearbyNPC();
@@ -4178,6 +4447,8 @@ function nextDay(){
     game.energy =
         game.maxEnergy;
 
+    game.choppedTrees = {};
+
     Object.values(game.crops)
         .forEach(crop=>{
 
@@ -4319,6 +4590,11 @@ function updateHUD(){
     document.getElementById("timeText").textContent =
         formatTime(game.time);
 
+    const locationText = document.getElementById("locationText");
+    if(locationText){
+        locationText.textContent = LOCATION_NAMES[game.location] || "마을";
+    }
+
     document.getElementById("energyText").textContent =
         `에너지 ${game.energy}/${game.maxEnergy}`;
 
@@ -4398,6 +4674,21 @@ function gameLoop(timestamp){
     lastTime = timestamp;
 
     if(game){
+
+        gameClockAccumulator += delta;
+
+        /* 게임 시간은 실제 5초마다 게임 내 1분씩 흐릅니다. */
+        while(gameClockAccumulator >= 5000){
+            gameClockAccumulator -= 5000;
+            game.time += 1;
+
+            if(game.time >= 1440){
+                game.time = 480;
+                nextDay();
+            }
+
+            updateHUD();
+        }
 
         let dx = 0;
         let dy = 0;
@@ -4658,6 +4949,10 @@ document
 
             if(id === "fishButton"){
                 fish();
+            }
+
+            if(id === "chopButton"){
+                chopTree();
             }
 
             if(id === "sleepButton"){
@@ -4955,6 +5250,32 @@ function handleSpecialInteraction(){
 
     }
 
+
+    /*
+        나무 베기
+    */
+
+    if(getNearbyTree()){
+        chopTree();
+        return true;
+    }
+
+    /*
+        NPC 집
+    */
+
+    if(game.location === "town"){
+        const homeOwner=getTownHomeAtPlayer();
+        if(homeOwner){
+            enterNPCHouse(homeOwner);
+            return true;
+        }
+    }
+
+    if(game.location === "npcHouse" && game.player.y >= 82 && game.player.x >= 38 && game.player.x <= 62){
+        leaveNPCHouse();
+        return true;
+    }
 
     /*
         상점 NPC
