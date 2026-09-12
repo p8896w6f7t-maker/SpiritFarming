@@ -3,11 +3,82 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const { WebSocketServer } = require('ws');
+const { Pool } = require('pg');
 
 const PORT = Number(process.env.PORT || 10000);
 const ROOT = __dirname;
 const rooms = new Map();
 const clients = new Map();
+// Optional PostgreSQL persistence.
+// Without DATABASE_URL the server keeps the existing in-memory behavior.
+const pool = process.env.DATABASE_URL
+  ? new Pool({
+      connectionString: process.env.DATABASE_URL,
+      ssl: process.env.DATABASE_URL.includes('localhost')
+        ? false
+        : { rejectUnauthorized: false }
+    })
+  : null;
+
+async function initDatabase() {
+  if (!pool) return;
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS player_profiles (
+      id TEXT PRIMARY KEY,
+      nickname VARCHAR(12) NOT NULL,
+      outfit_color VARCHAR(20) NOT NULL,
+      updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    );
+    CREATE TABLE IF NOT EXISTS game_saves (
+      player_id TEXT NOT NULL,
+      slot INTEGER NOT NULL,
+      save_data JSONB NOT NULL,
+      updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+      PRIMARY KEY (player_id, slot)
+    );
+  `);
+}
+
+async function saveProfile(id, nickname, outfitColor) {
+  if (!pool) return;
+  await pool.query(`
+    INSERT INTO player_profiles (id, nickname, outfit_color)
+    VALUES ($1, $2, $3)
+    ON CONFLICT (id) DO UPDATE SET
+      nickname = EXCLUDED.nickname,
+      outfit_color = EXCLUDED.outfit_color,
+      updated_at = NOW()
+  `, [id, nickname, outfitColor]);
+}
+
+async function saveGameData(playerId, slot, saveData) {
+  if (!pool) return;
+  await pool.query(`
+    INSERT INTO game_saves (player_id, slot, save_data)
+    VALUES ($1, $2, $3::jsonb)
+    ON CONFLICT (player_id, slot) DO UPDATE SET
+      save_data = EXCLUDED.save_data,
+      updated_at = NOW()
+  `, [playerId, slot, JSON.stringify(saveData)]);
+}
+
+async function loadGameData(playerId, slot) {
+  if (!pool) return null;
+  const result = await pool.query(
+    `SELECT save_data FROM game_saves WHERE player_id = $1 AND slot = $2`,
+    [playerId, slot]
+  );
+  return result.rows[0]?.save_data || null;
+}
+
+async function deleteGameData(playerId, slot) {
+  if (!pool) return;
+  await pool.query(
+    `DELETE FROM game_saves WHERE player_id = $1 AND slot = $2`,
+    [playerId, slot]
+  );
+}
+
 
 const mime = {
   '.html': 'text/html; charset=utf-8',
@@ -116,7 +187,7 @@ wss.on('connection', ws => {
 
   send(ws, 'connected', { id: client.id });
 
-  ws.on('message', raw => {
+  ws.on('message', async raw => {
     let msg;
     try { msg = JSON.parse(raw.toString()); }
     catch { return; }
@@ -163,6 +234,38 @@ wss.on('connection', ws => {
       room.players.set(client.id, { ...client.player, ws });
       send(ws, 'room-joined', { code, players: publicPlayers(room) });
       broadcast(room, 'player-joined', { player: client.player }, client.id);
+      return;
+    }
+
+
+    if (msg.type === 'profile-save') {
+      await saveProfile(
+        client.id,
+        String(msg.nickname || '플레이어').slice(0, 12),
+        String(msg.outfitColor || '#5476a5')
+      );
+      send(ws, 'profile-saved');
+      return;
+    }
+
+    if (msg.type === 'save-game') {
+      const slot = Math.max(1, Math.min(3, Number(msg.slot) || 1));
+      await saveGameData(client.id, slot, msg.saveData || {});
+      send(ws, 'game-saved', { slot });
+      return;
+    }
+
+    if (msg.type === 'load-game') {
+      const slot = Math.max(1, Math.min(3, Number(msg.slot) || 1));
+      const saveData = await loadGameData(client.id, slot);
+      send(ws, 'game-loaded', { slot, saveData });
+      return;
+    }
+
+    if (msg.type === 'delete-game') {
+      const slot = Math.max(1, Math.min(3, Number(msg.slot) || 1));
+      await deleteGameData(client.id, slot);
+      send(ws, 'game-deleted', { slot });
       return;
     }
 

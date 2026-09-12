@@ -28,3 +28,23 @@ GitHub Pages 주소로 게임을 열 경우에는 멀티플레이 창의 서버 
 - 바라보는 방향
 
 방은 서버 메모리에 유지되며 서버가 재시작되면 방이 사라집니다.
+
+
+## 다음 단계: 영구 저장
+
+이 버전은 PostgreSQL을 선택적으로 지원합니다.
+
+- `DATABASE_URL`이 없으면 기존 메모리 방식으로 동작합니다.
+- `DATABASE_URL`이 있으면 플레이어 프로필과 1~3번 세이브 슬롯을 PostgreSQL에 저장합니다.
+- 서버 시작 시 필요한 테이블을 자동 생성합니다.
+- Render에서는 Web Service와 PostgreSQL을 같은 리전에 두고 연결하는 것이 좋습니다.
+
+### Render 설정
+
+1. Render에서 PostgreSQL을 생성합니다.
+2. Web Service의 Environment에 PostgreSQL의 `DATABASE_URL`을 추가합니다.
+3. Build Command: `npm install`
+4. Start Command: `npm start`
+5. 재배포합니다.
+
+Render의 Free PostgreSQL은 현재 생성 후 30일 뒤 만료되므로 장기 저장용으로는 유료/외부 PostgreSQL이 필요합니다.
