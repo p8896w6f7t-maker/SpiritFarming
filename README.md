@@ -48,3 +48,15 @@ GitHub Pages 주소로 게임을 열 경우에는 멀티플레이 창의 서버 
 5. 재배포합니다.
 
 Render의 Free PostgreSQL은 현재 생성 후 30일 뒤 만료되므로 장기 저장용으로는 유료/외부 PostgreSQL이 필요합니다.
+
+
+## 기존 Render 서버 연결
+
+현재 멀티플레이 클라이언트의 기본 WebSocket 주소는:
+
+`wss://spiritfarming.onrender.com/ws`
+
+입니다.
+
+게임을 GitHub Pages에서 열어도 GitHub Pages가 아니라 기존 Render 서버로 연결합니다.
+Render 서비스는 새로 만들 필요가 없습니다. 기존 `spiritfarming.onrender.com` Web Service가 `Live`이고 최근 배포가 `Deploy succeeded`라면 해당 서비스를 그대로 사용합니다.

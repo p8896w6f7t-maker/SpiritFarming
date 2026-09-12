@@ -3,7 +3,9 @@
 
   const CONFIG = {
     maxPlayers: 8,
-    serverUrlKey: 'spiritFarmingMultiplayerServer'
+    serverUrlKey: 'spiritFarmingMultiplayerServer',
+    // Existing Render WebSocket server.
+    serverUrl: 'wss://spiritfarming.onrender.com/ws'
   };
 
   let socket = null;
@@ -20,10 +22,18 @@
 
   function getServerUrl() {
     const saved = localStorage.getItem(CONFIG.serverUrlKey);
-    if (saved) return saved.replace(/^http/i, 'ws').replace(/\/$/, '') + '/ws';
-    if (location.protocol === 'https:') return `wss://${location.host}/ws`;
-    if (location.protocol === 'http:') return `ws://${location.host}/ws`;
-    return '';
+    if (saved) {
+      const normalized = saved
+        .replace(/^https?:\/\//i, '')
+        .replace(/^wss?:\/\//i, '')
+        .replace(/\/$/, '')
+        .replace(/\/ws$/, '');
+      return `wss://${normalized}/ws`;
+    }
+
+    // IMPORTANT: the game may be hosted on GitHub Pages,
+    // so location.host is NOT the WebSocket server.
+    return CONFIG.serverUrl;
   }
 
   function send(payload) {
@@ -230,7 +240,7 @@
       <div class="mpPanel">
         <h3>온라인 멀티플레이</h3>
         <div class="mpStatus">서버에 연결되지 않았습니다.</div>
-        <input class="mpInput mpServer" placeholder="서버 주소 (Render 주소, 선택)" value="${localStorage.getItem(CONFIG.serverUrlKey) || ''}">
+        <input class="mpInput mpServer" placeholder="서버 주소 (Render 주소, 선택)" value="${localStorage.getItem(CONFIG.serverUrlKey) || 'https://spiritfarming.onrender.com'}">
         <input class="mpInput mpCode" maxlength="6" placeholder="친구에게 받은 방 코드">
         <div class="mpBtns">
           <button class="mpCreate">방 만들기</button>
@@ -246,7 +256,11 @@
     overlay.querySelector('.mpServer').addEventListener('change', e => {
       let value = e.target.value.trim();
       if (value) {
-        value = value.replace(/\/ws\/?$/, '').replace(/\/$/, '');
+        value = value
+          .replace(/^https?:\/\//i, '')
+          .replace(/^wss?:\/\//i, '')
+          .replace(/\/ws\/?$/, '')
+          .replace(/\/$/, '');
         localStorage.setItem(CONFIG.serverUrlKey, value);
       } else {
         localStorage.removeItem(CONFIG.serverUrlKey);
