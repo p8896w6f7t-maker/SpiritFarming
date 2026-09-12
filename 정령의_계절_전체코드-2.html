@@ -1,0 +1,5402 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no,viewport-fit=cover"
+>
+
+<meta
+    name="format-detection"
+    content="telephone=no"
+>
+
+<title>정령의 계절</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+html,
+body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:#10151c;
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Pretendard",
+        "Noto Sans KR",
+        sans-serif;
+    user-select:none;
+}
+
+button{
+    font:inherit;
+    border:0;
+    cursor:pointer;
+}
+
+#game{
+    width:100vw;
+    height:100vh;
+    position:relative;
+    overflow:hidden;
+}
+
+/* =========================
+   START
+========================= */
+
+#startScreen,
+#saveScreen{
+    position:absolute;
+    inset:0;
+    z-index:1000;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:
+        radial-gradient(circle at 50% 30%,#445e73 0%,#1b2632 40%,#0c1117 100%);
+}
+
+.startBox,
+.saveBox{
+    width:min(92vw,520px);
+    padding:42px 30px;
+    border-radius:28px;
+    background:rgba(17,24,32,.94);
+    border:1px solid rgba(255,255,255,.12);
+    box-shadow:0 25px 80px rgba(0,0,0,.55);
+    text-align:center;
+    color:white;
+}
+
+.startTitle{
+    font-size:42px;
+    font-weight:900;
+    letter-spacing:-2px;
+    margin-bottom:10px;
+}
+
+.startSub{
+    color:#aeb8c3;
+    margin-bottom:35px;
+}
+
+.mainStartBtn{
+    width:100%;
+    padding:18px;
+    border-radius:15px;
+    background:#e5c36a;
+    color:#302817;
+    font-size:20px;
+    font-weight:900;
+}
+
+.mainStartBtn:active{
+    transform:scale(.97);
+}
+
+.hidden{
+    display:none !important;
+}
+
+/* =========================
+   SAVE
+========================= */
+
+.saveBox h2{
+    margin-bottom:22px;
+}
+
+.saveSlots{
+    display:grid;
+    gap:12px;
+}
+
+.saveSlot{
+    padding:18px;
+    border-radius:16px;
+    background:#202b37;
+    color:white;
+    text-align:left;
+    border:1px solid #334252;
+}
+
+.saveSlot:hover{
+    background:#2b3948;
+}
+
+.saveSlotTitle{
+    font-weight:900;
+    margin-bottom:6px;
+}
+
+.saveSlotInfo{
+    color:#aeb8c3;
+    font-size:13px;
+}
+
+.saveSlotButtons{
+    display:flex;
+    gap:8px;
+    margin-top:10px;
+}
+
+.saveSlotButtons button{
+    padding:8px 12px;
+    border-radius:9px;
+    background:#e5c36a;
+    color:#292218;
+    font-weight:800;
+}
+
+.saveSlotButtons .deleteBtn{
+    background:#553139;
+    color:#ffdce1;
+}
+
+.backBtn{
+    margin-top:18px;
+    padding:11px 20px;
+    border-radius:10px;
+    background:#333e49;
+    color:#ddd;
+}
+
+/* =========================
+   HUD
+========================= */
+
+#hud{
+    position:absolute;
+    left:15px;
+    right:15px;
+    top:15px;
+    z-index:100;
+    display:flex;
+    justify-content:space-between;
+    pointer-events:none;
+}
+
+.hudLeft,
+.hudRight{
+    display:flex;
+    gap:8px;
+}
+
+.hudItem{
+    padding:9px 13px;
+    border-radius:12px;
+    background:rgba(16,22,29,.82);
+    border:1px solid rgba(255,255,255,.12);
+    color:white;
+    font-size:13px;
+    backdrop-filter:blur(8px);
+}
+
+#money{
+    color:#f0d36e;
+    font-weight:900;
+}
+
+/* =========================
+   MAIN
+========================= */
+
+#main{
+    position:absolute;
+    inset:0;
+}
+
+#screen{
+    position:absolute;
+    inset:0;
+    overflow:hidden;
+}
+
+.location{
+    position:absolute;
+    inset:0;
+    overflow:hidden;
+}
+
+.location::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(0,0,0,.08),
+            transparent 30%,
+            rgba(0,0,0,.15)
+        );
+}
+
+/* =========================
+   FARM
+========================= */
+
+#farm{
+    background:
+        linear-gradient(
+            #91b86a 0 28%,
+            #b2c978 28% 100%
+        );
+}
+
+.farmHouse{
+    position:absolute;
+    left:9%;
+    top:8%;
+    width:27%;
+    height:27%;
+    min-width:190px;
+    min-height:150px;
+    background:#b87554;
+    border:8px solid #6a4035;
+    border-radius:12px;
+    z-index:5;
+}
+
+.farmHouseRoof{
+    position:absolute;
+    left:-10px;
+    top:-55px;
+    width:calc(100% + 20px);
+    height:75px;
+    background:#754d55;
+    clip-path:polygon(50% 0,100% 100%,0 100%);
+}
+
+.farmHouseDoor{
+    position:absolute;
+    left:40%;
+    bottom:-2px;
+    width:20%;
+    height:32%;
+    min-width:38px;
+    background:#4b3028;
+    border:4px solid #2e211c;
+    border-radius:7px 7px 0 0;
+    z-index:10;
+}
+
+.farmHouseDoor::after{
+    content:"E";
+    position:absolute;
+    left:50%;
+    top:-30px;
+    transform:translateX(-50%);
+    padding:2px 7px;
+    border-radius:5px;
+    background:rgba(0,0,0,.65);
+    color:white;
+    font-size:11px;
+}
+
+.field{
+    position:absolute;
+    left:40%;
+    top:45%;
+    width:45%;
+    height:40%;
+    background:#8d6849;
+    border:7px solid #6b4d38;
+    border-radius:8px;
+    display:grid;
+    grid-template-columns:repeat(6,1fr);
+    grid-template-rows:repeat(4,1fr);
+    gap:6px;
+    padding:8px;
+}
+
+.cropTile{
+    background:#a67d56;
+    border-radius:4px;
+    position:relative;
+}
+
+.cropTile.watered{
+    background:#647d78;
+}
+
+.crop{
+    position:absolute;
+    inset:0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:27px;
+}
+
+.farmTree{
+    position:absolute;
+    font-size:58px;
+    z-index:3;
+}
+
+.tree1{left:4%;top:48%;}
+.tree2{left:86%;top:15%;}
+.tree3{left:90%;top:70%;}
+.tree4{left:24%;top:70%;}
+
+.pond{
+    position:absolute;
+    left:8%;
+    bottom:10%;
+    width:25%;
+    height:25%;
+    border-radius:50%;
+    background:#5b9eb0;
+    border:7px solid #42767f;
+}
+
+/* =========================
+   TOWN
+========================= */
+
+#town{
+    background:
+        linear-gradient(
+            #9bc4d1 0 30%,
+            #c9b89a 30% 100%
+        );
+}
+
+.townRoad{
+    position:absolute;
+    left:0;
+    right:0;
+    top:47%;
+    height:25%;
+    background:#b69d7c;
+}
+
+.townBuilding{
+    position:absolute;
+    width:23%;
+    height:24%;
+    background:#d59c78;
+    border:6px solid #704d43;
+    border-radius:10px;
+}
+
+.building1{
+    left:8%;
+    top:13%;
+}
+
+.building2{
+    right:8%;
+    top:13%;
+}
+
+.shopBuilding{
+    left:38%;
+    top:9%;
+    width:25%;
+    height:30%;
+    background:#c98560;
+    border-color:#674239;
+}
+
+.shopSign{
+    position:absolute;
+    top:-34px;
+    left:50%;
+    transform:translateX(-50%);
+    padding:5px 16px;
+    border-radius:8px;
+    background:#e6c66d;
+    color:#392e1c;
+    font-weight:900;
+    white-space:nowrap;
+}
+
+/* =========================
+   FOREST
+========================= */
+
+#forest{
+    background:
+        linear-gradient(
+            #4e7d59,
+            #294c37
+        );
+}
+
+.forestTree{
+    position:absolute;
+    font-size:70px;
+}
+
+.ft1{left:5%;top:8%;}
+.ft2{left:25%;top:25%;}
+.ft3{right:10%;top:10%;}
+.ft4{right:30%;bottom:10%;}
+.ft5{left:8%;bottom:12%;}
+
+.shrine{
+    position:absolute;
+    left:43%;
+    top:42%;
+    width:15%;
+    height:20%;
+    min-width:100px;
+    min-height:100px;
+    border-radius:50%;
+    background:#775a92;
+    border:8px solid #4d3b61;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:45px;
+}
+
+/* =========================
+   SEA
+========================= */
+
+#sea{
+    background:
+        linear-gradient(
+            #73b6cb,
+            #32798f
+        );
+}
+
+.wave{
+    position:absolute;
+    color:rgba(255,255,255,.25);
+    font-size:55px;
+}
+
+.w1{left:10%;top:25%;}
+.w2{left:45%;top:15%;}
+.w3{right:10%;top:35%;}
+.w4{left:25%;bottom:20%;}
+.w5{right:30%;bottom:10%;}
+
+.dock{
+    position:absolute;
+    right:0;
+    top:37%;
+    width:30%;
+    height:25%;
+    background:#8c6549;
+}
+
+/* =========================
+   HOUSE
+========================= */
+
+#house{
+    background:
+        linear-gradient(
+            #b98663 0 22%,
+            #d8bb91 22% 100%
+        );
+}
+
+.houseFloor{
+    position:absolute;
+    left:5%;
+    top:25%;
+    width:90%;
+    height:65%;
+    background:#cba87b;
+    border:8px solid #795544;
+    border-radius:10px;
+}
+
+.houseBed{
+    position:absolute;
+    left:10%;
+    top:15%;
+    width:28%;
+    height:30%;
+    background:#e3e6eb;
+    border:8px solid #694e4b;
+    border-radius:10px;
+}
+
+.houseTable{
+    position:absolute;
+    right:15%;
+    top:22%;
+    width:22%;
+    height:20%;
+    background:#80583e;
+    border:6px solid #573a2c;
+}
+
+.houseChest{
+    position:absolute;
+    right:17%;
+    bottom:15%;
+    width:18%;
+    height:13%;
+    background:#90623f;
+    border:5px solid #573a2c;
+}
+
+.houseDoorInside{
+    position:absolute;
+    left:45%;
+    bottom:-1px;
+    width:10%;
+    min-width:55px;
+    height:18%;
+    background:#4b3028;
+    border:5px solid #2e211c;
+    z-index:10;
+}
+
+/* =========================
+   PLAYER
+========================= */
+
+#player{
+    position:absolute;
+    width:48px;
+    height:58px;
+    z-index:50;
+    transform:translate(-50%,-50%);
+    transition:transform .04s linear;
+    pointer-events:none;
+}
+
+.playerBody{
+    position:absolute;
+    left:8px;
+    bottom:0;
+    width:32px;
+    height:39px;
+    background:#5476a5;
+    border-radius:10px 10px 6px 6px;
+    border:3px solid #27394f;
+}
+
+.playerHead{
+    position:absolute;
+    left:9px;
+    top:0;
+    width:30px;
+    height:30px;
+    border-radius:50%;
+    background:#efc39e;
+    border:3px solid #6a483c;
+}
+
+.playerHair{
+    position:absolute;
+    left:7px;
+    top:-3px;
+    width:34px;
+    height:17px;
+    background:#4c342e;
+    border-radius:18px 18px 7px 7px;
+}
+
+/* =========================
+   NPC
+========================= */
+
+.npc{
+    position:absolute;
+    width:58px;
+    height:72px;
+    transform:translate(-50%,-50%);
+    z-index:45;
+    text-align:center;
+}
+
+.npcBody{
+    position:absolute;
+    left:12px;
+    bottom:0;
+    width:34px;
+    height:43px;
+    border-radius:11px 11px 7px 7px;
+    background:#b16e79;
+    border:3px solid #5d3941;
+}
+
+.npcHead{
+    position:absolute;
+    left:14px;
+    top:0;
+    width:31px;
+    height:31px;
+    border-radius:50%;
+    background:#efc39e;
+    border:3px solid #67463d;
+}
+
+.npcName{
+    position:absolute;
+    bottom:-20px;
+    width:100%;
+    color:white;
+    font-size:11px;
+    font-weight:800;
+    text-shadow:0 2px 4px #000;
+}
+
+.npcShop .npcBody{
+    background:#c99449;
+}
+
+.npcSpecial .npcBody{
+    background:#8061a4;
+}
+
+.interactMark{
+    position:absolute;
+    top:-27px;
+    left:50%;
+    transform:translateX(-50%);
+    padding:3px 7px;
+    border-radius:6px;
+    background:rgba(0,0,0,.7);
+    color:white;
+    font-size:11px;
+    white-space:nowrap;
+    display:none;
+}
+
+.npc.near .interactMark{
+    display:block;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+
+#sidebar{
+    position:absolute;
+    right:15px;
+    top:75px;
+    z-index:120;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+
+.sideBtn{
+    width:48px;
+    height:48px;
+    border-radius:13px;
+    background:rgba(16,22,29,.87);
+    border:1px solid rgba(255,255,255,.12);
+    color:white;
+    font-size:21px;
+    backdrop-filter:blur(8px);
+}
+
+.sideBtn:active{
+    transform:scale(.93);
+}
+
+/* =========================
+   ACTION BAR
+========================= */
+
+#actionBar{
+    position:absolute;
+    left:50%;
+    bottom:20px;
+    transform:translateX(-50%);
+    z-index:100;
+    display:flex;
+    gap:8px;
+}
+
+.actionBtn{
+    padding:10px 13px;
+    border-radius:10px;
+    background:rgba(17,24,31,.88);
+    border:1px solid rgba(255,255,255,.12);
+    color:white;
+    font-size:12px;
+    font-weight:800;
+}
+
+
+/* =========================
+   SEA DETAILS
+========================= */
+
+.seaBeach{position:absolute;left:0;right:0;bottom:0;height:38%;background:linear-gradient(#d9c184,#c9aa6c);z-index:1;}
+.seaShore{position:absolute;left:0;right:0;bottom:38%;height:8%;background:rgba(255,255,255,.22);z-index:2;border-top:3px solid rgba(255,255,255,.28);}
+.seaSun{position:absolute;right:8%;top:8%;font-size:58px;z-index:2;}
+.seaCloud{position:absolute;font-size:42px;opacity:.65;z-index:2;}
+.cloud1{left:12%;top:10%;}.cloud2{left:38%;top:22%;}
+.boat{position:absolute;left:34%;top:28%;font-size:58px;z-index:3;}
+.lighthouse{position:absolute;right:8%;bottom:31%;font-size:68px;z-index:4;}
+.seaRock{position:absolute;font-size:28px;z-index:5;}.rock1{left:18%;bottom:12%;}.rock2{left:58%;bottom:8%;}.rock3{right:25%;bottom:16%;}
+.shell{position:absolute;font-size:25px;z-index:5;}.shell1{left:35%;bottom:12%;}.shell2{right:40%;bottom:20%;}
+.palm{position:absolute;font-size:65px;z-index:5;}.palm1{left:4%;bottom:18%;}.palm2{right:5%;bottom:12%;}
+.fishingSpot{position:absolute;left:24%;bottom:34%;z-index:6;padding:8px 12px;border-radius:12px;background:rgba(30,75,88,.7);color:white;font-weight:900;text-align:center;}.fishingSpot span{display:block;font-size:10px;margin-top:2px;}
+
+/* =========================
+   NPC HOUSES
+========================= */
+
+.building1,.building2{overflow:visible;}
+.building3{left:69%;top:75%;width:23%;height:20%;}
+.homeSign{position:absolute;top:-30px;left:50%;transform:translateX(-50%);padding:4px 10px;border-radius:7px;background:#e2bd69;color:#382d1d;font-size:11px;font-weight:900;white-space:nowrap;}
+.npcHomeDoor{position:absolute;left:40%;bottom:-1px;width:20%;height:27%;min-width:30px;background:#4b3028;border:4px solid #2e211c;border-radius:6px 6px 0 0;}
+
+/* =========================
+   NPC HOUSE INTERIOR
+========================= */
+
+#npcHouse{background:linear-gradient(#a97858 0 20%,#d5b785 20% 100%);}
+.npcHouseInterior{position:absolute;left:5%;top:15%;width:90%;height:75%;background:#c9a879;border:9px solid #704d3f;border-radius:12px;overflow:hidden;}
+.npcHouseRoofTrim{position:absolute;left:0;right:0;top:0;height:13%;background:#8a5a48;}
+.npcHouseTitle{position:absolute;top:4%;left:50%;transform:translateX(-50%);color:white;font-size:20px;font-weight:900;z-index:3;text-shadow:0 2px 4px #000;white-space:nowrap;}
+.npcHouseBed{position:absolute;left:10%;top:23%;width:25%;height:28%;background:#e5e9ed;border:7px solid #694e4b;border-radius:10px;}
+.npcHouseTable{position:absolute;right:15%;top:28%;width:22%;height:18%;background:#80583e;border:6px solid #573a2c;}
+.npcHouseCabinet{position:absolute;right:13%;bottom:15%;width:20%;height:18%;background:#90623f;border:5px solid #573a2c;}
+.npcHouseDoor{position:absolute;left:45%;bottom:-1px;width:10%;min-width:50px;height:17%;background:#4b3028;border:5px solid #2e211c;z-index:5;}
+.npcHouseOwner{position:absolute;left:50%;top:16%;transform:translateX(-50%);font-size:12px;color:#5a4034;font-weight:900;}
+
+/* tree interaction */
+.farmTree,.forestTree{cursor:pointer;}
+.farmTree.chopped,.forestTree.chopped{display:none;}
+
+/* =========================
+   MOBILE CONTROL
+========================= */
+
+#mobileControls{
+    position:absolute;
+    left:20px;
+    bottom:20px;
+    z-index:150;
+    width:145px;
+    height:145px;
+}
+
+.dpad{
+    position:absolute;
+    inset:0;
+}
+
+.dpad button{
+    position:absolute;
+    width:48px;
+    height:48px;
+    border-radius:12px;
+    background:rgba(20,27,34,.78);
+    color:white;
+    font-size:22px;
+    border:1px solid rgba(255,255,255,.12);
+    touch-action:none;
+}
+
+.up{left:49px;top:0;}
+.left{left:0;top:49px;}
+.right{right:0;top:49px;}
+.down{left:49px;bottom:0;}
+
+/* =========================
+   PANEL
+========================= */
+
+#panel{
+    position:absolute;
+    inset:0;
+    z-index:500;
+    background:rgba(5,8,11,.67);
+    display:flex;
+    justify-content:flex-end;
+}
+
+.panelBox{
+    width:min(520px,92vw);
+    height:100%;
+    background:#151d25;
+    color:white;
+    padding:30px;
+    overflow:auto;
+    box-shadow:-20px 0 60px rgba(0,0,0,.4);
+}
+
+.panelHeader{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:22px;
+}
+
+.panelHeader h2{
+    font-size:24px;
+}
+
+.closePanel{
+    width:40px;
+    height:40px;
+    border-radius:10px;
+    background:#2b3641;
+    color:white;
+    font-size:20px;
+}
+
+/* =========================
+   CHARACTER
+========================= */
+
+.stat{
+    margin-bottom:18px;
+}
+
+.statLabel{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:7px;
+    font-size:13px;
+}
+
+.statBar{
+    height:10px;
+    background:#2c3742;
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.statFill{
+    height:100%;
+    background:#e0bb5e;
+}
+
+/* =========================
+   INVENTORY
+========================= */
+
+.inventoryGrid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+}
+
+.itemCard{
+    min-height:110px;
+    padding:12px;
+    border-radius:13px;
+    background:#202b36;
+    border:1px solid #33414f;
+    text-align:center;
+}
+
+.itemIcon{
+    font-size:32px;
+    margin-bottom:5px;
+}
+
+.itemName{
+    font-size:12px;
+    font-weight:800;
+}
+
+.itemCount{
+    color:#e3c66e;
+    font-size:13px;
+    margin-top:4px;
+}
+
+.itemPrice{
+    color:#9ca9b5;
+    font-size:11px;
+    margin-top:5px;
+}
+
+/* =========================
+   SPIRIT
+========================= */
+
+.spiritCard{
+    padding:15px;
+    margin-bottom:10px;
+    background:#202b36;
+    border-radius:14px;
+}
+
+.spiritTop{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.spiritIcon{
+    font-size:36px;
+}
+
+.spiritName{
+    font-weight:900;
+}
+
+.spiritDesc{
+    color:#aeb9c4;
+    font-size:12px;
+    margin-top:7px;
+}
+
+.spiritAction{
+    margin-top:12px;
+    width:100%;
+    padding:10px;
+    border-radius:9px;
+    background:#735e98;
+    color:white;
+    font-weight:800;
+}
+
+/* =========================
+   MAP
+========================= */
+
+.mapGrid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+}
+
+.mapLocation{
+    position:relative;
+    min-height:120px;
+    border-radius:16px;
+    padding:18px;
+    background:#25323e;
+    border:1px solid #3a4855;
+    color:white;
+    text-align:left;
+    overflow:hidden;
+}
+
+.mapLocation:hover{
+    background:#314150;
+}
+
+.mapLocationIcon{
+    font-size:40px;
+}
+
+.mapLocationName{
+    margin-top:10px;
+    font-weight:900;
+}
+
+.mapLocationDesc{
+    margin-top:4px;
+    color:#aeb9c4;
+    font-size:11px;
+}
+
+/* =========================
+   DIALOGUE
+========================= */
+
+#dialogue{
+    position:absolute;
+    left:50%;
+    bottom:30px;
+    transform:translateX(-50%);
+    width:min(850px,92vw);
+    z-index:400;
+}
+
+.dialogueBox{
+    background:rgba(17,24,31,.96);
+    border:1px solid rgba(255,255,255,.15);
+    border-radius:18px;
+    padding:20px;
+    color:white;
+    box-shadow:0 15px 50px rgba(0,0,0,.4);
+}
+
+.dialogueName{
+    color:#e3c66e;
+    font-weight:900;
+    margin-bottom:8px;
+}
+
+.dialogueText{
+    line-height:1.6;
+    color:#e4e8eb;
+    margin-bottom:14px;
+}
+
+.dialogueChoices{
+    display:grid;
+    gap:8px;
+}
+
+.dialogueChoice{
+    padding:11px;
+    border-radius:10px;
+    background:#2a3642;
+    color:white;
+    text-align:left;
+}
+
+.dialogueChoice:hover{
+    background:#374654;
+}
+
+.dialogueFooter{
+    display:flex;
+    gap:8px;
+    margin-top:12px;
+}
+
+.dialogueFooter button{
+    padding:9px 13px;
+    border-radius:9px;
+    background:#5a6d7e;
+    color:white;
+    font-size:12px;
+}
+
+/* =========================
+   SHOP
+========================= */
+
+.shopTabs{
+    display:flex;
+    gap:8px;
+    margin-bottom:15px;
+}
+
+.shopTab{
+    flex:1;
+    padding:10px;
+    border-radius:9px;
+    background:#293641;
+    color:#b8c2cb;
+    font-weight:800;
+}
+
+.shopTab.active{
+    background:#d5b45c;
+    color:#312817;
+}
+
+.shopList{
+    display:grid;
+    gap:9px;
+}
+
+.shopItem{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:12px;
+    border-radius:13px;
+    background:#202b36;
+    border:1px solid #34414d;
+}
+
+.shopItemIcon{
+    width:50px;
+    height:50px;
+    border-radius:10px;
+    background:#2d3945;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:28px;
+}
+
+.shopItemInfo{
+    flex:1;
+}
+
+.shopItemName{
+    font-weight:900;
+}
+
+.shopItemDesc{
+    color:#9eabb7;
+    font-size:11px;
+    margin-top:3px;
+}
+
+.shopItemPrice{
+    color:#e6c96b;
+    font-size:12px;
+    margin-top:4px;
+}
+
+.shopItem button{
+    padding:9px 11px;
+    border-radius:9px;
+    background:#d5b45c;
+    color:#302719;
+    font-weight:900;
+}
+
+.shopItem button.sell{
+    background:#6d8b70;
+    color:white;
+}
+
+.shopItem button:disabled{
+    opacity:.35;
+}
+
+/* =========================
+   TOAST
+========================= */
+
+#toast{
+    position:absolute;
+    left:50%;
+    top:85px;
+    transform:translateX(-50%) translateY(-10px);
+    z-index:900;
+    padding:11px 17px;
+    border-radius:12px;
+    background:rgba(16,22,29,.92);
+    color:white;
+    opacity:0;
+    pointer-events:none;
+    transition:.25s;
+}
+
+#toast.show{
+    opacity:1;
+    transform:translateX(-50%) translateY(0);
+}
+
+/* =========================
+   INACTIVITY
+========================= */
+
+#inactiveWarning{
+    position:absolute;
+    inset:0;
+    z-index:800;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:rgba(0,0,0,.5);
+    pointer-events:none;
+}
+
+.warningBox{
+    padding:20px 25px;
+    border-radius:15px;
+    background:#171e26;
+    color:white;
+    text-align:center;
+}
+
+.warningBox strong{
+    color:#e4c565;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:700px){
+
+    .startTitle{
+        font-size:32px;
+    }
+
+    #hud{
+        top:8px;
+        left:8px;
+        right:8px;
+    }
+
+    .hudItem{
+        padding:7px 9px;
+        font-size:10px;
+    }
+
+    #sidebar{
+        top:60px;
+        right:8px;
+    }
+
+    .sideBtn{
+        width:42px;
+        height:42px;
+        font-size:18px;
+    }
+
+    #actionBar{
+        bottom:12px;
+        left:auto;
+        right:10px;
+        transform:none;
+        flex-direction:column;
+        align-items:flex-end;
+    }
+
+    .actionBtn{
+        padding:8px 10px;
+    }
+
+    .panelBox{
+        width:100%;
+        padding:22px;
+    }
+
+    .inventoryGrid{
+        grid-template-columns:repeat(3,1fr);
+    }
+
+    .farmHouse{
+        min-width:150px;
+        min-height:120px;
+    }
+
+}
+
+/* =========================
+   DESKTOP TOUCH HIDE
+========================= */
+
+@media(min-width:801px){
+    #mobileControls{
+        opacity:.25;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="game">
+
+    <!-- START -->
+    <div id="startScreen">
+        <div class="startBox">
+            <div class="startTitle">정령의 계절</div>
+            <div class="startSub">
+                작은 마을과 정령 그리고 당신의 이야기
+            </div>
+            <button class="mainStartBtn" id="startButton">
+                게임 시작
+            </button>
+        </div>
+    </div>
+
+    <!-- SAVE -->
+    <div id="saveScreen" class="hidden">
+        <div class="saveBox">
+            <h2>저장 슬롯</h2>
+
+            <div class="saveSlots" id="saveSlots"></div>
+
+            <button class="backBtn" id="saveBackButton">
+                뒤로
+            </button>
+        </div>
+    </div>
+
+    <!-- GAME -->
+    <div id="gameWorld" class="hidden">
+
+        <div id="hud">
+            <div class="hudLeft">
+                <div class="hudItem" id="dayText">1일차</div>
+                <div class="hudItem" id="timeText">08:00</div>
+                <div class="hudItem" id="locationText">농장</div>
+            </div>
+
+            <div class="hudRight">
+                <div class="hudItem" id="energyText">에너지 100/100</div>
+                <div class="hudItem" id="money">₩1000</div>
+            </div>
+        </div>
+
+        <div id="main">
+
+            <div id="screen">
+
+                <!-- FARM -->
+                <div id="farm" class="location">
+
+                    <div class="farmHouse">
+                        <div class="farmHouseRoof"></div>
+                        <div class="farmHouseDoor"></div>
+                    </div>
+
+                    <div class="field" id="field"></div>
+
+                    <div class="pond"></div>
+
+                    <div class="farmTree tree1" data-tree-id="farm-tree1">🌳</div>
+                    <div class="farmTree tree2" data-tree-id="farm-tree2">🌳</div>
+                    <div class="farmTree tree3" data-tree-id="farm-tree3">🌳</div>
+                    <div class="farmTree tree4" data-tree-id="farm-tree4">🌳</div>
+
+                </div>
+
+                <!-- TOWN -->
+                <div id="town" class="location hidden">
+
+                    <div class="townRoad"></div>
+
+                    <div class="townBuilding building1 npcHomeBuilding">
+                        <div class="homeSign">미나의 집</div>
+                        <div class="npcHomeDoor"></div>
+                    </div>
+                    <div class="townBuilding building2 npcHomeBuilding">
+                        <div class="homeSign">테오의 집</div>
+                        <div class="npcHomeDoor"></div>
+                    </div>
+                    <div class="townBuilding building3 npcHomeBuilding">
+                        <div class="homeSign">장로의 집</div>
+                        <div class="npcHomeDoor"></div>
+                    </div>
+
+                    <div class="townBuilding shopBuilding">
+                        <div class="shopSign">상점</div>
+                    </div>
+
+                </div>
+
+                <!-- FOREST -->
+                <div id="forest" class="location hidden">
+
+                    <div class="forestTree ft1" data-tree-id="forest-ft1">🌲</div>
+                    <div class="forestTree ft2" data-tree-id="forest-ft2">🌲</div>
+                    <div class="forestTree ft3" data-tree-id="forest-ft3">🌲</div>
+                    <div class="forestTree ft4" data-tree-id="forest-ft4">🌲</div>
+                    <div class="forestTree ft5" data-tree-id="forest-ft5">🌲</div>
+
+                    <div class="shrine">
+                        ✨
+                    </div>
+
+                </div>
+
+                <!-- SEA -->
+                <div id="sea" class="location hidden">
+
+                    <div class="seaSun">☀️</div>
+                    <div class="seaCloud cloud1">☁️</div>
+                    <div class="seaCloud cloud2">☁️</div>
+
+                    <div class="wave w1">〰〰</div>
+                    <div class="wave w2">〰〰</div>
+                    <div class="wave w3">〰〰</div>
+                    <div class="wave w4">〰〰</div>
+                    <div class="wave w5">〰〰</div>
+
+                    <div class="seaBeach"></div>
+                    <div class="seaShore"></div>
+                    <div class="dock"></div>
+                    <div class="boat">⛵</div>
+                    <div class="lighthouse">🗼</div>
+                    <div class="seaRock rock1">🪨</div>
+                    <div class="seaRock rock2">🪨</div>
+                    <div class="seaRock rock3">🪨</div>
+                    <div class="shell shell1">🐚</div>
+                    <div class="shell shell2">🐚</div>
+                    <div class="palm palm1">🌴</div>
+                    <div class="palm palm2">🌴</div>
+                    <div class="fishingSpot">🎣<span>낚시터</span></div>
+
+                </div>
+
+                <!-- NPC HOUSE -->
+                <div id="npcHouse" class="location hidden">
+                    <div class="npcHouseInterior">
+                        <div class="npcHouseRoofTrim"></div>
+                        <div class="npcHouseTitle" id="npcHouseTitle">NPC의 집</div>
+                        <div class="npcHouseBed"></div>
+                        <div class="npcHouseTable"></div>
+                        <div class="npcHouseCabinet"></div>
+                        <div class="npcHouseDoor"></div>
+                        <div class="npcHouseOwner" id="npcHouseOwner">집주인</div>
+                    </div>
+                </div>
+
+                <!-- HOUSE -->
+                <div id="house" class="location hidden">
+
+                    <div class="houseFloor">
+
+                        <div class="houseBed"></div>
+                        <div class="houseTable"></div>
+                        <div class="houseChest"></div>
+
+                        <div class="houseDoorInside"></div>
+
+                    </div>
+
+                </div>
+
+                <div id="player">
+                    <div class="playerHead"></div>
+                    <div class="playerHair"></div>
+                    <div class="playerBody"></div>
+                </div>
+
+            </div>
+
+            <!-- SIDEBAR -->
+            <div id="sidebar">
+
+                <button class="sideBtn" data-panel="map">
+                    🗺️
+                </button>
+
+                <button class="sideBtn" data-panel="character">
+                    👤
+                </button>
+
+                <button class="sideBtn" data-panel="inventory">
+                    🎒
+                </button>
+
+                <button class="sideBtn" data-panel="spirits">
+                    ✨
+                </button>
+
+                <button class="sideBtn" id="saveGameButton">
+                    💾
+                </button>
+
+            </div>
+
+            <!-- ACTION BAR -->
+            <div id="actionBar">
+
+                <button class="actionBtn" id="plantButton">
+                    🌱 심기
+                </button>
+
+                <button class="actionBtn" id="waterButton">
+                    💧 물주기
+                </button>
+
+                <button class="actionBtn" id="harvestButton">
+                    🧺 수확
+                </button>
+
+                <button class="actionBtn" id="fishButton">
+                    🎣 낚시
+                </button>
+
+                <button class="actionBtn" id="chopButton">
+                    🪓 나무 베기
+                </button>
+
+                <button class="actionBtn" id="sleepButton">
+                    🛏️ 자기
+                </button>
+
+            </div>
+
+            <!-- MOBILE -->
+            <div id="mobileControls">
+
+                <div class="dpad">
+
+                    <button class="up" data-dir="up">▲</button>
+                    <button class="left" data-dir="left">◀</button>
+                    <button class="right" data-dir="right">▶</button>
+                    <button class="down" data-dir="down">▼</button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- PANEL -->
+    <div id="panel" class="hidden">
+
+        <div class="panelBox">
+
+            <div class="panelHeader">
+                <h2 id="panelTitle">메뉴</h2>
+                <button class="closePanel" id="closePanel">
+                    ×
+                </button>
+            </div>
+
+            <div id="panelContent"></div>
+
+        </div>
+
+    </div>
+
+    <!-- DIALOGUE -->
+    <div id="dialogue" class="hidden"></div>
+
+    <!-- TOAST -->
+    <div id="toast"></div>
+
+    <!-- INACTIVE -->
+    <div id="inactiveWarning" class="hidden">
+        <div class="warningBox">
+            <strong>잠시 자리를 비우셨습니다.</strong>
+            <br>
+            1분 후 시작 화면으로 돌아갑니다.
+        </div>
+    </div>
+
+</div>
+
+<script>
+
+/* =========================================================
+   DATA
+========================================================= */
+
+const SAVE_PREFIX = "spirit_season_save_";
+
+const DEFAULT_GAME = {
+
+    day:1,
+    season:"봄",
+    time:480,
+
+    energy:100,
+    maxEnergy:100,
+
+    money:1000,
+
+    location:"farm",
+    saveSlot:null,
+    npcHome:null,
+    choppedTrees:{},
+
+    player:{
+        x:50,
+        y:68,
+        direction:"down"
+    },
+
+    inventory:{
+        turnip_seed:5,
+        potato_seed:3,
+        wheat_seed:3,
+        turnip:0,
+        potato:0,
+        wheat:0,
+        fish:0,
+        stone:3,
+        herb:0,
+        potion:1
+    },
+
+    stats:{
+        level:1,
+        exp:0,
+        nextExp:100,
+        farming:1,
+        fishing:1,
+        friendship:1
+    },
+
+    crops:{
+
+    },
+
+    npc:{
+        mina:0,
+        theo:0,
+        luna:0,
+        elder:0,
+        marin:0,
+        rose:0
+    },
+
+    spirits:{
+        earth:{
+            affection:0,
+            contract:false
+        },
+        water:{
+            affection:0,
+            contract:false
+        },
+        forest:{
+            affection:0,
+            contract:false
+        },
+        wind:{
+            affection:0,
+            contract:false
+        },
+        moon:{
+            affection:0,
+            contract:false
+        }
+    }
+
+};
+
+
+/* =========================================================
+   ITEM DATA
+========================================================= */
+
+const ITEMS = {
+
+    turnip_seed:{
+        name:"순무 씨앗",
+        icon:"🌱",
+        buy:30,
+        sell:10,
+        type:"seed"
+    },
+
+    potato_seed:{
+        name:"감자 씨앗",
+        icon:"🥔",
+        buy:45,
+        sell:15,
+        type:"seed"
+    },
+
+    wheat_seed:{
+        name:"밀 씨앗",
+        icon:"🌾",
+        buy:25,
+        sell:8,
+        type:"seed"
+    },
+
+    turnip:{
+        name:"순무",
+        icon:"🥬",
+        buy:null,
+        sell:55,
+        type:"crop"
+    },
+
+    potato:{
+        name:"감자",
+        icon:"🥔",
+        buy:null,
+        sell:70,
+        type:"crop"
+    },
+
+    wheat:{
+        name:"밀",
+        icon:"🌾",
+        buy:null,
+        sell:45,
+        type:"crop"
+    },
+
+    fish:{
+        name:"물고기",
+        icon:"🐟",
+        buy:80,
+        sell:60,
+        type:"fish"
+    },
+
+    stone:{
+        name:"돌",
+        icon:"🪨",
+        buy:10,
+        sell:5,
+        type:"material"
+    },
+
+    wood:{
+        name:"나무",
+        icon:"🪵",
+        buy:null,
+        sell:18,
+        type:"material"
+    },
+
+    herb:{
+        name:"약초",
+        icon:"🌿",
+        buy:40,
+        sell:25,
+        type:"material"
+    },
+
+    potion:{
+        name:"회복 물약",
+        icon:"🧪",
+        buy:100,
+        sell:40,
+        type:"consumable"
+    }
+
+};
+
+
+/* =========================================================
+   SHOP DATA
+========================================================= */
+
+const SHOP_ITEMS = [
+
+    "turnip_seed",
+    "potato_seed",
+    "wheat_seed",
+    "herb",
+    "potion",
+    "stone"
+
+];
+
+
+/* =========================================================
+   NPC
+========================================================= */
+
+const NPC_DATA = {
+
+    mina:{
+        name:"미나",
+        location:"town",
+        x:25,
+        y:65,
+        color:"#b16e79",
+
+        dialogue:[
+            {
+                text:"오늘 마을 광장이 꽤 조용하네.",
+                choices:[
+                    ["날씨가 좋아서 그런가 봐.",2],
+                    ["그냥 사람들이 없는 것 같은데.",1],
+                    ["난 관심 없어.",-1]
+                ]
+            },
+            {
+                text:"요즘 농사는 잘되고 있어?",
+                choices:[
+                    ["응! 열심히 하고 있어.",2],
+                    ["그럭저럭.",1],
+                    ["농사 따위 귀찮아.",-1]
+                ]
+            }
+        ],
+
+        gift:"오늘도 찾아와줘서 고마워."
+    },
+
+    theo:{
+        name:"테오",
+        location:"town",
+        x:72,
+        y:70,
+        color:"#6b85ad",
+
+        dialogue:[
+            {
+                text:"바다에 나가면 가끔 이상한 물고기가 잡혀.",
+                choices:[
+                    ["어떤 물고기인데?",2],
+                    ["재미있겠다.",1],
+                    ["물고기는 관심 없어.",-1]
+                ]
+            },
+            {
+                text:"낚시는 기다리는 시간이 제일 중요해.",
+                choices:[
+                    ["인내심을 배워야겠네.",2],
+                    ["나는 빨리 결과가 나오는 게 좋은데.",1],
+                    ["그냥 안 할래.",-1]
+                ]
+            }
+        ],
+
+        gift:"낚시하다가 생각나서 줘봤어."
+    },
+
+    luna:{
+        name:"루나",
+        location:"forest",
+        x:70,
+        y:48,
+        color:"#8061a4",
+
+        dialogue:[
+            {
+                text:"숲의 정령들이 네 존재를 알아차리고 있어.",
+                choices:[
+                    ["정령과 계약하고 싶어.",2],
+                    ["정령이라니 신기하네.",1],
+                    ["그런 건 안 믿어.",-1]
+                ]
+            },
+            {
+                text:"숲은 생각보다 많은 것을 기억해.",
+                choices:[
+                    ["나도 숲을 소중히 할게.",2],
+                    ["그냥 조용하긴 하네.",1],
+                    ["나무는 나무일 뿐이지.",-1]
+                ]
+            }
+        ],
+
+        gift:"숲에서 발견한 거야."
+    },
+
+    elder:{
+        name:"장로",
+        location:"town",
+        x:52,
+        y:38,
+        color:"#777c84",
+
+        dialogue:[
+            {
+                text:"이 마을에는 오래전부터 정령의 힘이 깃들어 있었다네.",
+                choices:[
+                    ["더 자세히 듣고 싶어요.",2],
+                    ["흥미롭네요.",1],
+                    ["옛날이야기는 별로예요.",-1]
+                ]
+            }
+        ],
+
+        gift:"마을의 미래를 부탁하네."
+    },
+
+    marin:{
+        name:"마린",
+        location:"sea",
+        x:62,
+        y:68,
+        color:"#588b99",
+
+        dialogue:[
+            {
+                text:"바다는 매일 다른 얼굴을 보여줘.",
+                choices:[
+                    ["그래서 바다가 좋아.",2],
+                    ["그냥 물 아닌가?",1],
+                    ["난 산이 더 좋아.",-1]
+                ]
+            }
+        ],
+
+        gift:"바다에서 주운 작은 조개야."
+    },
+
+    rose:{
+        name:"로제",
+        location:"town",
+        x:50,
+        y:56,
+        color:"#c99449",
+        shop:true,
+
+        dialogue:[
+            {
+                text:"어서 와! 필요한 게 있으면 말해.",
+                choices:[
+                    ["상점 구경할게.",2],
+                    ["오늘 장사 잘돼?",1],
+                    ["그냥 지나가던 길이야.",0]
+                ]
+            }
+        ],
+
+        gift:"다음에 또 와!"
+    }
+
+};
+
+
+/* =========================================================
+   SPIRITS
+========================================================= */
+
+const SPIRIT_DATA = {
+
+    earth:{
+        name:"대지의 정령",
+        icon:"🌱",
+        desc:"작물의 성장을 돕는 정령.",
+        need:10
+    },
+
+    water:{
+        name:"물의 정령",
+        icon:"💧",
+        desc:"낚시와 물의 힘을 돕는 정령.",
+        need:15
+    },
+
+    forest:{
+        name:"숲의 정령",
+        icon:"🌲",
+        desc:"숲에서 얻는 자원을 증가시킨다.",
+        need:20
+    },
+
+    wind:{
+        name:"바람의 정령",
+        icon:"🍃",
+        desc:"이동과 행동에 도움을 준다.",
+        need:25
+    },
+
+    moon:{
+        name:"달의 정령",
+        icon:"🌙",
+        desc:"밤의 힘을 다루는 신비한 정령.",
+        need:30
+    }
+
+};
+
+
+/* =========================================================
+   GAME STATE
+========================================================= */
+
+let game = null;
+
+let currentNPC = null;
+
+let dialogueIndex = 0;
+
+let shopMode = "buy";
+
+let keys = {};
+
+let lastTime = 0;
+let gameClockAccumulator = 0;
+
+let inactivityTimer = null;
+
+let inactivityWarningTimer = null;
+
+let toastTimer = null;
+
+
+/* =========================================================
+   DOM
+========================================================= */
+
+const startScreen =
+    document.getElementById("startScreen");
+
+const saveScreen =
+    document.getElementById("saveScreen");
+
+const gameWorld =
+    document.getElementById("gameWorld");
+
+const screen =
+    document.getElementById("screen");
+
+const playerEl =
+    document.getElementById("player");
+
+const panel =
+    document.getElementById("panel");
+
+const panelTitle =
+    document.getElementById("panelTitle");
+
+const panelContent =
+    document.getElementById("panelContent");
+
+const dialogue =
+    document.getElementById("dialogue");
+
+const toast =
+    document.getElementById("toast");
+
+const inactiveWarning =
+    document.getElementById("inactiveWarning");
+
+
+/* =========================================================
+   UTIL
+========================================================= */
+
+function clone(obj){
+    return JSON.parse(JSON.stringify(obj));
+}
+
+
+function moneyText(value){
+    return "₩" + Number(value).toLocaleString();
+}
+
+
+function showToast(text){
+
+    toast.textContent = text;
+
+    toast.classList.add("show");
+
+    clearTimeout(toastTimer);
+
+    toastTimer = setTimeout(()=>{
+        toast.classList.remove("show");
+    },1800);
+}
+
+
+function formatTime(minutes){
+
+    minutes = Math.max(0,Math.min(1439,minutes));
+
+    const h =
+        String(Math.floor(minutes / 60)).padStart(2,"0");
+
+    const m =
+        String(minutes % 60).padStart(2,"0");
+
+    return `${h}:${m}`;
+}
+
+
+/* =========================================================
+   SAVE
+========================================================= */
+
+function saveGame(){
+
+    if(!game || !game.saveSlot) return;
+
+    localStorage.setItem(
+        SAVE_PREFIX + game.saveSlot,
+        JSON.stringify(game)
+    );
+
+}
+
+
+function getSave(slot){
+
+    const raw =
+        localStorage.getItem(SAVE_PREFIX + slot);
+
+    if(!raw) return null;
+
+    try{
+        return JSON.parse(raw);
+    }catch{
+        return null;
+    }
+
+}
+
+
+function showSaveScreen(){
+
+    startScreen.classList.add("hidden");
+
+    saveScreen.classList.remove("hidden");
+
+    gameWorld.classList.add("hidden");
+
+    renderSaveSlots();
+
+}
+
+
+function renderSaveSlots(){
+
+    const box =
+        document.getElementById("saveSlots");
+
+    box.innerHTML = "";
+
+    for(let slot=1;slot<=3;slot++){
+
+        const data = getSave(slot);
+
+        const el =
+            document.createElement("div");
+
+        el.className = "saveSlot";
+
+        if(data){
+
+            el.innerHTML = `
+                <div class="saveSlotTitle">
+                    슬롯 ${slot}
+                </div>
+
+                <div class="saveSlotInfo">
+                    ${data.day}일차 · ${data.season}
+                    · ${data.location}
+                    · ${moneyText(data.money)}
+                </div>
+
+                <div class="saveSlotButtons">
+
+                    <button data-load="${slot}">
+                        이어하기
+                    </button>
+
+                    <button
+                        class="deleteBtn"
+                        data-delete="${slot}"
+                    >
+                        삭제
+                    </button>
+
+                </div>
+            `;
+
+        }else{
+
+            el.innerHTML = `
+                <div class="saveSlotTitle">
+                    슬롯 ${slot}
+                </div>
+
+                <div class="saveSlotInfo">
+                    비어 있음
+                </div>
+
+                <div class="saveSlotButtons">
+
+                    <button data-new="${slot}">
+                        새 게임
+                    </button>
+
+                </div>
+            `;
+
+        }
+
+        box.appendChild(el);
+    }
+
+}
+
+
+function startNewGame(slot){
+
+    game = clone(DEFAULT_GAME);
+
+    game.saveSlot = slot;
+
+    game.location = "farm";
+
+    game.player.x = 50;
+    game.player.y = 68;
+
+    createFarm();
+
+    enterGame();
+
+    saveGame();
+
+}
+
+
+function loadGame(slot){
+
+    const data = getSave(slot);
+
+    if(!data) return;
+
+    const fresh = clone(DEFAULT_GAME);
+
+    game = Object.assign(fresh,data);
+
+    game.player =
+        Object.assign(
+            fresh.player,
+            data.player || {}
+        );
+
+    game.inventory =
+        Object.assign(
+            fresh.inventory,
+            data.inventory || {}
+        );
+
+    game.stats =
+        Object.assign(
+            fresh.stats,
+            data.stats || {}
+        );
+
+    game.npc =
+        Object.assign(
+            fresh.npc,
+            data.npc || {}
+        );
+
+    game.spirits =
+        Object.assign(
+            fresh.spirits,
+            data.spirits || {}
+        );
+
+    game.crops =
+        Object.assign(
+            fresh.crops,
+            data.crops || {}
+        );
+
+    game.saveSlot = slot;
+
+    enterGame();
+
+}
+
+
+function deleteSave(slot){
+
+    localStorage.removeItem(
+        SAVE_PREFIX + slot
+    );
+
+    renderSaveSlots();
+
+}
+
+
+/* =========================================================
+   GAME START
+========================================================= */
+
+function enterGame(){
+
+    startScreen.classList.add("hidden");
+
+    saveScreen.classList.add("hidden");
+
+    gameWorld.classList.remove("hidden");
+
+    panel.classList.add("hidden");
+
+    dialogue.classList.add("hidden");
+
+    game.choppedTrees = game.choppedTrees || {};
+    game.npcHome = game.npcHome || null;
+    gameClockAccumulator = 0;
+    setLocation(game.location,true);
+
+    updateHUD();
+
+    updatePlayer();
+
+    createNPCs();
+
+    createFarm();
+
+    resetInactivityTimer();
+
+}
+
+
+function stopGame(){
+
+    saveGame();
+
+    game = null;
+
+    currentNPC = null;
+
+    keys = {};
+    gameClockAccumulator = 0;
+
+    dialogue.classList.add("hidden");
+
+    panel.classList.add("hidden");
+
+    gameWorld.classList.add("hidden");
+
+    inactiveWarning.classList.add("hidden");
+
+    startScreen.classList.remove("hidden");
+
+    clearTimeout(inactivityTimer);
+
+    clearTimeout(inactivityWarningTimer);
+
+}
+
+
+/* =========================================================
+   FARM
+========================================================= */
+
+function createFarm(){
+
+    const field =
+        document.getElementById("field");
+
+    if(!field) return;
+
+    field.innerHTML = "";
+
+    for(let i=0;i<24;i++){
+
+        const tile =
+            document.createElement("div");
+
+        tile.className = "cropTile";
+
+        tile.dataset.index = i;
+
+        const crop =
+            game?.crops?.[i];
+
+        if(crop){
+
+            if(crop.watered){
+                tile.classList.add("watered");
+            }
+
+            const icon =
+                document.createElement("div");
+
+            icon.className = "crop";
+
+            icon.textContent =
+                crop.grown
+                ? "🥬"
+                : "🌱";
+
+            tile.appendChild(icon);
+
+        }
+
+        field.appendChild(tile);
+
+    }
+
+}
+
+
+/* =========================================================
+   LOCATION
+========================================================= */
+
+const LOCATION_NAMES = {
+
+    farm:"농장",
+    town:"마을",
+    forest:"숲",
+    sea:"바다",
+    house:"집",
+    npcHouse:"NPC의 집"
+
+};
+
+
+function setLocation(location,initial=false){
+
+    if(!game) return;
+
+    game.location = location;
+
+    if(location !== "npcHouse") game.npcHome = null;
+
+    document
+        .querySelectorAll(".location")
+        .forEach(el=>{
+            el.classList.add("hidden");
+        });
+
+    const target =
+        document.getElementById(location);
+
+    if(target){
+        target.classList.remove("hidden");
+    }
+
+    placePlayerForLocation(location,initial);
+
+    createNPCs();
+
+    updatePlayer();
+
+    updateNearby();
+
+    createFarm();
+
+}
+
+
+function placePlayerForLocation(location,initial){
+
+    if(!game) return;
+
+    if(!initial){
+
+        if(location === "farm"){
+            game.player.x = 30;
+            game.player.y = 70;
+        }
+
+        if(location === "town"){
+            game.player.x = 8;
+            game.player.y = 65;
+        }
+
+        if(location === "forest"){
+            game.player.x = 50;
+            game.player.y = 90;
+        }
+
+        if(location === "sea"){
+            game.player.x = 8;
+            game.player.y = 62;
+        }
+
+        if(location === "house"){
+            game.player.x = 50;
+            game.player.y = 72;
+        }
+
+        if(location === "npcHouse"){
+            game.player.x = 50;
+            game.player.y = 74;
+        }
+
+    }
+
+}
+
+
+function teleportTo(location){
+
+    if(!game) return;
+
+    closePanel();
+
+    dialogue.classList.add("hidden");
+
+    setLocation(location);
+
+    showToast(
+        `${LOCATION_NAMES[location]}으로 이동했습니다.`
+    );
+
+    resetInactivityTimer();
+
+}
+
+
+/* =========================================================
+   TRANSITIONS
+========================================================= */
+
+function isNearFarmHouseDoor(){
+
+    if(!game || game.location !== "farm") return false;
+
+    return (
+        game.player.x >= 8 &&
+        game.player.x <= 37 &&
+        game.player.y >= 25 &&
+        game.player.y <= 44
+    );
+
+}
+
+function isNearHouseExit(){
+
+    if(!game || game.location !== "house") return false;
+
+    return (
+        game.player.x >= 35 &&
+        game.player.x <= 65 &&
+        game.player.y >= 74
+    );
+
+}
+
+function enterHouse(){
+
+    if(!game || game.location !== "farm") return false;
+
+    setLocation("house");
+
+    game.player.x = 50;
+    game.player.y = 73;
+
+    updatePlayer();
+
+    showToast("집에 들어왔습니다.");
+
+    return true;
+
+}
+
+function leaveHouse(){
+
+    if(!game || game.location !== "house") return false;
+
+    setLocation("farm");
+
+    game.player.x = 23;
+    game.player.y = 45;
+
+    updatePlayer();
+
+    showToast("농장으로 나왔습니다.");
+
+    return true;
+
+}
+
+function getTownHomeAtPlayer(){
+
+    if(!game || game.location !== "town") return null;
+
+    const x=game.player.x, y=game.player.y;
+
+    if(x>=14 && x<=25 && y>=34 && y<=46) return "mina";
+    if(x>=76 && x<=87 && y>=34 && y<=46) return "theo";
+    if(x>=76 && x<=87 && y>=91 && y<=98) return "elder";
+    if(x>=46 && x<=55 && y>=34 && y<=46) return "rose";
+
+    return null;
+
+}
+
+function enterNPCHouse(owner){
+
+    if(!game || !NPC_DATA[owner]) return false;
+
+    game.npcHome = owner;
+    setLocation("npcHouse");
+    game.npcHome = owner;
+    game.player.x = 50;
+    game.player.y = 74;
+    updatePlayer();
+    renderNPCHouse();
+    showToast(`${NPC_DATA[owner].name}의 집에 들어왔습니다.`);
+    return true;
+
+}
+
+function leaveNPCHouse(){
+
+    if(!game || game.location !== "npcHouse") return false;
+
+    game.npcHome = null;
+    setLocation("town");
+    game.player.x = 50;
+    game.player.y = 46;
+    updatePlayer();
+    showToast("마을로 나왔습니다.");
+    return true;
+
+}
+
+function renderNPCHouse(){
+
+    const title=document.getElementById("npcHouseTitle");
+    const owner=document.getElementById("npcHouseOwner");
+    if(!title || !owner) return;
+    const npc=game && game.npcHome ? NPC_DATA[game.npcHome] : null;
+    if(npc){
+        title.textContent=`${npc.name}의 집`;
+        owner.textContent=`집주인 · ${npc.name}`;
+    }else{
+        title.textContent="NPC의 집";
+        owner.textContent="집주인";
+    }
+
+}
+
+function checkTransitions(){
+
+    if(!game) return;
+
+    const x = game.player.x;
+    const y = game.player.y;
+
+    if(game.location === "farm"){
+
+        if(isNearFarmHouseDoor()){
+
+            enterHouse();
+
+            return;
+        }
+
+        if(
+            x >= 97 &&
+            y >= 48 &&
+            y <= 82
+        ){
+
+            setLocation("town");
+
+            game.player.x = 8;
+            game.player.y = 65;
+
+            updatePlayer();
+
+            return;
+        }
+
+    }
+
+
+    if(game.location === "house"){
+
+        if(isNearHouseExit()){
+
+            leaveHouse();
+
+            return;
+        }
+
+    }
+
+    if(game.location === "npcHouse"){
+
+        if(y >= 86 && x >= 40 && x <= 60){
+            leaveNPCHouse();
+            return;
+        }
+
+    }
+
+
+    if(game.location === "town"){
+
+        const homeOwner = getTownHomeAtPlayer();
+        if(homeOwner){
+            enterNPCHouse(homeOwner);
+            return;
+        }
+
+        if(
+            x <= 3 &&
+            y >= 45 &&
+            y <= 85
+        ){
+
+            setLocation("farm");
+
+            game.player.x = 92;
+            game.player.y = 65;
+
+            updatePlayer();
+
+            return;
+        }
+
+        if(
+            y <= 3 &&
+            x >= 40 &&
+            x <= 62
+        ){
+
+            setLocation("forest");
+
+            game.player.x = 50;
+            game.player.y = 91;
+
+            updatePlayer();
+
+            return;
+        }
+
+        if(
+            x >= 97 &&
+            y >= 35 &&
+            y <= 65
+        ){
+
+            setLocation("sea");
+
+            game.player.x = 8;
+            game.player.y = 65;
+
+            updatePlayer();
+
+            return;
+        }
+
+    }
+
+
+    if(game.location === "forest"){
+
+        if(
+            y >= 97 &&
+            x >= 35 &&
+            x <= 65
+        ){
+
+            setLocation("town");
+
+            game.player.x = 50;
+            game.player.y = 8;
+
+            updatePlayer();
+
+            return;
+        }
+
+    }
+
+
+    if(game.location === "sea"){
+
+        if(
+            x <= 3 &&
+            y >= 35 &&
+            y <= 85
+        ){
+
+            setLocation("town");
+
+            game.player.x = 92;
+            game.player.y = 55;
+
+            updatePlayer();
+
+            return;
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   MOVEMENT
+========================================================= */
+
+function canMove(nx,ny){
+
+    if(nx < 2 || nx > 98 || ny < 2 || ny > 98){
+        return false;
+    }
+
+    if(game.location === "farm"){
+
+        /*
+            집 본체 충돌.
+            문 중앙은 통과 가능.
+        */
+
+        const inHouse =
+            nx >= 8 &&
+            nx <= 37 &&
+            ny >= 8 &&
+            ny <= 35;
+
+        const door =
+            nx >= 17 &&
+            nx <= 27 &&
+            ny >= 26 &&
+            ny <= 43;
+
+        if(inHouse && !door){
+            return false;
+        }
+
+        /*
+            연못
+        */
+
+        if(
+            nx >= 8 &&
+            nx <= 33 &&
+            ny >= 65 &&
+            ny <= 92
+        ){
+            return false;
+        }
+
+    }
+
+
+    if(game.location === "town"){
+
+        if(
+            nx >= 8 &&
+            nx <= 31 &&
+            ny >= 13 &&
+            ny <= 38
+        ){
+            return false;
+        }
+
+        if(
+            nx >= 69 &&
+            nx <= 92 &&
+            ny >= 13 &&
+            ny <= 38
+        ){
+            return false;
+        }
+
+        /*
+            상점 건물.
+            입구 앞은 비워둠.
+        */
+
+        if(
+            nx >= 38 &&
+            nx <= 63 &&
+            ny >= 9 &&
+            ny <= 39
+        ){
+
+            const shopDoor =
+                nx >= 46 &&
+                nx <= 55 &&
+                ny >= 35 &&
+                ny <= 44;
+
+            if(!shopDoor){
+                return false;
+            }
+
+        }
+
+    }
+
+
+    if(game.location === "forest"){
+
+        if(
+            nx >= 39 &&
+            nx <= 61 &&
+            ny >= 40 &&
+            ny <= 63
+        ){
+            return false;
+        }
+
+    }
+
+
+    if(game.location === "npcHouse"){
+
+        if(nx >= 10 && nx <= 35 && ny >= 39 && ny <= 55){
+            return false;
+        }
+        if(nx >= 68 && nx <= 90 && ny >= 43 && ny <= 58){
+            return false;
+        }
+        if(nx >= 67 && nx <= 87 && ny >= 73 && ny <= 88){
+            return false;
+        }
+
+    }
+
+    if(game.location === "house"){
+
+        /*
+            가구 충돌
+        */
+
+        if(
+            nx >= 10 &&
+            nx <= 38 &&
+            ny >= 39 &&
+            ny <= 55
+        ){
+            return false;
+        }
+
+        if(
+            nx >= 68 &&
+            nx <= 90 &&
+            ny >= 43 &&
+            ny <= 58
+        ){
+            return false;
+        }
+
+        if(
+            nx >= 67 &&
+            nx <= 87 &&
+            ny >= 73 &&
+            ny <= 88
+        ){
+            return false;
+        }
+
+    }
+
+    return true;
+
+}
+
+
+function movePlayer(dx,dy){
+
+    if(!game) return;
+
+    let speed = 0.38;
+
+    if(game.spirits.wind.contract){
+        speed = 0.46;
+    }
+
+    const nx =
+        game.player.x + dx * speed;
+
+    const ny =
+        game.player.y + dy * speed;
+
+    if(canMove(nx,ny)){
+
+        game.player.x = nx;
+        game.player.y = ny;
+
+        if(Math.abs(dx)>Math.abs(dy)){
+
+            game.player.direction =
+                dx > 0 ? "right" : "left";
+
+        }else if(dy !== 0){
+
+            game.player.direction =
+                dy > 0 ? "down" : "up";
+
+        }
+
+        updatePlayer();
+
+        updateNearby();
+
+        checkTransitions();
+
+    }
+
+}
+
+
+function updatePlayer(){
+
+    if(!game) return;
+
+    playerEl.style.left =
+        game.player.x + "%";
+
+    playerEl.style.top =
+        game.player.y + "%";
+
+}
+
+
+/* =========================================================
+   TREE CHOPPING
+========================================================= */
+
+function getTreePositions(){
+    return {
+        farm:{
+            "farm-tree1":[7,55],
+            "farm-tree2":[89,22],
+            "farm-tree3":[93,77],
+            "farm-tree4":[27,77]
+        },
+        forest:{
+            "forest-ft1":[8,18],
+            "forest-ft2":[28,35],
+            "forest-ft3":[88,20],
+            "forest-ft4":[70,86],
+            "forest-ft5":[12,84]
+        }
+    };
+}
+
+function updateChoppableTrees(){
+    if(!game) return;
+    document.querySelectorAll("[data-tree-id]").forEach(el=>{
+        const id=el.dataset.treeId;
+        el.classList.toggle("chopped", !!game.choppedTrees[id]);
+    });
+}
+
+function getNearbyTree(){
+    if(!game || !["farm","forest"].includes(game.location)) return null;
+    let closest=null, best=Infinity;
+    const positions=getTreePositions()[game.location] || {};
+    Object.entries(positions).forEach(([id,pos])=>{
+        if(game.choppedTrees[id]) return;
+        const dx=game.player.x-pos[0], dy=game.player.y-pos[1];
+        const d=Math.sqrt(dx*dx+dy*dy);
+        if(d<best){best=d; closest={id,x:pos[0],y:pos[1]};}
+    });
+    return best<=11 ? closest : null;
+}
+
+function chopTree(){
+    if(!game || !["farm","forest"].includes(game.location)){
+        showToast("농장이나 숲에서만 나무를 벨 수 있습니다.");
+        return;
+    }
+    if(game.energy < 5){
+        showToast("에너지가 부족합니다.");
+        return;
+    }
+    const tree=getNearbyTree();
+    if(!tree){
+        showToast("나무 가까이에서 나무 베기를 사용하세요.");
+        return;
+    }
+    game.energy-=5;
+    const amount=game.spirits.forest.contract ? 3 : 2;
+    game.inventory.wood=(game.inventory.wood||0)+amount;
+    game.inventory.stone=(game.inventory.stone||0)+1;
+    game.stats.exp+=8;
+    game.stats.farming++;
+    game.choppedTrees[tree.id]=true;
+    checkLevel();
+    updateChoppableTrees();
+    updateHUD();
+    saveGame();
+    showToast(`나무를 베었습니다. 나무 +${amount}`);
+}
+
+/* =========================================================
+   NPC CREATE
+========================================================= */
+
+function createNPCs(){
+
+    document
+        .querySelectorAll(".npc")
+        .forEach(el=>el.remove());
+
+    if(!game) return;
+
+    Object.entries(NPC_DATA).forEach(([id,npc])=>{
+
+        if(npc.location !== game.location) return;
+
+        const el =
+            document.createElement("div");
+
+        el.className = "npc";
+
+        if(npc.shop){
+            el.classList.add("npcShop");
+        }
+
+        el.dataset.npc = id;
+
+        el.style.left =
+            npc.x + "%";
+
+        el.style.top =
+            npc.y + "%";
+
+        el.innerHTML = `
+
+            <div class="interactMark">
+                E 상호작용
+            </div>
+
+            <div class="npcHead"></div>
+
+            <div
+                class="npcBody"
+                style="background:${npc.color}"
+            ></div>
+
+            <div class="npcName">
+                ${npc.name}
+            </div>
+
+        `;
+
+        screen.appendChild(el);
+
+    });
+
+    updateNearby();
+
+}
+
+
+/* =========================================================
+   NPC NEARBY
+========================================================= */
+
+function distanceToNPC(npc){
+
+    const dx =
+        game.player.x - npc.x;
+
+    const dy =
+        game.player.y - npc.y;
+
+    return Math.sqrt(
+        dx*dx + dy*dy
+    );
+
+}
+
+
+function getNearbyNPC(){
+
+    if(!game) return null;
+
+    let closest = null;
+
+    let distance = Infinity;
+
+    Object.entries(NPC_DATA).forEach(([id,npc])=>{
+
+        if(npc.location !== game.location) return;
+
+        const d =
+            distanceToNPC(npc);
+
+        if(d < distance){
+
+            distance = d;
+
+            closest = {
+                id,
+                npc
+            };
+
+        }
+
+    });
+
+    if(distance <= 12){
+        return closest;
+    }
+
+    return null;
+
+}
+
+
+function updateNearby(){
+
+    if(!game) return;
+
+    const nearby =
+        getNearbyNPC();
+
+    document
+        .querySelectorAll(".npc")
+        .forEach(el=>{
+
+            if(
+                nearby &&
+                el.dataset.npc === nearby.id
+            ){
+                el.classList.add("near");
+            }else{
+                el.classList.remove("near");
+            }
+
+        });
+
+}
+
+
+/* =========================================================
+   INTERACTION
+========================================================= */
+
+function interactNearby(){
+
+    if(!game) return;
+
+    if(game.location === "npcHouse"){
+        if(game.player.y >= 82 && game.player.x >= 38 && game.player.x <= 62){
+            leaveNPCHouse();
+            return;
+        }
+    }
+
+    const nearby =
+        getNearbyNPC();
+
+    if(nearby){
+
+        openDialogue(
+            nearby.id
+        );
+
+        return;
+    }
+
+    /*
+        숲 제단
+    */
+
+    if(game.location === "forest"){
+
+        const dx =
+            game.player.x - 50;
+
+        const dy =
+            game.player.y - 52;
+
+        if(Math.sqrt(dx*dx+dy*dy) < 15){
+
+            openPanel("spirits");
+
+            return;
+        }
+
+    }
+
+    /*
+        집 침대
+    */
+
+    if(game.location === "house"){
+
+        if(
+            game.player.x >= 10 &&
+            game.player.x <= 42 &&
+            game.player.y >= 30 &&
+            game.player.y <= 60
+        ){
+
+            sleep();
+
+            return;
+        }
+
+    }
+
+    /*
+        집 문
+    */
+
+    if(game.location === "house"){
+
+        if(isNearHouseExit()){
+
+            leaveHouse();
+
+            return;
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   DIALOGUE
+========================================================= */
+
+function openDialogue(id){
+
+    const npc =
+        NPC_DATA[id];
+
+    if(!npc) return;
+
+    currentNPC = id;
+
+    dialogueIndex = 0;
+
+    renderDialogue();
+
+}
+
+
+function renderDialogue(){
+
+    if(!currentNPC) return;
+
+    const npc =
+        NPC_DATA[currentNPC];
+
+    const data =
+        npc.dialogue[dialogueIndex];
+
+    dialogue.classList.remove("hidden");
+
+    dialogue.innerHTML = `
+
+        <div class="dialogueBox">
+
+            <div class="dialogueName">
+                ${npc.name}
+                · 호감도 ${game.npc[currentNPC] || 0}
+            </div>
+
+            <div class="dialogueText">
+                ${data.text}
+            </div>
+
+            <div class="dialogueChoices">
+
+                ${data.choices.map((choice,index)=>`
+
+                    <button
+                        class="dialogueChoice"
+                        data-choice="${index}"
+                    >
+                        ${choice[0]}
+                    </button>
+
+                `).join("")}
+
+            </div>
+
+            <div class="dialogueFooter">
+
+                ${
+                    npc.shop
+                    ?
+                    `<button id="openShopFromDialogue">
+                        상점 열기
+                    </button>`
+                    :
+                    ""
+                }
+
+                <button id="giftButton">
+                    선물하기
+                </button>
+
+                <button id="closeDialogueButton">
+                    닫기
+                </button>
+
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+
+function chooseDialogue(index){
+
+    if(!currentNPC) return;
+
+    const npc =
+        NPC_DATA[currentNPC];
+
+    const data =
+        npc.dialogue[dialogueIndex];
+
+    const amount =
+        data.choices[index][1];
+
+    game.npc[currentNPC] =
+        Math.max(
+            0,
+            (game.npc[currentNPC] || 0) + amount
+        );
+
+    if(amount > 0){
+
+        showToast(
+            `호감도 +${amount}`
+        );
+
+    }else if(amount < 0){
+
+        showToast(
+            `호감도 ${amount}`
+        );
+
+    }else{
+
+        showToast(
+            "호감도 변화 없음"
+        );
+
+    }
+
+    game.stats.friendship +=
+        amount > 0 ? 1 : 0;
+
+    checkLevel();
+
+    dialogueIndex++;
+
+    if(dialogueIndex >= npc.dialogue.length){
+
+        dialogueIndex = 0;
+
+    }
+
+    saveGame();
+
+    renderDialogue();
+
+}
+
+
+function giveGift(){
+
+    if(!currentNPC) return;
+
+    if(game.inventory.herb > 0){
+
+        game.inventory.herb--;
+
+        game.npc[currentNPC] += 5;
+
+        showToast(
+            `${NPC_DATA[currentNPC].name}의 호감도 +5`
+        );
+
+    }else if(game.inventory.turnip > 0){
+
+        game.inventory.turnip--;
+
+        game.npc[currentNPC] += 3;
+
+        showToast(
+            `${NPC_DATA[currentNPC].name}의 호감도 +3`
+        );
+
+    }else{
+
+        showToast(
+            "선물할 아이템이 없습니다."
+        );
+
+    }
+
+    saveGame();
+
+    renderDialogue();
+
+}
+
+
+/* =========================================================
+   SHOP
+========================================================= */
+
+function openShop(){
+
+    if(!game) return;
+
+    shopMode = "buy";
+
+    openPanel("shop");
+
+}
+
+
+function renderShop(){
+
+    panelTitle.textContent =
+        "로제의 상점";
+
+    panelContent.innerHTML = `
+
+        <div
+            style="
+                color:#aeb9c4;
+                font-size:13px;
+                margin-bottom:15px;
+            "
+        >
+            필요한 물건을 사고 가지고 있는 아이템을 판매할 수 있습니다.
+        </div>
+
+        <div class="shopTabs">
+
+            <button
+                class="shopTab ${shopMode==="buy"?"active":""}"
+                data-shop-tab="buy"
+            >
+                구매
+            </button>
+
+            <button
+                class="shopTab ${shopMode==="sell"?"active":""}"
+                data-shop-tab="sell"
+            >
+                판매
+            </button>
+
+        </div>
+
+        <div class="shopList" id="shopList"></div>
+
+    `;
+
+    const list =
+        document.getElementById("shopList");
+
+    if(shopMode === "buy"){
+
+        SHOP_ITEMS.forEach(id=>{
+
+            const item =
+                ITEMS[id];
+
+            const row =
+                document.createElement("div");
+
+            row.className = "shopItem";
+
+            row.innerHTML = `
+
+                <div class="shopItemIcon">
+                    ${item.icon}
+                </div>
+
+                <div class="shopItemInfo">
+
+                    <div class="shopItemName">
+                        ${item.name}
+                    </div>
+
+                    <div class="shopItemDesc">
+                        보유 ${game.inventory[id] || 0}개
+                    </div>
+
+                    <div class="shopItemPrice">
+                        ${moneyText(item.buy)}
+                    </div>
+
+                </div>
+
+                <button
+                    data-buy="${id}"
+                    ${game.money < item.buy ? "disabled":""}
+                >
+                    구매
+                </button>
+
+            `;
+
+            list.appendChild(row);
+
+        });
+
+    }else{
+
+        Object.keys(game.inventory).forEach(id=>{
+
+            const count =
+                game.inventory[id] || 0;
+
+            const item =
+                ITEMS[id];
+
+            if(!item || !item.sell || count <= 0){
+                return;
+            }
+
+            const row =
+                document.createElement("div");
+
+            row.className = "shopItem";
+
+            row.innerHTML = `
+
+                <div class="shopItemIcon">
+                    ${item.icon}
+                </div>
+
+                <div class="shopItemInfo">
+
+                    <div class="shopItemName">
+                        ${item.name}
+                    </div>
+
+                    <div class="shopItemDesc">
+                        보유 ${count}개
+                    </div>
+
+                    <div class="shopItemPrice">
+                        판매가 ${moneyText(item.sell)}
+                    </div>
+
+                </div>
+
+                <button
+                    class="sell"
+                    data-sell="${id}"
+                >
+                    판매
+                </button>
+
+            `;
+
+            list.appendChild(row);
+
+        });
+
+        if(!list.children.length){
+
+            list.innerHTML = `
+
+                <div
+                    style="
+                        padding:30px;
+                        text-align:center;
+                        color:#8f9ca8;
+                    "
+                >
+                    판매할 아이템이 없습니다.
+                </div>
+
+            `;
+
+        }
+
+    }
+
+}
+
+
+function buyItem(id){
+
+    const item =
+        ITEMS[id];
+
+    if(!item || !item.buy) return;
+
+    if(game.money < item.buy){
+
+        showToast("돈이 부족합니다.");
+
+        return;
+    }
+
+    game.money -= item.buy;
+
+    game.inventory[id] =
+        (game.inventory[id] || 0) + 1;
+
+    showToast(
+        `${item.name} 1개 구매`
+    );
+
+    updateHUD();
+
+    saveGame();
+
+    renderShop();
+
+}
+
+
+function sellItem(id){
+
+    const item =
+        ITEMS[id];
+
+    if(!item || !item.sell) return;
+
+    if(
+        !game.inventory[id] ||
+        game.inventory[id] <= 0
+    ){
+
+        showToast("아이템이 없습니다.");
+
+        return;
+    }
+
+    game.inventory[id]--;
+
+    game.money += item.sell;
+
+    showToast(
+        `${item.name} 1개 판매`
+    );
+
+    updateHUD();
+
+    saveGame();
+
+    renderShop();
+
+}
+
+
+/* =========================================================
+   INVENTORY
+========================================================= */
+
+function openInventory(){
+
+    panelTitle.textContent =
+        "인벤토리";
+
+    panelContent.innerHTML = `
+
+        <div class="inventoryGrid">
+
+            ${
+                Object.keys(game.inventory)
+                .map(id=>{
+
+                    const item =
+                        ITEMS[id];
+
+                    if(!item) return "";
+
+                    const count =
+                        game.inventory[id] || 0;
+
+                    return `
+
+                        <div class="itemCard">
+
+                            <div class="itemIcon">
+                                ${item.icon}
+                            </div>
+
+                            <div class="itemName">
+                                ${item.name}
+                            </div>
+
+                            <div class="itemCount">
+                                × ${count}
+                            </div>
+
+                            ${
+                                item.sell
+                                ?
+                                `<div class="itemPrice">
+                                    판매 ${moneyText(item.sell)}
+                                </div>`
+                                :
+                                ""
+                            }
+
+                        </div>
+
+                    `;
+
+                }).join("")
+            }
+
+        </div>
+
+        <div
+            style="
+                margin-top:20px;
+                padding:15px;
+                border-radius:12px;
+                background:#202b36;
+                color:#aeb9c4;
+                font-size:12px;
+                line-height:1.6;
+            "
+        >
+            마을의 로제에게 가면 아이템을 판매하거나
+            씨앗과 필요한 물건을 구매할 수 있습니다.
+        </div>
+
+    `;
+
+}
+
+
+/* =========================================================
+   MAP
+========================================================= */
+
+function openMap(){
+
+    panelTitle.textContent =
+        "지도";
+
+    panelContent.innerHTML = `
+
+        <div
+            style="
+                color:#aeb9c4;
+                font-size:13px;
+                margin-bottom:15px;
+            "
+        >
+            지역을 누르면 해당 장소로 바로 이동합니다.
+        </div>
+
+        <div class="mapGrid">
+
+            <button
+                class="mapLocation"
+                data-teleport="farm"
+            >
+                <div class="mapLocationIcon">🌾</div>
+                <div class="mapLocationName">농장</div>
+                <div class="mapLocationDesc">
+                    작물을 기르고 생활하는 곳
+                </div>
+            </button>
+
+            <button
+                class="mapLocation"
+                data-teleport="town"
+            >
+                <div class="mapLocationIcon">🏘️</div>
+                <div class="mapLocationName">마을</div>
+                <div class="mapLocationDesc">
+                    NPC와 상점이 있는 곳
+                </div>
+            </button>
+
+            <button
+                class="mapLocation"
+                data-teleport="forest"
+            >
+                <div class="mapLocationIcon">🌲</div>
+                <div class="mapLocationName">숲</div>
+                <div class="mapLocationDesc">
+                    정령과 만날 수 있는 곳
+                </div>
+            </button>
+
+            <button
+                class="mapLocation"
+                data-teleport="sea"
+            >
+                <div class="mapLocationIcon">🌊</div>
+                <div class="mapLocationName">바다</div>
+                <div class="mapLocationDesc">
+                    낚시를 할 수 있는 곳
+                </div>
+            </button>
+
+            <button
+                class="mapLocation"
+                data-teleport="house"
+            >
+                <div class="mapLocationIcon">🏠</div>
+                <div class="mapLocationName">집</div>
+                <div class="mapLocationDesc">
+                    휴식하고 잠을 잘 수 있는 곳
+                </div>
+            </button>
+
+        </div>
+
+    `;
+
+}
+
+
+/* =========================================================
+   CHARACTER
+========================================================= */
+
+function openCharacter(){
+
+    panelTitle.textContent =
+        "캐릭터";
+
+    const s =
+        game.stats;
+
+    panelContent.innerHTML = `
+
+        <div
+            style="
+                padding:18px;
+                margin-bottom:20px;
+                border-radius:15px;
+                background:#202b36;
+            "
+        >
+
+            <div style="font-size:22px;font-weight:900;">
+                여행자
+            </div>
+
+            <div style="color:#9eabb7;margin-top:5px;">
+                Lv.${s.level}
+            </div>
+
+        </div>
+
+        ${makeStat(
+            "경험치",
+            s.exp,
+            s.nextExp
+        )}
+
+        ${makeStat(
+            "농사",
+            s.farming,
+            10
+        )}
+
+        ${makeStat(
+            "낚시",
+            s.fishing,
+            10
+        )}
+
+        ${makeStat(
+            "우정",
+            s.friendship,
+            20
+        )}
+
+        <div
+            style="
+                margin-top:20px;
+                padding:15px;
+                border-radius:12px;
+                background:#202b36;
+                line-height:1.8;
+                color:#aeb9c4;
+                font-size:13px;
+            "
+        >
+            현재 위치:
+            <strong style="color:white;">
+                ${LOCATION_NAMES[game.location]}
+            </strong>
+            <br>
+            날짜:
+            ${game.day}일차 ${game.season}
+            <br>
+            보유 금액:
+            <strong style="color:#e3c66e;">
+                ${moneyText(game.money)}
+            </strong>
+        </div>
+
+    `;
+
+}
+
+
+function makeStat(name,value,max){
+
+    const percent =
+        Math.min(
+            100,
+            Math.round(value / max * 100)
+        );
+
+    return `
+
+        <div class="stat">
+
+            <div class="statLabel">
+
+                <span>${name}</span>
+
+                <span>
+                    ${value} / ${max}
+                </span>
+
+            </div>
+
+            <div class="statBar">
+                <div
+                    class="statFill"
+                    style="width:${percent}%"
+                ></div>
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+
+/* =========================================================
+   SPIRITS
+========================================================= */
+
+function openSpirits(){
+
+    panelTitle.textContent =
+        "정령 계약";
+
+    panelContent.innerHTML = "";
+
+    Object.entries(SPIRIT_DATA).forEach(([id,spirit])=>{
+
+        const state =
+            game.spirits[id];
+
+        const card =
+            document.createElement("div");
+
+        card.className =
+            "spiritCard";
+
+        card.innerHTML = `
+
+            <div class="spiritTop">
+
+                <div class="spiritIcon">
+                    ${spirit.icon}
+                </div>
+
+                <div>
+
+                    <div class="spiritName">
+                        ${spirit.name}
+                    </div>
+
+                    <div style="color:#e3c66e;">
+                        호감도 ${state.affection}
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="spiritDesc">
+                ${spirit.desc}
+            </div>
+
+            ${
+                state.contract
+                ?
+                `<div
+                    style="
+                        margin-top:10px;
+                        color:#9fd2a0;
+                        font-weight:900;
+                    "
+                >
+                    계약 완료
+                </div>`
+                :
+                `<button
+                    class="spiritAction"
+                    data-contract="${id}"
+                >
+                    ${
+                        state.affection >= spirit.need
+                        ?
+                        "계약하기"
+                        :
+                        `호감도 ${spirit.need} 필요`
+                    }
+                </button>`
+            }
+
+        `;
+
+        panelContent.appendChild(card);
+
+    });
+
+}
+
+
+function contractSpirit(id){
+
+    const spirit =
+        SPIRIT_DATA[id];
+
+    const state =
+        game.spirits[id];
+
+    if(state.contract) return;
+
+    if(state.affection < spirit.need){
+
+        showToast(
+            `${spirit.name}의 호감도가 부족합니다.`
+        );
+
+        return;
+    }
+
+    state.contract = true;
+
+    showToast(
+        `${spirit.name}과 계약했습니다.`
+    );
+
+    saveGame();
+
+    openSpirits();
+
+}
+
+
+/* =========================================================
+   FARM ACTIONS
+========================================================= */
+
+function getSelectedCropTile(){
+
+    if(!game || game.location !== "farm"){
+        return null;
+    }
+
+    const field =
+        document.getElementById("field");
+
+    const rect =
+        field.getBoundingClientRect();
+
+    const px =
+        window.innerWidth *
+        game.player.x / 100;
+
+    const py =
+        window.innerHeight *
+        game.player.y / 100;
+
+    if(
+        px < rect.left ||
+        px > rect.right ||
+        py < rect.top ||
+        py > rect.bottom
+    ){
+        return null;
+    }
+
+    const cols = 6;
+    const rows = 4;
+
+    const col =
+        Math.floor(
+            (px - rect.left) /
+            rect.width *
+            cols
+        );
+
+    const row =
+        Math.floor(
+            (py - rect.top) /
+            rect.height *
+            rows
+        );
+
+    if(
+        col < 0 ||
+        col >= cols ||
+        row < 0 ||
+        row >= rows
+    ){
+        return null;
+    }
+
+    return row * cols + col;
+
+}
+
+
+function plantCrop(){
+
+    if(game.location !== "farm"){
+
+        showToast("농장에서만 심을 수 있습니다.");
+
+        return;
+    }
+
+    const index =
+        getSelectedCropTile();
+
+    if(index === null){
+
+        showToast("밭 근처로 이동하세요.");
+
+        return;
+    }
+
+    if(game.crops[index]){
+
+        showToast("이미 작물이 있습니다.");
+
+        return;
+    }
+
+    let seed = null;
+
+    if(game.inventory.turnip_seed > 0){
+        seed = "turnip";
+        game.inventory.turnip_seed--;
+    }else if(game.inventory.potato_seed > 0){
+        seed = "potato";
+        game.inventory.potato_seed--;
+    }else if(game.inventory.wheat_seed > 0){
+        seed = "wheat";
+        game.inventory.wheat_seed--;
+    }
+
+    if(!seed){
+
+        showToast("씨앗이 없습니다.");
+
+        return;
+    }
+
+    game.crops[index] = {
+        type:seed,
+        watered:false,
+        grown:false,
+        age:0
+    };
+
+    game.energy =
+        Math.max(0,game.energy - 5);
+
+    createFarm();
+
+    updateHUD();
+
+    saveGame();
+
+    showToast("씨앗을 심었습니다.");
+
+}
+
+
+function waterCrop(){
+
+    if(game.location !== "farm"){
+
+        showToast("농장에서만 물을 줄 수 있습니다.");
+
+        return;
+    }
+
+    const index =
+        getSelectedCropTile();
+
+    if(index === null){
+
+        showToast("밭 근처로 이동하세요.");
+
+        return;
+    }
+
+    const crop =
+        game.crops[index];
+
+    if(!crop){
+
+        showToast("심어진 작물이 없습니다.");
+
+        return;
+    }
+
+    crop.watered = true;
+
+    game.energy =
+        Math.max(0,game.energy - 3);
+
+    createFarm();
+
+    updateHUD();
+
+    saveGame();
+
+    showToast("작물에 물을 줬습니다.");
+
+}
+
+
+function harvestCrop(){
+
+    if(game.location !== "farm"){
+
+        showToast("농장에서만 수확할 수 있습니다.");
+
+        return;
+    }
+
+    const index =
+        getSelectedCropTile();
+
+    if(index === null){
+
+        showToast("밭 근처로 이동하세요.");
+
+        return;
+    }
+
+    const crop =
+        game.crops[index];
+
+    if(!crop){
+
+        showToast("작물이 없습니다.");
+
+        return;
+    }
+
+    if(!crop.grown){
+
+        showToast("아직 자라지 않았습니다.");
+
+        return;
+    }
+
+    const type =
+        crop.type;
+
+    game.inventory[type] =
+        (game.inventory[type] || 0) + 1;
+
+    delete game.crops[index];
+
+    game.stats.farming++;
+
+    game.stats.exp += 15;
+
+    checkLevel();
+
+    createFarm();
+
+    updateHUD();
+
+    saveGame();
+
+    showToast(
+        `${ITEMS[type].name}을 수확했습니다.`
+    );
+
+}
+
+
+/* =========================================================
+   FISHING
+========================================================= */
+
+function fish(){
+
+    if(game.location !== "sea"){
+
+        showToast("바다에서만 낚시할 수 있습니다.");
+
+        return;
+    }
+
+    if(game.energy < 8){
+
+        showToast("에너지가 부족합니다.");
+
+        return;
+    }
+
+    game.energy -= 8;
+
+    const success =
+        Math.random() < .75;
+
+    if(success){
+
+        game.inventory.fish++;
+
+        game.stats.fishing++;
+
+        game.stats.exp += 12;
+
+        if(
+            game.spirits.water.contract
+        ){
+            game.inventory.fish++;
+        }
+
+        showToast("물고기를 낚았습니다.");
+
+    }else{
+
+        showToast("물고기를 놓쳤습니다.");
+
+    }
+
+    checkLevel();
+
+    updateHUD();
+
+    saveGame();
+
+}
+
+
+/* =========================================================
+   NEXT DAY
+========================================================= */
+
+function nextDay(){
+
+    game.day++;
+
+    game.energy =
+        game.maxEnergy;
+
+    game.choppedTrees = {};
+
+    Object.values(game.crops)
+        .forEach(crop=>{
+
+            crop.age++;
+
+            crop.watered = false;
+
+            if(crop.age >= 1){
+                crop.grown = true;
+            }
+
+        });
+
+    createFarm();
+
+    showToast(
+        `${game.day}일차가 되었습니다.`
+    );
+
+    saveGame();
+
+}
+
+
+/* =========================================================
+   SLEEP
+========================================================= */
+
+function sleep(){
+
+    if(game.location !== "house"){
+
+        showToast("집에서 잠을 잘 수 있습니다.");
+
+        return;
+    }
+
+    nextDay();
+
+    game.time = 480;
+
+    showToast(
+        "푹 쉬었습니다."
+    );
+
+    saveGame();
+
+}
+
+
+/* =========================================================
+   LEVEL
+========================================================= */
+
+function checkLevel(){
+
+    while(
+        game.stats.exp >=
+        game.stats.nextExp
+    ){
+
+        game.stats.exp -=
+            game.stats.nextExp;
+
+        game.stats.level++;
+
+        game.stats.nextExp =
+            Math.floor(
+                game.stats.nextExp * 1.35
+            );
+
+        game.maxEnergy += 5;
+
+        game.energy =
+            game.maxEnergy;
+
+        showToast(
+            `레벨 ${game.stats.level} 달성!`
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   PANEL
+========================================================= */
+
+function openPanel(type){
+
+    if(!game) return;
+
+    panel.classList.remove("hidden");
+
+    if(type === "map"){
+
+        openMap();
+
+    }else if(type === "character"){
+
+        openCharacter();
+
+    }else if(type === "inventory"){
+
+        openInventory();
+
+    }else if(type === "spirits"){
+
+        openSpirits();
+
+    }else if(type === "shop"){
+
+        renderShop();
+
+    }
+
+}
+
+
+function closePanel(){
+
+    panel.classList.add("hidden");
+
+}
+
+
+/* =========================================================
+   HUD
+========================================================= */
+
+function updateHUD(){
+
+    if(!game) return;
+
+    document.getElementById("dayText").textContent =
+        `${game.day}일차 ${game.season}`;
+
+    document.getElementById("timeText").textContent =
+        formatTime(game.time);
+
+    const locationText = document.getElementById("locationText");
+    if(locationText){
+        locationText.textContent = LOCATION_NAMES[game.location] || "마을";
+    }
+
+    document.getElementById("energyText").textContent =
+        `에너지 ${game.energy}/${game.maxEnergy}`;
+
+    document.getElementById("money").textContent =
+        moneyText(game.money);
+
+}
+
+
+/* =========================================================
+   KEYBOARD
+========================================================= */
+
+window.addEventListener("keydown",e=>{
+
+    registerActivity();
+
+    if(
+        e.key === "ArrowUp" ||
+        e.key === "ArrowDown" ||
+        e.key === "ArrowLeft" ||
+        e.key === "ArrowRight" ||
+        e.key.toLowerCase() === "w" ||
+        e.key.toLowerCase() === "a" ||
+        e.key.toLowerCase() === "s" ||
+        e.key.toLowerCase() === "d"
+    ){
+
+        e.preventDefault();
+
+    }
+
+    if(e.key === "e" || e.key === "E"){
+
+        interactNearby();
+
+        return;
+    }
+
+    if(e.key === "Escape"){
+
+        closePanel();
+
+        dialogue.classList.add("hidden");
+
+        return;
+    }
+
+    keys[e.key.toLowerCase()] = true;
+
+});
+
+
+window.addEventListener("keyup",e=>{
+
+    keys[e.key.toLowerCase()] = false;
+
+});
+
+
+/* =========================================================
+   MOVEMENT LOOP
+========================================================= */
+
+function gameLoop(timestamp){
+
+    if(!lastTime){
+        lastTime = timestamp;
+    }
+
+    const delta =
+        Math.min(
+            timestamp - lastTime,
+            100
+        );
+
+    lastTime = timestamp;
+
+    if(game){
+
+        gameClockAccumulator += delta;
+
+        /* 게임 시간은 실제 5초마다 게임 내 1분씩 흐릅니다. */
+        while(gameClockAccumulator >= 5000){
+            gameClockAccumulator -= 5000;
+            game.time += 1;
+
+            if(game.time >= 1440){
+                game.time = 480;
+                nextDay();
+            }
+
+            updateHUD();
+        }
+
+        let dx = 0;
+        let dy = 0;
+
+        if(
+            keys["arrowup"] ||
+            keys["w"]
+        ){
+            dy -= 1;
+        }
+
+        if(
+            keys["arrowdown"] ||
+            keys["s"]
+        ){
+            dy += 1;
+        }
+
+        if(
+            keys["arrowleft"] ||
+            keys["a"]
+        ){
+            dx -= 1;
+        }
+
+        if(
+            keys["arrowright"] ||
+            keys["d"]
+        ){
+            dx += 1;
+        }
+
+        if(dx !== 0 || dy !== 0){
+
+            if(dx !== 0 && dy !== 0){
+
+                dx *= .707;
+                dy *= .707;
+
+            }
+
+            movePlayer(
+                dx * delta / 16,
+                dy * delta / 16
+            );
+
+        }
+
+    }
+
+    requestAnimationFrame(gameLoop);
+
+}
+
+requestAnimationFrame(gameLoop);
+
+
+/* =========================================================
+   MOBILE D-PAD
+========================================================= */
+
+document
+    .querySelectorAll("#mobileControls button")
+    .forEach(button=>{
+
+        const dir =
+            button.dataset.dir;
+
+        const start = e=>{
+
+            e.preventDefault();
+
+            registerActivity();
+
+            keys[
+                dir === "up"
+                ? "arrowup"
+                : dir === "down"
+                ? "arrowdown"
+                : dir === "left"
+                ? "arrowleft"
+                : "arrowright"
+            ] = true;
+
+        };
+
+        const end = e=>{
+
+            e.preventDefault();
+
+            keys[
+                dir === "up"
+                ? "arrowup"
+                : dir === "down"
+                ? "arrowdown"
+                : dir === "left"
+                ? "arrowleft"
+                : "arrowright"
+            ] = false;
+
+        };
+
+        button.addEventListener(
+            "pointerdown",
+            start
+        );
+
+        button.addEventListener(
+            "pointerup",
+            end
+        );
+
+        button.addEventListener(
+            "pointercancel",
+            end
+        );
+
+        button.addEventListener(
+            "pointerleave",
+            end
+        );
+
+    });
+
+
+/* =========================================================
+   BUTTON EVENTS
+========================================================= */
+
+document
+    .getElementById("startButton")
+    .addEventListener(
+        "click",
+        showSaveScreen
+    );
+
+
+document
+    .getElementById("saveBackButton")
+    .addEventListener(
+        "click",
+        ()=>{
+
+            saveScreen.classList.add("hidden");
+
+            startScreen.classList.remove("hidden");
+
+        }
+    );
+
+
+document
+    .getElementById("saveSlots")
+    .addEventListener(
+        "click",
+        e=>{
+
+            const newSlot =
+                e.target.dataset.new;
+
+            const loadSlot =
+                e.target.dataset.load;
+
+            const deleteSlot =
+                e.target.dataset.delete;
+
+            if(newSlot){
+
+                startNewGame(
+                    Number(newSlot)
+                );
+
+            }
+
+            if(loadSlot){
+
+                loadGame(
+                    Number(loadSlot)
+                );
+
+            }
+
+            if(deleteSlot){
+
+                deleteSave(
+                    Number(deleteSlot)
+                );
+
+            }
+
+        }
+    );
+
+
+document
+    .getElementById("closePanel")
+    .addEventListener(
+        "click",
+        closePanel
+    );
+
+
+document
+    .getElementById("sidebar")
+    .addEventListener(
+        "click",
+        e=>{
+
+            const button =
+                e.target.closest(".sideBtn");
+
+            if(!button) return;
+
+            registerActivity();
+
+            if(button.dataset.panel){
+
+                openPanel(
+                    button.dataset.panel
+                );
+
+            }
+
+            if(button.id === "saveGameButton"){
+
+                saveGame();
+
+                showToast("게임을 저장했습니다.");
+
+            }
+
+        }
+    );
+
+
+document
+    .getElementById("actionBar")
+    .addEventListener(
+        "click",
+        e=>{
+
+            const id =
+                e.target.id;
+
+            registerActivity();
+
+            if(id === "plantButton"){
+                plantCrop();
+            }
+
+            if(id === "waterButton"){
+                waterCrop();
+            }
+
+            if(id === "harvestButton"){
+                harvestCrop();
+            }
+
+            if(id === "fishButton"){
+                fish();
+            }
+
+            if(id === "chopButton"){
+                chopTree();
+            }
+
+            if(id === "sleepButton"){
+                sleep();
+            }
+
+        }
+    );
+
+
+/* =========================================================
+   PANEL DELEGATION
+========================================================= */
+
+panel.addEventListener(
+    "click",
+    e=>{
+
+        registerActivity();
+
+        const choice =
+            e.target.closest("[data-choice]");
+
+        if(choice){
+
+            chooseDialogue(
+                Number(choice.dataset.choice)
+            );
+
+            return;
+        }
+
+        if(
+            e.target.id ===
+            "openShopFromDialogue"
+        ){
+
+            dialogue.classList.add("hidden");
+
+            openShop();
+
+            return;
+        }
+
+        if(
+            e.target.id ===
+            "giftButton"
+        ){
+
+            giveGift();
+
+            return;
+        }
+
+        if(
+            e.target.id ===
+            "closeDialogueButton"
+        ){
+
+            dialogue.classList.add("hidden");
+
+            return;
+        }
+
+        const teleport =
+            e.target.closest("[data-teleport]");
+
+        if(teleport){
+
+            teleportTo(
+                teleport.dataset.teleport
+            );
+
+            return;
+        }
+
+        const contract =
+            e.target.closest("[data-contract]");
+
+        if(contract){
+
+            contractSpirit(
+                contract.dataset.contract
+            );
+
+            return;
+        }
+
+        const shopTab =
+            e.target.closest("[data-shop-tab]");
+
+        if(shopTab){
+
+            shopMode =
+                shopTab.dataset.shopTab;
+
+            renderShop();
+
+            return;
+        }
+
+        const buy =
+            e.target.closest("[data-buy]");
+
+        if(buy){
+
+            buyItem(
+                buy.dataset.buy
+            );
+
+            return;
+        }
+
+        const sell =
+            e.target.closest("[data-sell]");
+
+        if(sell){
+
+            sellItem(
+                sell.dataset.sell
+            );
+
+            return;
+        }
+
+    }
+);
+
+
+/* =========================================================
+   DIALOGUE EVENTS
+========================================================= */
+
+dialogue.addEventListener(
+    "click",
+    e=>{
+
+        registerActivity();
+
+        const choice =
+            e.target.closest("[data-choice]");
+
+        if(choice){
+
+            chooseDialogue(
+                Number(choice.dataset.choice)
+            );
+
+            return;
+        }
+
+        if(
+            e.target.id ===
+            "openShopFromDialogue"
+        ){
+
+            dialogue.classList.add("hidden");
+
+            openShop();
+
+            return;
+        }
+
+        if(
+            e.target.id ===
+            "giftButton"
+        ){
+
+            giveGift();
+
+            return;
+        }
+
+        if(
+            e.target.id ===
+            "closeDialogueButton"
+        ){
+
+            dialogue.classList.add("hidden");
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   INACTIVITY
+========================================================= */
+
+function resetInactivityTimer(){
+
+    if(!game) return;
+
+    clearTimeout(inactivityTimer);
+
+    clearTimeout(inactivityWarningTimer);
+
+    inactiveWarning.classList.add("hidden");
+
+    /*
+        9분 후 경고
+    */
+
+    inactivityWarningTimer =
+        setTimeout(()=>{
+
+            if(!game) return;
+
+            inactiveWarning.classList.remove(
+                "hidden"
+            );
+
+        },9 * 60 * 1000);
+
+
+    /*
+        10분 후 시작 화면
+    */
+
+    inactivityTimer =
+        setTimeout(()=>{
+
+            if(!game) return;
+
+            stopGame();
+
+        },10 * 60 * 1000);
+
+}
+
+
+function registerActivity(){
+
+    if(!game) return;
+
+    resetInactivityTimer();
+
+}
+
+
+[
+    "pointerdown",
+    "pointermove",
+    "touchstart"
+].forEach(event=>{
+
+    window.addEventListener(
+        event,
+        ()=>{
+            if(game){
+                resetInactivityTimer();
+            }
+        },
+        {
+            passive:true
+        }
+    );
+
+});
+
+
+/* =========================================================
+   SPECIAL E INTERACTION
+========================================================= */
+
+function handleSpecialInteraction(){
+
+    if(!game) return;
+
+    /*
+        집 문
+    */
+
+    if(game.location === "farm"){
+
+        if(isNearFarmHouseDoor()){
+
+            enterHouse();
+
+            return true;
+        }
+
+    }
+
+
+    if(game.location === "house"){
+
+        if(isNearHouseExit()){
+
+            leaveHouse();
+
+            return true;
+        }
+
+    }
+
+
+    /*
+        나무 베기
+    */
+
+    if(getNearbyTree()){
+        chopTree();
+        return true;
+    }
+
+    /*
+        NPC 집
+    */
+
+    if(game.location === "town"){
+        const homeOwner=getTownHomeAtPlayer();
+        if(homeOwner){
+            enterNPCHouse(homeOwner);
+            return true;
+        }
+    }
+
+    if(game.location === "npcHouse" && game.player.y >= 82 && game.player.x >= 38 && game.player.x <= 62){
+        leaveNPCHouse();
+        return true;
+    }
+
+    /*
+        상점 NPC
+    */
+
+    const npc =
+        getNearbyNPC();
+
+    if(
+        npc &&
+        npc.npc.shop
+    ){
+
+        openShop();
+
+        return true;
+    }
+
+    return false;
+
+}
+
+
+/*
+    기존 E 상호작용을 확장
+*/
+
+const originalInteract =
+    interactNearby;
+
+interactNearby = function(){
+
+    if(
+        handleSpecialInteraction()
+    ){
+        return;
+    }
+
+    originalInteract();
+
+};
+
+
+/* =========================================================
+   FARM HOUSE DOOR CLICK
+========================================================= */
+
+const farmHouseDoor =
+    document.querySelector(".farmHouseDoor");
+
+if(farmHouseDoor){
+
+    farmHouseDoor.addEventListener("click",e=>{
+
+        e.preventDefault();
+        e.stopPropagation();
+        registerActivity();
+
+        if(game && game.location === "farm"){
+            enterHouse();
+        }
+
+    });
+
+}
+
+
+/* =========================================================
+   INITIAL
+========================================================= */
+
+function initialSetup(){
+
+    startScreen.classList.remove("hidden");
+
+    saveScreen.classList.add("hidden");
+
+    gameWorld.classList.add("hidden");
+
+    panel.classList.add("hidden");
+
+    dialogue.classList.add("hidden");
+
+}
+
+initialSetup();
+
+
+/* =========================================================
+   AUTO SAVE
+========================================================= */
+
+setInterval(()=>{
+
+    if(game){
+        saveGame();
+    }
+
+},30000);
+
+
+/* =========================================================
+   PAGE VISIBILITY
+========================================================= */
+
+document.addEventListener(
+    "visibilitychange",
+    ()=>{
+
+        if(game){
+
+            saveGame();
+
+            resetInactivityTimer();
+
+        }
+
+    }
+);
+
+</script>
+
+</body>
+</html>
