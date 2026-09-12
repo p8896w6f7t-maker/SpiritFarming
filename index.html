@@ -3593,7 +3593,9 @@ function updateNearbySpirit(){
 }
 
 function spiritTalk(id){
-    const spirit=SPIRIT_DATA[id], state=game.spirits[id];
+    const spirit=SPIRIT_DATA[id];
+    const state=game.spirits[id];
+    if(!spirit || !state) return;
     if(state.lastTalkDay===game.day){
         showToast("오늘은 이미 이야기를 나눴습니다.");
         return;
@@ -3605,7 +3607,9 @@ function spiritTalk(id){
 }
 
 function spiritGift(id,itemId){
-    const spirit=SPIRIT_DATA[id], state=game.spirits[id];
+    const spirit=SPIRIT_DATA[id];
+    const state=game.spirits[id];
+    if(!spirit || !state || !ITEMS[itemId]) return;
     if(state.lastGiftDay===game.day){
         showToast("오늘은 이미 선물을 건넸습니다.");
         return;
@@ -5490,6 +5494,25 @@ panel.addEventListener(
         const spiritGiftButton = e.target.closest("[data-spirit-gift]");
         if(spiritGiftButton){
             spiritGift(spiritGiftButton.dataset.spiritGift, spiritGiftButton.dataset.spiritItem);
+            return;
+        }
+
+        const spiritTalkButton =
+            e.target.closest("[data-spirit-talk]");
+
+        if(spiritTalkButton){
+            spiritTalk(spiritTalkButton.dataset.spiritTalk);
+            return;
+        }
+
+        const spiritGiftButton =
+            e.target.closest("[data-spirit-gift]");
+
+        if(spiritGiftButton){
+            spiritGift(
+                spiritGiftButton.dataset.spiritGift,
+                spiritGiftButton.dataset.spiritItem
+            );
             return;
         }
 
