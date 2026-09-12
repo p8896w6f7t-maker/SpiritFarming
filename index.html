@@ -91,6 +91,82 @@ button{
     margin-bottom:35px;
 }
 
+/* =========================
+   CHARACTER SETUP
+========================= */
+
+.characterSetup{
+    margin:0 auto 18px;
+    padding:14px;
+    border-radius:14px;
+    background:rgba(255,255,255,.05);
+    border:1px solid rgba(255,255,255,.08);
+    text-align:left;
+}
+
+.setupLabel{
+    margin-bottom:6px;
+    color:#dbe2e8;
+    font-size:12px;
+    font-weight:900;
+}
+
+.nicknameInput{
+    width:100%;
+    padding:11px 12px;
+    margin-bottom:13px;
+    border:1px solid #3a4855;
+    border-radius:9px;
+    outline:none;
+    background:#202b37;
+    color:white;
+    font-size:13px;
+}
+
+.nicknameInput:focus{
+    border-color:#e5c36a;
+}
+
+.nicknameInput::placeholder{
+    color:#7f8b96;
+}
+
+.outfitColors{
+    display:flex;
+    gap:9px;
+    flex-wrap:wrap;
+}
+
+.outfitColor{
+    width:29px;
+    height:29px;
+    padding:0;
+    border-radius:50%;
+    border:3px solid transparent;
+    box-shadow:0 2px 7px rgba(0,0,0,.25);
+}
+
+.outfitColor.active{
+    border-color:white;
+    box-shadow:0 0 0 2px #e5c36a;
+}
+
+.playerNickname{
+    position:absolute;
+    left:50%;
+    top:-19px;
+    transform:translateX(-50%);
+    padding:2px 6px;
+    border-radius:5px;
+    background:rgba(12,17,23,.78);
+    color:white;
+    font-size:10px;
+    font-weight:900;
+    line-height:1.2;
+    white-space:nowrap;
+    text-shadow:0 1px 2px #000;
+}
+
 .mainStartBtn{
     width:100%;
     padding:18px;
@@ -927,6 +1003,47 @@ button{
    SPIRIT
 ========================= */
 
+
+.spiritWorld{
+    position:absolute;
+    z-index:6;
+    transform:translate(-50%,-50%);
+    text-align:center;
+    pointer-events:none;
+}
+.spiritWorldIcon{
+    width:46px;height:46px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:26px;
+    background:rgba(25,32,40,.72);
+    border:3px solid rgba(255,255,255,.5);
+    box-shadow:0 0 24px rgba(255,255,255,.22);
+}
+.spiritWorldName{
+    margin-top:3px;padding:2px 6px;border-radius:6px;
+    background:rgba(20,25,30,.72);color:white;font-size:9px;font-weight:900;
+}
+.spiritWorld.near .spiritWorldIcon{
+    border-color:#f1d77a;
+    box-shadow:0 0 18px rgba(241,215,122,.55);
+}
+.spiritWorldMark{
+    position:absolute;left:50%;top:-19px;transform:translateX(-50%);
+    white-space:nowrap;color:#f7e6a4;font-size:9px;font-weight:900;
+}
+.spiritInteractBox{
+    display:grid;gap:5px;margin-top:9px;
+}
+.spiritInteractBox button{
+    border:0;border-radius:7px;padding:6px 8px;background:#2d3945;color:white;
+    font-size:11px;font-weight:800;cursor:pointer;
+}
+.spiritInteractBox button:hover{background:#40515f}
+.spiritGiftGrid{display:flex;flex-wrap:wrap;gap:5px;margin-top:5px}
+.spiritGiftGrid button{font-size:10px;padding:5px 7px}
+.spiritGiftGrid button:disabled{opacity:.35;cursor:not-allowed}
+.spiritMood{margin-top:5px;color:#e3c66e;font-size:11px;font-weight:900}
+
 .spiritCard{
     padding:15px;
     margin-bottom:10px;
@@ -1021,10 +1138,25 @@ button{
 .dialogueBox{
     background:rgba(17,24,31,.96);
     border:1px solid rgba(255,255,255,.15);
-    border-radius:18px;
-    padding:20px;
+    border-radius:10px;
+    padding:9px 12px;
     color:white;
-    box-shadow:0 15px 50px rgba(0,0,0,.4);
+    box-shadow:0 8px 25px rgba(0,0,0,.35);
+    width:fit-content;
+    max-width:min(430px,78vw);
+    margin:0 auto;
+}
+.dialogueName{
+    color:#e3c66e;
+    font-weight:900;
+    margin-bottom:3px;
+    font-size:11px;
+}
+.dialogueText{
+    line-height:1.35;
+    color:#e4e8eb;
+    margin-bottom:6px;
+    font-size:11px;
 }
 
 .dialogueName{
@@ -1279,6 +1411,28 @@ button{
     }
 }
 
+
+.shopSellButtons{
+    display:flex;
+    gap:6px;
+    margin-left:auto;
+}
+
+.shopSellButtons button{
+    padding:8px 10px;
+    border-radius:8px;
+    color:white;
+    font-weight:800;
+    white-space:nowrap;
+}
+
+.shopSellButtons .sell{
+    background:#596a78;
+}
+
+.shopSellButtons .sellAll{
+    background:#8a5c66;
+}
 </style>
 </head>
 
@@ -1293,6 +1447,29 @@ button{
             <div class="startSub">
                 작은 마을과 정령 그리고 당신의 이야기
             </div>
+
+            <div class="characterSetup">
+                <div class="setupLabel">닉네임</div>
+                <input
+                    id="nicknameInput"
+                    class="nicknameInput"
+                    type="text"
+                    maxlength="12"
+                    placeholder="닉네임을 입력하세요"
+                    autocomplete="off"
+                >
+
+                <div class="setupLabel">옷 색상</div>
+                <div class="outfitColors" id="outfitColors">
+                    <button type="button" class="outfitColor active" data-color="#5476a5" style="background:#5476a5" aria-label="파란색"></button>
+                    <button type="button" class="outfitColor" data-color="#b16e79" style="background:#b16e79" aria-label="분홍색"></button>
+                    <button type="button" class="outfitColor" data-color="#6d9467" style="background:#6d9467" aria-label="초록색"></button>
+                    <button type="button" class="outfitColor" data-color="#8061a4" style="background:#8061a4" aria-label="보라색"></button>
+                    <button type="button" class="outfitColor" data-color="#c99449" style="background:#c99449" aria-label="주황색"></button>
+                    <button type="button" class="outfitColor" data-color="#58636f" style="background:#58636f" aria-label="회색"></button>
+                </div>
+            </div>
+
             <button class="mainStartBtn" id="startButton">
                 게임 시작
             </button>
@@ -1448,6 +1625,7 @@ button{
                 </div>
 
                 <div id="player">
+                    <div class="playerNickname" id="playerNickname"></div>
                     <div class="playerHead"></div>
                     <div class="playerHair"></div>
                     <div class="playerBody"></div>
@@ -1584,12 +1762,15 @@ const DEFAULT_GAME = {
     location:"farm",
     saveSlot:null,
     npcHome:null,
+    npcWorld:{},
     choppedTrees:{},
 
     player:{
         x:50,
         y:68,
-        direction:"down"
+        direction:"down",
+        nickname:"플레이어",
+        outfitColor:"#5476a5"
     },
 
     inventory:{
@@ -1630,23 +1811,33 @@ const DEFAULT_GAME = {
     spirits:{
         earth:{
             affection:0,
-            contract:false
+            contract:false,
+            lastTalkDay:0,
+            lastGiftDay:0
         },
         water:{
             affection:0,
-            contract:false
+            contract:false,
+            lastTalkDay:0,
+            lastGiftDay:0
         },
         forest:{
             affection:0,
-            contract:false
+            contract:false,
+            lastTalkDay:0,
+            lastGiftDay:0
         },
         wind:{
             affection:0,
-            contract:false
+            contract:false,
+            lastTalkDay:0,
+            lastGiftDay:0
         },
         moon:{
             affection:0,
-            contract:false
+            contract:false,
+            lastTalkDay:0,
+            lastGiftDay:0
         }
     }
 
@@ -1927,46 +2118,131 @@ const NPC_DATA = {
 
 
 /* =========================================================
+   NPC DAILY LIFE / SCHEDULE
+========================================================= */
+const NPC_SCHEDULES = {
+    mina:[{start:480,end:600,x:25,y:65,home:false},{start:600,end:720,x:37,y:58,home:false},{start:720,end:900,x:25,y:65,home:false},{start:900,end:1020,x:42,y:65,home:false},{start:1020,end:1080,x:18,y:44,home:false},{start:1080,end:1320,x:19,y:44,home:true},{start:1320,end:1380,x:32,y:57,home:false},{start:1380,end:1440,x:19,y:44,home:true}],
+    theo:[{start:480,end:600,x:72,y:70,home:false},{start:600,end:780,x:62,y:70,home:false},{start:780,end:900,x:70,y:62,home:false},{start:900,end:1080,x:55,y:65,home:false},{start:1080,end:1200,x:82,y:46,home:false},{start:1200,end:1320,x:82,y:44,home:true},{start:1320,end:1410,x:66,y:62,home:false},{start:1410,end:1440,x:82,y:44,home:true}],
+    elder:[{start:480,end:600,x:76,y:94,home:true},{start:600,end:720,x:58,y:52,home:false},{start:720,end:900,x:52,y:55,home:false},{start:900,end:1080,x:48,y:48,home:false},{start:1080,end:1200,x:58,y:55,home:false},{start:1200,end:1440,x:76,y:94,home:true}],
+    rose:[{start:480,end:600,x:50,y:56,home:false},{start:600,end:1020,x:50,y:50,home:false},{start:1020,end:1200,x:50,y:56,home:false},{start:1200,end:1320,x:50,y:44,home:false},{start:1320,end:1440,x:50,y:44,home:true}],
+    luna:[{start:480,end:660,x:70,y:48,home:false},{start:660,end:840,x:55,y:38,home:false},{start:840,end:1020,x:38,y:55,home:false},{start:1020,end:1200,x:65,y:70,home:false},{start:1200,end:1440,x:70,y:48,home:false}],
+    marin:[{start:480,end:660,x:62,y:68,home:false},{start:660,end:840,x:30,y:65,home:false},{start:840,end:1020,x:45,y:58,home:false},{start:1020,end:1200,x:70,y:62,home:false},{start:1200,end:1440,x:62,y:68,home:false}]
+};
+
+function getNPCSchedule(id){
+    const list=NPC_SCHEDULES[id];
+    if(!list) return null;
+    return list.find(s=>game.time>=s.start && game.time<s.end) || list[list.length-1];
+}
+
+function getNPCWorld(id){
+    if(!game.npcWorld) game.npcWorld={};
+    if(!game.npcWorld[id]){
+        const n=NPC_DATA[id];
+        game.npcWorld[id]={x:n.x,y:n.y,targetX:n.x,targetY:n.y,home:false};
+    }
+    return game.npcWorld[id];
+}
+
+function initializeNPCWorld(){
+    if(!game.npcWorld) game.npcWorld={};
+    Object.keys(NPC_DATA).forEach(id=>{
+        const w=getNPCWorld(id), sc=getNPCSchedule(id);
+        if(sc){ w.targetX=sc.x; w.targetY=sc.y; w.home=!!sc.home; }
+    });
+}
+
+function updateNPCSchedules(force=false){
+    if(!game) return;
+    let changed=false;
+    Object.keys(NPC_DATA).forEach(id=>{
+        const sc=getNPCSchedule(id), w=getNPCWorld(id);
+        if(!sc) return;
+        if(force || w.targetX!==sc.x || w.targetY!==sc.y || w.home!==!!sc.home){
+            w.targetX=sc.x; w.targetY=sc.y; w.home=!!sc.home; changed=true;
+        }
+    });
+    if(changed){
+        createNPCs();
+        renderNPCInHouse();
+    }
+}
+
+function updateNPCMovement(delta){
+    if(!game) return;
+    let moved=false;
+    Object.keys(NPC_DATA).forEach(id=>{
+        const w=getNPCWorld(id);
+        if(w.home) return;
+        const dx=w.targetX-w.x, dy=w.targetY-w.y;
+        const d=Math.sqrt(dx*dx+dy*dy);
+        if(d>0.15){
+            const step=Math.min(d,0.006*delta);
+            w.x += dx/d*step;
+            w.y += dy/d*step;
+            moved=true;
+        }
+    });
+    if(moved){
+        document.querySelectorAll('.npc').forEach(el=>{
+            const w=game.npcWorld && game.npcWorld[el.dataset.npc];
+            if(w){el.style.left=w.x+'%';el.style.top=w.y+'%';}
+        });
+        updateNearby();
+    }
+}
+
+function renderNPCInHouse(){
+    document.querySelectorAll('.npcHouseResident').forEach(el=>el.remove());
+    if(!game || game.location!=='npcHouse' || !game.npcHome) return;
+    const id=game.npcHome, npc=NPC_DATA[id], w=getNPCWorld(id);
+    if(!npc || !w.home) return;
+    const el=document.createElement('div');
+    el.className='npc npcHouseResident';
+    el.dataset.npc=id;
+    el.style.left='50%';
+    el.style.top='58%';
+    el.innerHTML='<div class="npcHead"></div><div class="npcBody" style="background:'+npc.color+'"></div><div class="npcName">'+npc.name+'</div>';
+    screen.appendChild(el);
+}
+
+
+/* =========================================================
    SPIRITS
 ========================================================= */
 
 const SPIRIT_DATA = {
 
     earth:{
-        name:"대지의 정령",
-        icon:"🌱",
-        desc:"작물의 성장을 돕는 정령.",
-        need:10
+        name:"대지의 정령", icon:"🌱", desc:"작물의 성장을 돕는 정령.", need:10,
+        location:"farm", x:70, y:54,
+        gifts:{turnip:5,potato:5,wheat:5,herb:2},
+        talk:["흙 속에는 계절의 기억이 잠들어 있어.","네가 돌보는 밭에서 좋은 기운이 느껴져."]
     },
-
     water:{
-        name:"물의 정령",
-        icon:"💧",
-        desc:"낚시와 물의 힘을 돕는 정령.",
-        need:15
+        name:"물의 정령", icon:"💧", desc:"낚시와 물의 힘을 돕는 정령.", need:15,
+        location:"sea", x:45, y:68,
+        gifts:{fish:6,herb:2,potion:2},
+        talk:["파도는 모든 이야기를 기억해.","오늘 바다는 꽤 기분이 좋아 보여."]
     },
-
     forest:{
-        name:"숲의 정령",
-        icon:"🌲",
-        desc:"숲에서 얻는 자원을 증가시킨다.",
-        need:20
+        name:"숲의 정령", icon:"🌲", desc:"숲에서 얻는 자원을 증가시킨다.", need:20,
+        location:"forest", x:25, y:75,
+        gifts:{wood:5,herb:6,stone:2},
+        talk:["나무를 베었다면 새 나무도 심어줘.","숲은 네 발소리를 기억하고 있어."]
     },
-
     wind:{
-        name:"바람의 정령",
-        icon:"🍃",
-        desc:"이동과 행동에 도움을 준다.",
-        need:25
+        name:"바람의 정령", icon:"🍃", desc:"이동과 행동에 도움을 준다.", need:25,
+        location:"town", x:30, y:42,
+        gifts:{herb:5,wheat:4},
+        talk:["바람을 따라가면 새로운 길을 찾을 수 있어.","가벼운 마음은 발걸음도 가볍게 하지."]
     },
-
     moon:{
-        name:"달의 정령",
-        icon:"🌙",
-        desc:"밤의 힘을 다루는 신비한 정령.",
-        need:30
+        name:"달의 정령", icon:"🌙", desc:"밤의 힘을 다루는 신비한 정령.", need:30,
+        location:"forest", x:78, y:30, nightOnly:true,
+        gifts:{fish:5,herb:7,potion:4},
+        talk:["밤이 되면 숨겨진 것들이 모습을 드러내.","달빛 아래서는 거짓말도 오래 숨지 못해."]
     }
-
 };
 
 
@@ -2198,6 +2474,25 @@ function startNewGame(slot){
 
     game.saveSlot = slot;
 
+    const nicknameInput =
+        document.getElementById("nicknameInput");
+
+    const selectedColor =
+        document.querySelector(".outfitColor.active");
+
+    const nickname =
+        nicknameInput
+            ? nicknameInput.value.trim()
+            : "";
+
+    game.player.nickname =
+        nickname.slice(0,12) || "플레이어";
+
+    game.player.outfitColor =
+        selectedColor
+            ? selectedColor.dataset.color
+            : "#5476a5";
+
     game.location = "farm";
 
     game.player.x = 50;
@@ -2294,6 +2589,13 @@ function enterGame(){
 
     game.choppedTrees = game.choppedTrees || {};
     game.npcHome = game.npcHome || null;
+    game.npcWorld = game.npcWorld || {};
+    initializeNPCWorld();
+    Object.keys(SPIRIT_DATA).forEach(id=>{
+        game.spirits[id] = game.spirits[id] || {affection:0,contract:false};
+        game.spirits[id].lastTalkDay = game.spirits[id].lastTalkDay || 0;
+        game.spirits[id].lastGiftDay = game.spirits[id].lastGiftDay || 0;
+    });
     gameClockAccumulator = 0;
     setLocation(game.location,true);
 
@@ -2430,6 +2732,8 @@ function setLocation(location,initial=false){
     placePlayerForLocation(location,initial);
 
     createNPCs();
+    createSpiritWorlds();
+    renderNPCInHouse();
 
     updatePlayer();
 
@@ -2447,8 +2751,9 @@ function placePlayerForLocation(location,initial){
     if(!initial){
 
         if(location === "farm"){
-            game.player.x = 30;
-            game.player.y = 70;
+            // 농장 텔레포트: 물/연못이 아닌 밭 중앙으로 이동
+            game.player.x = 58;
+            game.player.y = 62;
         }
 
         if(location === "town"){
@@ -3001,6 +3306,22 @@ function updatePlayer(){
     playerEl.style.top =
         game.player.y + "%";
 
+    const nicknameEl =
+        document.getElementById("playerNickname");
+
+    if(nicknameEl){
+        nicknameEl.textContent =
+            game.player.nickname || "플레이어";
+    }
+
+    const bodyEl =
+        playerEl.querySelector(".playerBody");
+
+    if(bodyEl){
+        bodyEl.style.background =
+            game.player.outfitColor || "#5476a5";
+    }
+
 }
 
 
@@ -3218,6 +3539,112 @@ function updateNearby(){
 
 
 /* =========================================================
+   SPIRIT WORLD INTERACTION
+========================================================= */
+
+function isSpiritNight(){
+    return game && (game.time >= 1140 || game.time < 360);
+}
+
+function createSpiritWorlds(){
+    document.querySelectorAll(".spiritWorld").forEach(el=>el.remove());
+    if(!game) return;
+
+    Object.entries(SPIRIT_DATA).forEach(([id,spirit])=>{
+        if(spirit.location !== game.location) return;
+        if(spirit.nightOnly && !isSpiritNight()) return;
+
+        const state = game.spirits[id];
+        const el = document.createElement("div");
+        el.className = "spiritWorld";
+        el.dataset.spirit = id;
+        el.style.left = spirit.x + "%";
+        el.style.top = spirit.y + "%";
+        el.innerHTML = `
+            <div class="spiritWorldMark">E 상호작용</div>
+            <div class="spiritWorldIcon">${spirit.icon}</div>
+            <div class="spiritWorldName">${spirit.name}</div>
+        `;
+        screen.appendChild(el);
+    });
+    updateNearbySpirit();
+}
+
+function getNearbySpirit(){
+    if(!game) return null;
+    let closest=null, distance=Infinity;
+    Object.entries(SPIRIT_DATA).forEach(([id,spirit])=>{
+        if(spirit.location !== game.location) return;
+        if(spirit.nightOnly && !isSpiritNight()) return;
+        // 정령은 장식/상호작용 오브젝트일 뿐 이동 충돌을 만들지 않는다.
+        const dx=game.player.x-spirit.x;
+        const dy=game.player.y-spirit.y;
+        const d=Math.sqrt(dx*dx+dy*dy);
+        if(d<distance){ distance=d; closest={id,spirit}; }
+    });
+    return distance<=13 ? closest : null;
+}
+
+function updateNearbySpirit(){
+    const nearby=getNearbySpirit();
+    document.querySelectorAll(".spiritWorld").forEach(el=>{
+        el.classList.toggle("near",!!nearby && el.dataset.spirit===nearby.id);
+    });
+}
+
+function spiritTalk(id){
+    const spirit=SPIRIT_DATA[id], state=game.spirits[id];
+    if(state.lastTalkDay===game.day){
+        showToast("오늘은 이미 이야기를 나눴습니다.");
+        return;
+    }
+    state.lastTalkDay=game.day;
+    state.affection += 1;
+    showSpiritDialogue(id, spirit.talk[(game.day-1)%spirit.talk.length]);
+    saveGame();
+}
+
+function spiritGift(id,itemId){
+    const spirit=SPIRIT_DATA[id], state=game.spirits[id];
+    if(state.lastGiftDay===game.day){
+        showToast("오늘은 이미 선물을 건넸습니다.");
+        return;
+    }
+    const count=game.inventory[itemId]||0;
+    if(count<=0){ showToast("그 아이템이 없습니다."); return; }
+    game.inventory[itemId]=count-1;
+    const amount=spirit.gifts[itemId]||1;
+    state.affection += amount;
+    state.lastGiftDay=game.day;
+    showSpiritDialogue(id, `${ITEMS[itemId]?.name||itemId}을(를) 받았어. 고마워. 호감도 +${amount}`);
+    saveGame();
+}
+
+function showSpiritDialogue(id,text){
+    const spirit=SPIRIT_DATA[id], state=game.spirits[id];
+    dialogue.classList.remove("hidden");
+    dialogue.innerHTML=`
+        <div class="dialogueBox">
+            <div class="dialogueName">${spirit.icon} ${spirit.name}</div>
+            <div class="dialogueText">${text}</div>
+            <div class="spiritMood">호감도 ${state.affection} / 계약 조건 ${spirit.need}</div>
+            <div class="spiritInteractBox">
+                <button data-spirit-talk="${id}" ${state.lastTalkDay===game.day?'disabled':''}>대화하기 (+1)</button>
+                <div><b>선물하기</b></div>
+                <div class="spiritGiftGrid">
+                    ${Object.entries(spirit.gifts).map(([item,amount])=>`
+                        <button data-spirit-gift="${id}" data-spirit-item="${item}" ${(state.lastGiftDay===game.day || !(game.inventory[item]>0))?'disabled':''}>
+                            ${ITEMS[item]?.icon||''} ${ITEMS[item]?.name||item} (+${amount})
+                        </button>
+                    `).join("")}
+                </div>
+                ${state.contract ? '<button disabled>계약 완료</button>' : `<button data-contract="${id}" ${state.affection<spirit.need?'disabled':''}>${state.affection>=spirit.need?'계약하기':'호감도 '+spirit.need+' 필요'}</button>`}
+                <button id="closeDialogueButton">닫기</button>
+            </div>
+        </div>`;
+}
+
+/* =========================================================
    INTERACTION
 ========================================================= */
 
@@ -3230,6 +3657,13 @@ function interactNearby(){
             leaveNPCHouse();
             return;
         }
+    }
+
+    const nearbySpirit = getNearbySpirit();
+
+    if(nearbySpirit){
+        showSpiritDialogue(nearbySpirit.id, SPIRIT_DATA[nearbySpirit.id].talk[(game.day-1)%SPIRIT_DATA[nearbySpirit.id].talk.length]);
+        return;
     }
 
     const nearby =
@@ -3635,12 +4069,23 @@ function renderShop(){
 
                 </div>
 
-                <button
-                    class="sell"
-                    data-sell="${id}"
-                >
-                    판매
-                </button>
+                <div class="shopSellButtons">
+
+                    <button
+                        class="sell"
+                        data-sell="${id}"
+                    >
+                        1개 판매
+                    </button>
+
+                    <button
+                        class="sellAll"
+                        data-sell-all="${id}"
+                    >
+                        전부 판매
+                    </button>
+
+                </div>
 
             `;
 
@@ -3692,6 +4137,43 @@ function buyItem(id){
 
     showToast(
         `${item.name} 1개 구매`
+    );
+
+    updateHUD();
+
+    saveGame();
+
+    renderShop();
+
+}
+
+
+function sellAllItem(id){
+
+    const item =
+        ITEMS[id];
+
+    if(!item || !item.sell) return;
+
+    const count =
+        game.inventory[id] || 0;
+
+    if(count <= 0){
+
+        showToast("아이템이 없습니다.");
+
+        return;
+    }
+
+    const total =
+        item.sell * count;
+
+    game.inventory[id] = 0;
+
+    game.money += total;
+
+    showToast(
+        `${item.name} ${count}개를 모두 판매했습니다. +${moneyText(total)}`
     );
 
     updateHUD();
@@ -4443,6 +4925,9 @@ function fish(){
 function nextDay(){
 
     game.day++;
+    game.npcWorld = {};
+    initializeNPCWorld();
+    updateNPCSchedules(true);
 
     game.energy =
         game.maxEnergy;
@@ -4681,6 +5166,7 @@ function gameLoop(timestamp){
         while(gameClockAccumulator >= 5000){
             gameClockAccumulator -= 5000;
             game.time += 1;
+            updateNPCSchedules(false);
 
             if(game.time >= 1440){
                 game.time = 480;
@@ -4689,6 +5175,8 @@ function gameLoop(timestamp){
 
             updateHUD();
         }
+
+        updateNPCMovement(delta);
 
         let dx = 0;
         let dy = 0;
@@ -4817,6 +5305,26 @@ document
 /* =========================================================
    BUTTON EVENTS
 ========================================================= */
+
+document
+    .querySelectorAll(".outfitColor")
+    .forEach(button=>{
+        button.addEventListener("click",()=>{
+            document
+                .querySelectorAll(".outfitColor")
+                .forEach(b=>b.classList.remove("active"));
+
+            button.classList.add("active");
+        });
+    });
+
+document
+    .getElementById("nicknameInput")
+    .addEventListener("keydown",e=>{
+        if(e.key === "Enter"){
+            showSaveScreen();
+        }
+    });
 
 document
     .getElementById("startButton")
@@ -4973,6 +5481,18 @@ panel.addEventListener(
 
         registerActivity();
 
+        const spiritTalkButton = e.target.closest("[data-spirit-talk]");
+        if(spiritTalkButton){
+            spiritTalk(spiritTalkButton.dataset.spiritTalk);
+            return;
+        }
+
+        const spiritGiftButton = e.target.closest("[data-spirit-gift]");
+        if(spiritGiftButton){
+            spiritGift(spiritGiftButton.dataset.spiritGift, spiritGiftButton.dataset.spiritItem);
+            return;
+        }
+
         const choice =
             e.target.closest("[data-choice]");
 
@@ -5061,6 +5581,18 @@ panel.addEventListener(
 
             buyItem(
                 buy.dataset.buy
+            );
+
+            return;
+        }
+
+        const sellAll =
+            e.target.closest("[data-sell-all]");
+
+        if(sellAll){
+
+            sellAllItem(
+                sellAll.dataset.sellAll
             );
 
             return;
