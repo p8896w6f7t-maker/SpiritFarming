@@ -5485,18 +5485,6 @@ panel.addEventListener(
 
         registerActivity();
 
-        const spiritTalkButton = e.target.closest("[data-spirit-talk]");
-        if(spiritTalkButton){
-            spiritTalk(spiritTalkButton.dataset.spiritTalk);
-            return;
-        }
-
-        const spiritGiftButton = e.target.closest("[data-spirit-gift]");
-        if(spiritGiftButton){
-            spiritGift(spiritGiftButton.dataset.spiritGift, spiritGiftButton.dataset.spiritItem);
-            return;
-        }
-
         const choice =
             e.target.closest("[data-choice]");
 
@@ -5627,6 +5615,25 @@ dialogue.addEventListener(
     e=>{
 
         registerActivity();
+
+        const spiritTalkButton =
+            e.target.closest("[data-spirit-talk]");
+
+        if(spiritTalkButton){
+            spiritTalk(spiritTalkButton.dataset.spiritTalk);
+            return;
+        }
+
+        const spiritGiftButton =
+            e.target.closest("[data-spirit-gift]");
+
+        if(spiritGiftButton){
+            spiritGift(
+                spiritGiftButton.dataset.spiritGift,
+                spiritGiftButton.dataset.spiritItem
+            );
+            return;
+        }
 
         const choice =
             e.target.closest("[data-choice]");
