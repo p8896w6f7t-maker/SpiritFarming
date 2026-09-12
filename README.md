@@ -1,1 +1,30 @@
-# SpiritFarming
+# 정령의 계절 온라인 멀티플레이
+
+## 구조
+- GitHub: 게임 소스 보관
+- Render Web Service: Node.js + WebSocket 서버 실행
+- 서버가 `index.html`을 제공할 때 `/multiplayer.js`를 자동으로 주입
+
+## Render 배포
+1. Render에서 New > Web Service를 선택합니다.
+2. GitHub 저장소 `p8896w6f7t-maker/SpiritFarming`를 연결합니다.
+3. Runtime은 Node로 둡니다.
+4. Build Command: `npm install`
+5. Start Command: `npm start`
+6. 배포 후 `https://xxxxx.onrender.com` 주소를 확인합니다.
+
+## 게임 접속
+Render 주소로 접속하면 게임 화면의 `온라인 멀티플레이` 버튼에서 서버 주소를 따로 입력하지 않아도 같은 서버로 연결됩니다.
+
+GitHub Pages 주소로 게임을 열 경우에는 멀티플레이 창의 서버 주소 칸에 Render 주소를 입력하면 됩니다.
+
+방 만들기 → 6자리 방 코드 생성 → 친구가 같은 코드를 입력해 방 참가.
+
+현재 동기화되는 값:
+- 닉네임
+- 옷 색상
+- 현재 위치(농장/마을/숲/바다/집 등)
+- X/Y 위치
+- 바라보는 방향
+
+방은 서버 메모리에 유지되며 서버가 재시작되면 방이 사라집니다.
