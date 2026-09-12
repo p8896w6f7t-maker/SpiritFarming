@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-
 <meta charset="UTF-8">
 
 <meta
@@ -18,7 +17,7 @@
 <style>
 
 /* =========================================================
-   RESET
+   기본 설정
 ========================================================= */
 
 *{
@@ -32,28 +31,25 @@ body{
     margin:0;
     width:100%;
     height:100%;
-
     overflow:hidden;
 
     background:#17151d;
+    color:#fff;
 
     font-family:
         "Courier New",
         monospace;
-
-    color:#fff;
 
     touch-action:none;
 }
 
 button{
     font-family:inherit;
-    cursor:pointer;
 }
 
 
 /* =========================================================
-   GAME ROOT
+   게임 전체
 ========================================================= */
 
 #game{
@@ -62,8 +58,6 @@ button{
     width:100vw;
     height:100vh;
 
-    min-height:600px;
-
     overflow:hidden;
 
     background:#17151d;
@@ -71,11 +65,10 @@ button{
 
 
 /* =========================================================
-   START SCREEN
+   시작 화면
 ========================================================= */
 
 #startScreen{
-
     position:absolute;
 
     inset:0;
@@ -89,17 +82,16 @@ button{
 
     background:
         linear-gradient(
-            rgba(18,16,23,.45),
-            rgba(18,16,23,.75)
+            rgba(20,18,27,.45),
+            rgba(20,18,27,.75)
         ),
-        #465d49;
+        #536b55;
 }
 
-.start-box{
+.startBox{
+    width:min(480px,90vw);
 
-    width:min(500px,90vw);
-
-    padding:42px 35px;
+    padding:40px 32px;
 
     text-align:center;
 
@@ -109,109 +101,99 @@ button{
 
     box-shadow:
         inset 4px 4px 0 #51495e,
-        inset -4px -4px 0 #18151e,
-        0 15px 40px rgba(0,0,0,.35);
+        inset -4px -4px 0 #17141c,
+        0 20px 50px rgba(0,0,0,.4);
 }
 
-.start-icon{
+.startIcon{
+    font-size:72px;
 
-    font-size:76px;
-
-    margin-bottom:10px;
+    margin-bottom:8px;
 }
 
-.start-title{
-
+.startTitle{
     margin:0;
 
-    font-size:34px;
+    color:#ead6f5;
+
+    font-size:32px;
 
     letter-spacing:3px;
-
-    color:#f0d7ff;
 }
 
-.start-subtitle{
-
-    margin:10px 0 30px;
+.startSub{
+    margin:12px 0 28px;
 
     color:#aaa1b8;
 
-    font-size:12px;
+    font-size:11px;
 
-    line-height:1.7;
+    line-height:1.8;
 }
 
-.start-button{
-
+.startButton{
     width:100%;
 
-    padding:15px;
-
-    margin-top:8px;
+    padding:16px;
 
     color:white;
 
     background:#5d4b70;
 
-    border:4px solid #17131d;
+    border:4px solid #15121a;
 
     box-shadow:
         inset 3px 3px 0 #8a71a0,
         inset -3px -3px 0 #35293f;
 
     font-size:14px;
+
+    cursor:pointer;
 }
 
-.start-button:hover{
-
+.startButton:hover{
     background:#705986;
 }
 
-.start-button:active{
-
+.startButton:active{
     transform:translateY(2px);
 }
 
-.start-warning{
+.startNote{
+    margin-top:18px;
 
-    margin-top:20px;
-
-    color:#8d8792;
+    color:#77717e;
 
     font-size:9px;
 
-    line-height:1.5;
+    line-height:1.6;
 }
 
 
 /* =========================================================
-   SAVE SELECT
+   저장 슬롯 화면
 ========================================================= */
 
-#saveSelect{
-
+#saveScreen{
     position:absolute;
 
     inset:0;
 
-    z-index:950;
+    z-index:1100;
 
     display:none;
 
     align-items:center;
     justify-content:center;
 
-    background:rgba(8,7,12,.8);
+    background:rgba(8,7,12,.82);
 }
 
-#saveSelect.open{
-
+#saveScreen.open{
     display:flex;
 }
 
-.save-box{
-
+.saveBox{
     width:min(620px,92vw);
 
     max-height:85vh;
@@ -229,92 +211,96 @@ button{
         inset -3px -3px 0 #17141c;
 }
 
-.save-title{
-
+.saveTitle{
     margin-bottom:18px;
 
-    font-size:20px;
-
     color:#e5c8f5;
+
+    font-size:20px;
 }
 
-.save-slot{
-
+.saveSlot{
     display:flex;
 
     align-items:center;
-
     justify-content:space-between;
 
     gap:15px;
 
-    margin-bottom:10px;
-
     padding:14px;
+
+    margin-bottom:10px;
 
     background:#332e3b;
 
     border:3px solid #17141c;
 }
 
-.save-info{
-
+.saveInfo{
     flex:1;
-
-    text-align:left;
 }
 
-.save-name{
-
-    font-size:14px;
-
-    font-weight:bold;
-
+.saveName{
     margin-bottom:5px;
+
+    font-size:13px;
+    font-weight:bold;
 }
 
-.save-detail{
-
+.saveDetail{
     color:#aaa1b8;
 
-    font-size:10px;
+    font-size:9px;
 
-    line-height:1.5;
+    line-height:1.6;
 }
 
-.save-buttons{
-
+.saveButtons{
     display:flex;
 
     gap:5px;
 }
 
-.save-button{
+.saveButton{
+    padding:8px 11px;
 
-    padding:8px 10px;
-
-    color:#fff;
+    color:white;
 
     background:#51445e;
 
     border:3px solid #17131b;
 
-    font-size:10px;
+    font-size:9px;
+
+    cursor:pointer;
 }
 
-.save-button.new{
-
-    background:#5c4c6e;
+.saveButton:hover{
+    background:#6a5875;
 }
 
-.save-button.delete{
+.saveButton.new{
+    background:#5d4b70;
+}
 
+.saveButton.delete{
     background:#49343e;
 }
 
-.save-button:hover{
+.backButton{
+    margin-top:5px;
 
-    filter:brightness(1.2);
+    padding:9px 15px;
+
+    color:white;
+
+    background:#403a47;
+
+    border:3px solid #17131b;
+
+    cursor:pointer;
+
+    font-size:10px;
 }
 
 
@@ -323,7 +309,6 @@ button{
 ========================================================= */
 
 #hud{
-
     position:absolute;
 
     left:0;
@@ -337,7 +322,6 @@ button{
     display:flex;
 
     align-items:center;
-
     justify-content:space-between;
 
     padding:9px 18px;
@@ -350,17 +334,13 @@ button{
         inset 0 -2px 0 #40394c;
 }
 
-.hud-left{
-
+.hudLeft{
     display:flex;
-
-    align-items:center;
 
     gap:10px;
 }
 
-.day-box{
-
+.dayBox{
     min-width:120px;
 
     padding:7px 11px;
@@ -374,36 +354,30 @@ button{
         inset -2px -2px 0 #1c1923;
 }
 
-.day-title{
-
+.hudLabel{
     color:#aaa1b8;
 
-    font-size:10px;
-
-    margin-bottom:2px;
+    font-size:9px;
 }
 
-.day-number{
+.hudValue{
+    margin-top:2px;
 
-    font-size:17px;
-
+    font-size:16px;
     font-weight:bold;
 }
 
-.season{
-
+.spring{
     color:#e8b8ff;
 }
 
-.hud-stats{
-
+.hudRight{
     display:flex;
 
     gap:8px;
 }
 
-.stat{
-
+.statBox{
     min-width:110px;
 
     padding:7px 10px;
@@ -417,56 +391,34 @@ button{
         inset -2px -2px 0 #1c1923;
 }
 
-.stat-label{
-
-    color:#aaa1b8;
-
-    font-size:9px;
-}
-
-.stat-value{
-
-    margin-top:2px;
-
-    font-size:14px;
-
-    font-weight:bold;
-}
-
-.money{
-
-    color:#f3d46a;
-}
-
-.energy-bar{
-
+.energyBar{
     width:85px;
-
     height:8px;
 
     margin-top:3px;
 
-    background:#16141a;
+    background:#151319;
 
-    border:2px solid #0d0c10;
+    border:2px solid #0c0b0f;
 }
 
-.energy-fill{
-
+.energyFill{
     width:100%;
-
     height:100%;
 
     background:#e6a54e;
 }
 
+.money{
+    color:#f3d46a;
+}
+
 
 /* =========================================================
-   MAIN
+   메인
 ========================================================= */
 
 #main{
-
     position:absolute;
 
     left:0;
@@ -479,11 +431,10 @@ button{
 
 
 /* =========================================================
-   SIDEBAR
+   사이드 메뉴
 ========================================================= */
 
 #sidebar{
-
     width:185px;
 
     flex-shrink:0;
@@ -497,22 +448,20 @@ button{
     z-index:90;
 }
 
-.menu-title{
-
-    margin:3px 4px 9px;
+.menuTitle{
+    margin:4px;
 
     color:#aaa1b8;
 
     font-size:11px;
 }
 
-.menu-button{
-
+.menuButton{
     width:100%;
 
-    margin-bottom:7px;
-
     padding:11px 8px;
+
+    margin-bottom:7px;
 
     color:white;
 
@@ -526,28 +475,21 @@ button{
         inset 2px 2px 0 #51495e,
         inset -2px -2px 0 #1c1923;
 
-    font-size:11px;
+    cursor:pointer;
+
+    font-size:10px;
 }
 
-.menu-button:hover{
-
-    background:#423c4e;
-}
-
-.menu-button.active{
-
-    background:#5b4b6d;
-
-    border-color:#80699b;
+.menuButton:hover{
+    background:#453d50;
 }
 
 
 /* =========================================================
-   SCREEN
+   게임 화면
 ========================================================= */
 
 #screen{
-
     position:relative;
 
     flex:1;
@@ -561,11 +503,10 @@ button{
 
 
 /* =========================================================
-   MAP
+   지역
 ========================================================= */
 
 .location{
-
     position:absolute;
 
     inset:0;
@@ -576,17 +517,15 @@ button{
 }
 
 .location.active{
-
     display:block;
 }
 
 
 /* =========================================================
-   FARM
+   농장
 ========================================================= */
 
 #farm{
-
     background:
         linear-gradient(
             #789a70 0 18%,
@@ -594,57 +533,61 @@ button{
         );
 }
 
+.locationName{
+    position:absolute;
 
-/* =========================================================
-   FARM PATH
-========================================================= */
+    left:18px;
+    top:16px;
 
-.farm-path-horizontal{
+    padding:7px 12px;
 
+    background:rgba(37,34,46,.86);
+
+    border:3px solid #111018;
+
+    color:#ead8f2;
+
+    font-size:11px;
+
+    z-index:30;
+}
+
+.farmPath{
     position:absolute;
 
     left:0;
     right:0;
 
-    top:65%;
+    top:64%;
 
-    height:90px;
+    height:100px;
 
-    background:#c6aa79;
+    background:#c5a878;
 
-    border-top:5px solid #9a8059;
-    border-bottom:5px solid #9a8059;
+    border-top:5px solid #9b8058;
+    border-bottom:5px solid #9b8058;
 }
 
-.farm-path-right{
-
+.farmExit{
     position:absolute;
 
     right:0;
+    top:54%;
 
-    top:55%;
+    width:90px;
+    height:120px;
 
-    width:100px;
+    background:#c5a878;
 
-    height:110px;
-
-    background:#c6aa79;
-
-    border-top:5px solid #9a8059;
-    border-bottom:5px solid #9a8059;
+    border-top:5px solid #9b8058;
+    border-bottom:5px solid #9b8058;
 }
 
-
-/* =========================================================
-   HOUSE
-========================================================= */
-
 .house{
-
     position:absolute;
 
     left:7%;
-    top:8%;
+    top:9%;
 
     width:210px;
     height:150px;
@@ -653,11 +596,10 @@ button{
 
     border:6px solid #30221f;
 
-    z-index:5;
+    z-index:10;
 }
 
-.house-roof{
-
+.houseRoof{
     position:absolute;
 
     left:-20px;
@@ -673,8 +615,7 @@ button{
     transform:skewX(-20deg);
 }
 
-.house-door{
-
+.houseDoor{
     position:absolute;
 
     left:78px;
@@ -688,8 +629,7 @@ button{
     border:5px solid #30221f;
 }
 
-.house-window{
-
+.houseWindow{
     position:absolute;
 
     top:35px;
@@ -702,23 +642,15 @@ button{
     border:5px solid #30221f;
 }
 
-.house-window.left{
-
+.houseWindow.left{
     left:20px;
 }
 
-.house-window.right{
-
+.houseWindow.right{
     right:20px;
 }
 
-
-/* =========================================================
-   FARM FIELD
-========================================================= */
-
 .field{
-
     position:absolute;
 
     left:35%;
@@ -726,11 +658,8 @@ button{
 
     display:grid;
 
-    grid-template-columns:
-        repeat(5,54px);
-
-    grid-template-rows:
-        repeat(4,54px);
+    grid-template-columns:repeat(5,54px);
+    grid-template-rows:repeat(4,54px);
 
     gap:4px;
 
@@ -740,11 +669,10 @@ button{
 
     border:5px solid #30241f;
 
-    z-index:5;
+    z-index:10;
 }
 
-.crop-tile{
-
+.crop{
     width:54px;
     height:54px;
 
@@ -762,43 +690,31 @@ button{
     cursor:pointer;
 }
 
-.crop-tile.watered{
-
+.crop.watered{
     background:#566b72;
 }
 
-.crop-tile.ready{
-
+.crop.ready{
     animation:pulse 1s infinite;
 }
 
-.crop-tile.empty::after{
-
+.crop.empty::after{
     content:"+";
 
     color:#a47b59;
-
-    font-size:18px;
 }
 
 @keyframes pulse{
-
     0%,100%{
         filter:brightness(1);
     }
 
     50%{
-        filter:brightness(1.35);
+        filter:brightness(1.4);
     }
 }
 
-
-/* =========================================================
-   POND
-========================================================= */
-
 .pond{
-
     position:absolute;
 
     right:9%;
@@ -816,50 +732,40 @@ button{
     box-shadow:
         inset 0 8px 0 #71b4c2;
 
-    z-index:5;
+    z-index:10;
 }
 
-
-/* =========================================================
-   TREES
-========================================================= */
-
 .tree{
-
     position:absolute;
 
     font-size:70px;
 
-    pointer-events:none;
+    z-index:5;
 
-    z-index:4;
+    pointer-events:none;
 }
 
-.tree.t1{
-
+.tree1{
     left:8%;
     bottom:8%;
 }
 
-.tree.t2{
-
+.tree2{
     right:25%;
     bottom:7%;
 }
 
-.tree.t3{
-
+.tree3{
     right:5%;
     bottom:28%;
 }
 
 
 /* =========================================================
-   TOWN
+   마을
 ========================================================= */
 
 #town{
-
     background:
         linear-gradient(
             #9a907d 0 30%,
@@ -867,8 +773,7 @@ button{
         );
 }
 
-.town-road{
-
+.townRoadHorizontal{
     position:absolute;
 
     left:0;
@@ -884,8 +789,7 @@ button{
     border-bottom:5px solid #8d7551;
 }
 
-.town-road-up{
-
+.townRoadVertical{
     position:absolute;
 
     left:50%;
@@ -893,7 +797,7 @@ button{
     top:0;
 
     width:100px;
-    height:60%;
+    height:58%;
 
     transform:translateX(-50%);
 
@@ -904,7 +808,6 @@ button{
 }
 
 .shop{
-
     position:absolute;
 
     width:180px;
@@ -914,23 +817,20 @@ button{
 
     border:6px solid #4a302d;
 
-    z-index:5;
+    z-index:10;
 }
 
-.shop.one{
-
+.shop1{
     left:10%;
     top:18%;
 }
 
-.shop.two{
-
+.shop2{
     right:10%;
     top:18%;
 }
 
-.shop-roof{
-
+.shopRoof{
     position:absolute;
 
     left:-8px;
@@ -944,8 +844,7 @@ button{
     border:6px solid #4a302d;
 }
 
-.shop-door{
-
+.shopDoor{
     position:absolute;
 
     left:67px;
@@ -959,8 +858,7 @@ button{
     border:5px solid #4a302d;
 }
 
-.town-npc{
-
+.npc{
     position:absolute;
 
     font-size:40px;
@@ -970,25 +868,22 @@ button{
     pointer-events:none;
 }
 
-.npc-a{
-
-    left:40%;
-    top:45%;
+.npc1{
+    left:39%;
+    top:44%;
 }
 
-.npc-b{
-
-    right:30%;
-    top:65%;
+.npc2{
+    right:29%;
+    top:64%;
 }
 
 
 /* =========================================================
-   FOREST
+   숲
 ========================================================= */
 
 #forest{
-
     background:
         linear-gradient(
             #456149 0 30%,
@@ -996,8 +891,7 @@ button{
         );
 }
 
-.forest-ground{
-
+.forestGround{
     position:absolute;
 
     inset:30% 0 0;
@@ -1015,53 +909,46 @@ button{
         );
 }
 
-.forest-tree{
-
+.forestTree{
     position:absolute;
 
     font-size:82px;
 
-    pointer-events:none;
-
     z-index:5;
+
+    pointer-events:none;
 }
 
-.forest-tree:nth-child(1){
-
+.ft1{
     left:7%;
     top:12%;
 }
 
-.forest-tree:nth-child(2){
-
+.ft2{
     left:27%;
     top:7%;
 }
 
-.forest-tree:nth-child(3){
-
+.ft3{
     right:25%;
     top:12%;
 }
 
-.forest-tree:nth-child(4){
-
+.ft4{
     right:5%;
     top:8%;
 }
 
-.forest-center{
-
+.spiritStone{
     position:absolute;
 
     left:50%;
     top:48%;
 
-    width:190px;
-    height:190px;
+    width:180px;
+    height:180px;
 
-    transform:
-        translate(-50%,-50%);
+    transform:translate(-50%,-50%);
 
     display:flex;
 
@@ -1074,47 +961,40 @@ button{
 
     border:6px solid #18231c;
 
-    font-size:90px;
-
     box-shadow:
-        0 0 30px rgba(185,150,255,.18);
+        0 0 30px rgba(185,150,255,.2);
 
-    z-index:8;
+    font-size:85px;
+
+    z-index:10;
 }
 
 
 /* =========================================================
-   PLAYER
+   플레이어
 ========================================================= */
 
-.player{
-
+#player{
     position:absolute;
 
-    width:46px;
-    height:58px;
+    width:48px;
+    height:60px;
 
-    z-index:80;
+    transform:translate(-50%,-50%);
 
-    transform:
-        translate(-50%,-50%);
+    z-index:100;
+
+    pointer-events:none;
+
+    user-select:none;
 
     display:flex;
 
     align-items:center;
     justify-content:center;
-
-    user-select:none;
-
-    pointer-events:none;
-
-    transition:
-        left .04s linear,
-        top .04s linear;
 }
 
-.player-sprite{
-
+.playerSprite{
     font-size:38px;
 
     line-height:1;
@@ -1123,44 +1003,36 @@ button{
         transform .05s linear;
 }
 
-.player.flip .player-sprite{
-
+#player.flip .playerSprite{
     transform:scaleX(-1);
 }
 
-.player-name{
-
+.playerName{
     position:absolute;
 
-    top:-21px;
     left:50%;
+    top:-21px;
 
     transform:translateX(-50%);
 
     padding:2px 5px;
 
+    color:white;
+
     background:#27232e;
 
     border:2px solid #111018;
-
-    color:white;
 
     font-size:8px;
 
     white-space:nowrap;
 }
 
-
-/* =========================================================
-   PLAYER SHADOW
-========================================================= */
-
-.player-shadow{
-
+.playerShadow{
     position:absolute;
 
     left:50%;
-    bottom:-3px;
+    bottom:-2px;
 
     width:28px;
     height:7px;
@@ -1176,40 +1048,14 @@ button{
 
 
 /* =========================================================
-   LOCATION NAME
-========================================================= */
-
-.location-name{
-
-    position:absolute;
-
-    left:22px;
-    top:18px;
-
-    padding:7px 12px;
-
-    background:rgba(37,34,46,.85);
-
-    border:3px solid #111018;
-
-    color:#e6d5ee;
-
-    font-size:11px;
-
-    z-index:25;
-}
-
-
-/* =========================================================
-   INFO
+   정보
 ========================================================= */
 
 #info{
-
     position:absolute;
 
     right:15px;
-    bottom:88px;
+    bottom:87px;
 
     width:220px;
 
@@ -1225,17 +1071,15 @@ button{
     z-index:85;
 }
 
-.info-title{
+.infoTitle{
+    margin-bottom:7px;
 
     color:#dcbfff;
-
-    margin-bottom:7px;
 
     font-size:13px;
 }
 
-.info-text{
-
+.infoText{
     color:#c5bdca;
 
     font-size:10px;
@@ -1245,11 +1089,10 @@ button{
 
 
 /* =========================================================
-   ACTION BAR
+   액션바
 ========================================================= */
 
-#actionbar{
-
+#actionBar{
     position:absolute;
 
     left:50%;
@@ -1270,32 +1113,31 @@ button{
     z-index:90;
 }
 
-.action{
-
+.actionButton{
     width:90px;
     height:42px;
+
+    color:white;
 
     background:#383342;
 
     border:3px solid #14121a;
 
-    color:white;
-
     font-size:10px;
+
+    cursor:pointer;
 }
 
-.action:hover{
-
+.actionButton:hover{
     background:#51485d;
 }
 
 
 /* =========================================================
-   MOBILE CONTROLLER
+   모바일 방향키
 ========================================================= */
 
 #mobileControls{
-
     position:absolute;
 
     left:15px;
@@ -1304,13 +1146,12 @@ button{
     width:150px;
     height:150px;
 
-    z-index:100;
+    z-index:120;
 
     display:none;
 }
 
 .control{
-
     position:absolute;
 
     width:50px;
@@ -1339,43 +1180,37 @@ button{
 }
 
 .control:active{
-
     background:#655172;
 
     transform:scale(.93);
 }
 
-.control.up{
-
+.up{
     left:50px;
     top:0;
 }
 
-.control.left{
-
+.left{
     left:0;
     top:50px;
 }
 
-.control.down{
-
+.down{
     left:50px;
     top:50px;
 }
 
-.control.right{
-
+.right{
     left:100px;
     top:50px;
 }
 
 
 /* =========================================================
-   PANEL
+   패널
 ========================================================= */
 
 #panel{
-
     position:absolute;
 
     inset:0;
@@ -1391,12 +1226,10 @@ button{
 }
 
 #panel.open{
-
     display:flex;
 }
 
-.panel-box{
-
+.panelBox{
     width:min(600px,90vw);
 
     max-height:82vh;
@@ -1414,8 +1247,7 @@ button{
         inset -3px -3px 0 #17141c;
 }
 
-.panel-close{
-
+.panelClose{
     float:right;
 
     padding:5px 10px;
@@ -1425,24 +1257,24 @@ button{
     background:#4b3948;
 
     border:3px solid #17131b;
+
+    cursor:pointer;
 }
 
-.panel-title{
-
+.panelTitle{
     margin-bottom:18px;
 
-    font-size:20px;
-
     color:#e5c8f5;
+
+    font-size:20px;
 }
 
 
 /* =========================================================
-   PANEL CARDS
+   패널 카드
 ========================================================= */
 
 .card{
-
     padding:13px;
 
     margin-bottom:10px;
@@ -1452,49 +1284,43 @@ button{
     border:3px solid #17141c;
 }
 
-.card-title{
+.cardTitle{
+    margin-bottom:7px;
 
     font-size:13px;
-
     font-weight:bold;
-
-    margin-bottom:8px;
 }
 
-.card-text{
-
+.cardText{
     color:#aaa1b8;
 
     font-size:10px;
 
-    line-height:1.6;
+    line-height:1.7;
 }
 
 
 /* =========================================================
-   STATS
+   캐릭터 스탯
 ========================================================= */
 
-.stat-row{
-
+.statRow{
     display:flex;
 
     align-items:center;
 
-    margin-bottom:10px;
-
     gap:10px;
+
+    margin-bottom:10px;
 }
 
-.stat-name{
-
-    width:70px;
+.statName{
+    width:60px;
 
     font-size:10px;
 }
 
-.stat-track{
-
+.statTrack{
     flex:1;
 
     height:10px;
@@ -1504,16 +1330,14 @@ button{
     border:2px solid #0d0c10;
 }
 
-.stat-track-fill{
-
+.statTrackFill{
     height:100%;
 
     background:#8b6ca2;
 }
 
-.stat-number{
-
-    width:35px;
+.statNumber{
+    width:25px;
 
     text-align:right;
 
@@ -1522,24 +1346,20 @@ button{
 
 
 /* =========================================================
-   MAP PANEL
+   지도
 ========================================================= */
 
-.map-container{
-
+.map{
     position:relative;
 
-    height:300px;
+    height:310px;
 
     background:#536b55;
 
     border:4px solid #17141c;
-
-    overflow:hidden;
 }
 
-.map-area{
-
+.mapArea{
     position:absolute;
 
     display:flex;
@@ -1547,19 +1367,15 @@ button{
     align-items:center;
     justify-content:center;
 
-    background:#756a58;
-
     border:4px solid #332b25;
 
     color:white;
 
     font-size:11px;
-
     font-weight:bold;
 }
 
-.map-farm{
-
+.mapFarm{
     left:8%;
     bottom:15%;
 
@@ -1569,10 +1385,9 @@ button{
     background:#6e8d62;
 }
 
-.map-town{
-
+.mapTown{
     left:39%;
-    top:27%;
+    top:28%;
 
     width:27%;
     height:40%;
@@ -1580,8 +1395,7 @@ button{
     background:#968873;
 }
 
-.map-forest{
-
+.mapForest{
     right:7%;
     top:10%;
 
@@ -1591,21 +1405,19 @@ button{
     background:#3d5c43;
 }
 
-.map-road1{
-
+.mapRoadH{
     position:absolute;
 
     left:32%;
     bottom:32%;
 
-    width:16%;
+    width:18%;
     height:35px;
 
     background:#c3a875;
 }
 
-.map-road2{
-
+.mapRoadV{
     position:absolute;
 
     left:51%;
@@ -1617,8 +1429,7 @@ button{
     background:#c3a875;
 }
 
-.map-player{
-
+.mapPlayer{
     position:absolute;
 
     width:18px;
@@ -1629,16 +1440,14 @@ button{
     background:#f0c57c;
 
     border:3px solid #352b2b;
-
 }
 
 
 /* =========================================================
-   INVENTORY
+   인벤토리
 ========================================================= */
 
-.inventory-grid{
-
+.inventoryGrid{
     display:grid;
 
     grid-template-columns:
@@ -1647,8 +1456,7 @@ button{
     gap:8px;
 }
 
-.inventory-item{
-
+.inventoryItem{
     min-height:90px;
 
     display:flex;
@@ -1665,22 +1473,20 @@ button{
     font-size:28px;
 }
 
-.inventory-count{
-
+.inventoryCount{
     margin-top:6px;
 
-    font-size:10px;
-
     color:#c5bdca;
+
+    font-size:9px;
 }
 
 
 /* =========================================================
-   SPIRIT
+   정령
 ========================================================= */
 
-.spirit-card{
-
+.spiritCard{
     display:flex;
 
     align-items:center;
@@ -1696,8 +1502,7 @@ button{
     border:3px solid #17141c;
 }
 
-.spirit-icon{
-
+.spiritIcon{
     width:65px;
     height:65px;
 
@@ -1713,26 +1518,20 @@ button{
     font-size:42px;
 }
 
-.spirit-name{
-
+.spiritName{
     margin-bottom:4px;
 
     font-size:13px;
-
     font-weight:bold;
 }
 
 .hearts{
-
     color:#e4a6ff;
 
     letter-spacing:2px;
-
-    font-size:12px;
 }
 
-.contract-button{
-
+.contractButton{
     margin-top:7px;
 
     padding:7px 10px;
@@ -1743,21 +1542,21 @@ button{
 
     border:3px solid #18141e;
 
+    cursor:pointer;
+
     font-size:10px;
 }
 
-.contract-button:disabled{
-
+.contractButton:disabled{
     opacity:.4;
 }
 
 
 /* =========================================================
-   TOAST
+   토스트
 ========================================================= */
 
 #toast{
-
     position:absolute;
 
     left:50%;
@@ -1784,7 +1583,6 @@ button{
 }
 
 #toast.show{
-
     opacity:1;
 
     transform:
@@ -1793,15 +1591,14 @@ button{
 
 
 /* =========================================================
-   INACTIVITY
+   비활성 경고
 ========================================================= */
 
 #inactiveWarning{
-
     position:absolute;
 
     left:50%;
-    bottom:30px;
+    bottom:25px;
 
     transform:translateX(-50%);
 
@@ -1817,100 +1614,81 @@ button{
 
     opacity:0;
 
-    pointer-events:none;
-
     z-index:600;
+
+    pointer-events:none;
 }
 
 #inactiveWarning.show{
-
     opacity:1;
 }
 
 
 /* =========================================================
-   RESPONSIVE
+   모바일
 ========================================================= */
 
 @media(max-width:700px){
 
     #hud{
-
         height:64px;
 
         padding:5px;
     }
 
     #main{
-
         top:64px;
     }
 
-    .day-box{
-
+    .dayBox{
         min-width:82px;
 
         padding:5px;
     }
 
-    .day-title{
-
-        font-size:8px;
+    .hudLabel{
+        font-size:7px;
     }
 
-    .day-number{
-
+    .hudValue{
         font-size:12px;
     }
 
-    .stat{
-
+    .statBox{
         min-width:65px;
 
         padding:5px;
     }
 
-    .stat-label{
-
-        font-size:7px;
-    }
-
-    .stat-value{
-
-        font-size:9px;
-    }
-
-    .energy-bar{
-
+    .energyBar{
         width:50px;
     }
 
     #sidebar{
-
-        width:88px;
+        width:85px;
 
         padding:6px;
     }
 
-    .menu-title{
-
+    .menuTitle{
         font-size:8px;
     }
 
-    .menu-button{
-
+    .menuButton{
         padding:8px 4px;
 
-        font-size:8px;
+        font-size:7px;
     }
 
     #info{
-
         display:none;
     }
 
-    #actionbar{
+    #mobileControls{
+        display:block;
+    }
 
+    #actionBar{
         right:6px;
         bottom:8px;
         left:auto;
@@ -1922,21 +1700,14 @@ button{
         padding:4px;
     }
 
-    .action{
-
+    .actionButton{
         width:55px;
         height:37px;
 
         font-size:8px;
     }
 
-    #mobileControls{
-
-        display:block;
-    }
-
     .field{
-
         transform:scale(.78);
 
         transform-origin:
@@ -1944,7 +1715,6 @@ button{
     }
 
     .house{
-
         transform:scale(.8);
 
         transform-origin:
@@ -1952,7 +1722,6 @@ button{
     }
 
     .shop{
-
         transform:scale(.75);
 
         transform-origin:
@@ -1964,25 +1733,30 @@ button{
 @media(max-width:430px){
 
     #sidebar{
-
         width:72px;
     }
 
-    .menu-button{
-
+    .menuButton{
         font-size:7px;
     }
 
-    .hud-stats .stat:nth-child(2){
-
+    .hudRight .statBox:nth-child(2){
         display:none;
     }
 
-    #actionbar{
-
+    #actionBar{
         display:none;
     }
 
+}
+
+
+/* =========================================================
+   게임 종료 상태
+========================================================= */
+
+.gamePaused #screen{
+    filter:brightness(.7);
 }
 
 </style>
@@ -2001,36 +1775,33 @@ button{
 
 <div id="startScreen">
 
-    <div class="start-box">
+    <div class="startBox">
 
-        <div class="start-icon">
+        <div class="startIcon">
             ✨
         </div>
 
-        <h1 class="start-title">
+        <h1 class="startTitle">
             정령의 계절
         </h1>
 
-        <div class="start-subtitle">
-
+        <div class="startSub">
             작은 농장에서 시작되는<br>
             정령과 인간의 이야기
-
         </div>
 
         <button
-            class="start-button"
-            onclick="openSaveSelect()">
+            type="button"
+            class="startButton"
+            onclick="showSaveScreen()">
 
             게임 시작
 
         </button>
 
-        <div class="start-warning">
-
-            방향키 / WASD로 이동<br>
-            모바일에서는 화면의 방향키를 사용하세요.
-
+        <div class="startNote">
+            PC: 방향키 / WASD<br>
+            모바일: 화면 방향키
         </div>
 
     </div>
@@ -2039,24 +1810,25 @@ button{
 
 
 <!-- =========================================================
-     SAVE SELECT
+     SAVE SCREEN
 ========================================================= -->
 
-<div id="saveSelect">
+<div id="saveScreen">
 
-    <div class="save-box">
+    <div class="saveBox">
 
-        <div class="save-title">
+        <div class="saveTitle">
             저장 슬롯 선택
         </div>
 
         <div id="saveSlots"></div>
 
         <button
-            class="save-button"
-            onclick="closeSaveSelect()">
+            type="button"
+            class="backButton"
+            onclick="hideSaveScreen()">
 
-            돌아가기
+            뒤로가기
 
         </button>
 
@@ -2071,37 +1843,30 @@ button{
 
 <header id="hud">
 
-    <div class="hud-left">
+    <div class="hudLeft">
 
-        <div class="day-box">
+        <div class="dayBox">
 
-            <div class="day-title">
+            <div class="hudLabel">
                 계절
             </div>
 
-            <div class="day-number">
-
-                <span id="day">
-                    1
-                </span>일
-
-                <span class="season">
-                    봄
-                </span>
-
+            <div class="hudValue">
+                <span id="day">1</span>일
+                <span class="spring">봄</span>
             </div>
 
         </div>
 
 
-        <div class="day-box">
+        <div class="dayBox">
 
-            <div class="day-title">
+            <div class="hudLabel">
                 시간
             </div>
 
             <div
-                class="day-number"
+                class="hudValue"
                 id="time">
 
                 06:00
@@ -2113,15 +1878,15 @@ button{
     </div>
 
 
-    <div class="hud-stats">
+    <div class="hudRight">
 
-        <div class="stat">
+        <div class="statBox">
 
-            <div class="stat-label">
+            <div class="hudLabel">
                 체력
             </div>
 
-            <div class="stat-value">
+            <div class="hudValue">
 
                 <span id="energy">
                     100
@@ -2129,11 +1894,11 @@ button{
 
             </div>
 
-            <div class="energy-bar">
+            <div class="energyBar">
 
                 <div
                     id="energyFill"
-                    class="energy-fill">
+                    class="energyFill">
                 </div>
 
             </div>
@@ -2141,18 +1906,15 @@ button{
         </div>
 
 
-        <div class="stat">
+        <div class="statBox">
 
-            <div class="stat-label">
+            <div class="hudLabel">
                 소지금
             </div>
 
-            <div class="stat-value money">
+            <div class="hudValue money">
 
-                ₩
-                <span id="money">
-                    500
-                </span>
+                ₩<span id="money">500</span>
 
             </div>
 
@@ -2176,13 +1938,14 @@ button{
 
 <aside id="sidebar">
 
-    <div class="menu-title">
+    <div class="menuTitle">
         관리
     </div>
 
 
     <button
-        class="menu-button"
+        type="button"
+        class="menuButton"
         onclick="openMap()">
 
         🗺️ 지도
@@ -2191,7 +1954,8 @@ button{
 
 
     <button
-        class="menu-button"
+        type="button"
+        class="menuButton"
         onclick="openCharacter()">
 
         👤 캐릭터
@@ -2200,7 +1964,8 @@ button{
 
 
     <button
-        class="menu-button"
+        type="button"
+        class="menuButton"
         onclick="openInventory()">
 
         🎒 인벤토리
@@ -2209,7 +1974,8 @@ button{
 
 
     <button
-        class="menu-button"
+        type="button"
+        class="menuButton"
         onclick="openSpirits()">
 
         ✨ 정령
@@ -2218,32 +1984,29 @@ button{
 
 
     <button
-        class="menu-button"
-        onclick="saveCurrentGame()">
+        type="button"
+        class="menuButton"
+        onclick="manualSave()">
 
         💾 저장
 
     </button>
 
 
-    <div class="menu-title"
-         style="margin-top:20px;">
+    <div
+        class="menuTitle"
+        style="margin-top:18px;">
 
         현재 위치
 
     </div>
 
 
-    <div
-        class="card"
-        style="padding:9px;">
+    <div class="card">
 
         <div
             id="locationLabel"
-            style="
-            font-size:10px;
-            color:#dcbfff;
-            ">
+            class="cardText">
 
             농장
 
@@ -2269,25 +2032,25 @@ button{
     id="farm"
     class="location active">
 
-    <div class="location-name">
+    <div class="locationName">
         🌱 작은 농장
     </div>
 
 
-    <div class="farm-path-horizontal"></div>
+    <div class="farmPath"></div>
 
-    <div class="farm-path-right"></div>
+    <div class="farmExit"></div>
 
 
     <div class="house">
 
-        <div class="house-roof"></div>
+        <div class="houseRoof"></div>
 
-        <div class="house-window left"></div>
+        <div class="houseWindow left"></div>
 
-        <div class="house-window right"></div>
+        <div class="houseWindow right"></div>
 
-        <div class="house-door"></div>
+        <div class="houseDoor"></div>
 
     </div>
 
@@ -2301,15 +2064,15 @@ button{
     <div class="pond"></div>
 
 
-    <div class="tree t1">
+    <div class="tree tree1">
         🌳
     </div>
 
-    <div class="tree t2">
+    <div class="tree tree2">
         🌳
     </div>
 
-    <div class="tree t3">
+    <div class="tree tree3">
         🌲
     </div>
 
@@ -2324,40 +2087,40 @@ button{
     id="town"
     class="location">
 
-    <div class="location-name">
+    <div class="locationName">
         🏘️ 작은 마을
     </div>
 
 
-    <div class="town-road"></div>
+    <div class="townRoadHorizontal"></div>
 
-    <div class="town-road-up"></div>
-
-
-    <div class="shop one">
-
-        <div class="shop-roof"></div>
-
-        <div class="shop-door"></div>
-
-    </div>
+    <div class="townRoadVertical"></div>
 
 
-    <div class="shop two">
+    <div class="shop shop1">
 
-        <div class="shop-roof"></div>
+        <div class="shopRoof"></div>
 
-        <div class="shop-door"></div>
+        <div class="shopDoor"></div>
 
     </div>
 
 
-    <div class="town-npc npc-a">
+    <div class="shop shop2">
+
+        <div class="shopRoof"></div>
+
+        <div class="shopDoor"></div>
+
+    </div>
+
+
+    <div class="npc npc1">
         🧙🏻
     </div>
 
 
-    <div class="town-npc npc-b">
+    <div class="npc npc2">
         🐈
     </div>
 
@@ -2372,34 +2135,34 @@ button{
     id="forest"
     class="location">
 
-    <div class="location-name">
+    <div class="locationName">
         🌲 오래된 숲
     </div>
 
 
-    <div class="forest-ground"></div>
+    <div class="forestGround"></div>
 
 
-    <div class="forest-tree">
+    <div class="forestTree ft1">
         🌳
     </div>
 
-    <div class="forest-tree">
+    <div class="forestTree ft2">
         🌲
     </div>
 
-    <div class="forest-tree">
+    <div class="forestTree ft3">
         🌳
     </div>
 
-    <div class="forest-tree">
+    <div class="forestTree ft4">
         🌲
     </div>
 
 
     <div
-        id="spiritCenter"
-        class="forest-center">
+        id="spiritStone"
+        class="spiritStone">
 
         ✨
 
@@ -2416,15 +2179,15 @@ button{
     id="player"
     class="player">
 
-    <div class="player-name">
+    <div class="playerName">
         나
     </div>
 
-    <div class="player-sprite">
+    <div class="playerSprite">
         🧑🏻‍🌾
     </div>
 
-    <div class="player-shadow"></div>
+    <div class="playerShadow"></div>
 
 </div>
 
@@ -2435,16 +2198,16 @@ button{
 
 <div id="info">
 
-    <div class="info-title">
+    <div class="infoTitle">
         오늘의 기록
     </div>
 
     <div
         id="infoText"
-        class="info-text">
+        class="infoText">
 
-        새로운 농장에서의 첫날이다.<br>
-        길을 따라 마을을 찾아가 보자.
+        농장에서 시작했다.<br>
+        오른쪽 길을 따라가면 마을로 갈 수 있다.
 
     </div>
 
@@ -2455,10 +2218,11 @@ button{
      ACTION BAR
 ========================================================= -->
 
-<div id="actionbar">
+<div id="actionBar">
 
     <button
-        class="action"
+        type="button"
+        class="actionButton"
         onclick="plantCrop()">
 
         🌱 심기
@@ -2467,7 +2231,8 @@ button{
 
 
     <button
-        class="action"
+        type="button"
+        class="actionButton"
         onclick="waterCrop()">
 
         💧 물주기
@@ -2476,7 +2241,8 @@ button{
 
 
     <button
-        class="action"
+        type="button"
+        class="actionButton"
         onclick="harvestCrop()">
 
         🧺 수확
@@ -2485,7 +2251,8 @@ button{
 
 
     <button
-        class="action"
+        type="button"
+        class="actionButton"
         onclick="rest()">
 
         🛏️ 휴식
@@ -2494,8 +2261,9 @@ button{
 
 
     <button
-        class="action"
-        onclick="endDay()">
+        type="button"
+        class="actionButton"
+        onclick="sleep()">
 
         🌙 취침
 
@@ -2511,6 +2279,7 @@ button{
 <div id="mobileControls">
 
     <button
+        type="button"
         class="control up"
         data-key="ArrowUp">
 
@@ -2520,6 +2289,7 @@ button{
 
 
     <button
+        type="button"
         class="control left"
         data-key="ArrowLeft">
 
@@ -2529,6 +2299,7 @@ button{
 
 
     <button
+        type="button"
         class="control down"
         data-key="ArrowDown">
 
@@ -2538,6 +2309,7 @@ button{
 
 
     <button
+        type="button"
         class="control right"
         data-key="ArrowRight">
 
@@ -2554,10 +2326,11 @@ button{
 
 <div id="panel">
 
-    <div class="panel-box">
+    <div class="panelBox">
 
         <button
-            class="panel-close"
+            type="button"
+            class="panelClose"
             onclick="closePanel()">
 
             X
@@ -2567,16 +2340,14 @@ button{
 
         <div
             id="panelTitle"
-            class="panel-title">
+            class="panelTitle">
 
             메뉴
 
         </div>
 
 
-        <div
-            id="panelContent">
-        </div>
+        <div id="panelContent"></div>
 
     </div>
 
@@ -2596,7 +2367,7 @@ button{
 
 <div id="inactiveWarning">
 
-    오랫동안 움직임이 없습니다.
+    10분 동안 활동이 없어 게임이 종료됩니다.
 
 </div>
 
@@ -2611,14 +2382,10 @@ button{
 <script>
 
 /* =========================================================
-   GAME DATA
+   게임 데이터
 ========================================================= */
 
-const game = {
-
-    started:false,
-
-    saveSlot:1,
+const DEFAULT_GAME = {
 
     day:1,
 
@@ -2636,110 +2403,75 @@ const game = {
 
     selectedCrop:0,
 
+    saveSlot:1,
+
     inventory:{
-
         seed:5,
-
-        crop:0
-
+        crop:0,
+        wood:0,
+        stone:0
     },
 
     crops:[],
 
     player:{
-
         x:50,
-
         y:75,
-
-        speed:0.75,
-
+        speed:.8,
         direction:"down"
-
     },
 
     locations:{
-
         farm:{
             x:50,
             y:75
         },
 
         town:{
-            x:50,
-            y:70
+            x:8,
+            y:67
         },
 
         forest:{
             x:50,
-            y:78
+            y:90
         }
-
     },
 
     stats:{
-
         level:1,
-
         exp:0,
-
         farming:1,
-
         fishing:1,
-
         gathering:1,
-
         strength:1,
-
         luck:1
-
     },
 
     spirits:{
 
         earth:{
-
             name:"대지의 정령",
-
             icon:"🌱",
-
             affection:0,
-
             contracted:false,
-
-            power:
-                "땅을 빠르게 개간할 수 있다."
-
+            power:"땅을 빠르게 개간할 수 있다."
         },
 
         water:{
-
             name:"물의 정령",
-
             icon:"💧",
-
             affection:0,
-
             contracted:false,
-
-            power:
-                "물을 주면 주변 밭까지 함께 적신다."
-
+            power:"물을 주면 주변 밭까지 함께 적신다."
         },
 
         forest:{
-
             name:"숲의 정령",
-
             icon:"🌲",
-
             affection:0,
-
             contracted:false,
-
-            power:
-                "채집물의 발견 확률이 증가한다."
-
+            power:"채집물의 발견 확률이 증가한다."
         }
 
     }
@@ -2748,63 +2480,704 @@ const game = {
 
 
 /* =========================================================
-   FARM CREATION
+   게임 객체
 ========================================================= */
 
-function createFarm(){
+let game;
 
-    const field =
-        document.getElementById("field");
+let keys = {};
 
-    field.innerHTML="";
+let selectedCrop = 0;
 
-    if(
-        !game.crops ||
-        game.crops.length!==20
+let toastTimer = null;
+
+let inactivityTimer = null;
+
+let warningTimer = null;
+
+
+/* =========================================================
+   새 게임 데이터 생성
+========================================================= */
+
+function createDefaultGame(){
+
+    const data =
+        JSON.parse(
+            JSON.stringify(
+                DEFAULT_GAME
+            )
+        );
+
+
+    data.crops=[];
+
+
+    for(
+        let i=0;
+        i<20;
+        i++
     ){
 
-        game.crops=[];
+        data.crops.push({
 
-        for(let i=0;i<20;i++){
+            planted:false,
+
+            watered:false,
+
+            grown:false
+
+        });
+
+    }
+
+
+    return data;
+
+}
+
+
+/* =========================================================
+   저장 키
+========================================================= */
+
+function getSaveKey(slot){
+
+    return "spiritSeasonSave_" + slot;
+
+}
+
+
+/* =========================================================
+   시작 화면 → 저장 화면
+========================================================= */
+
+function showSaveScreen(){
+
+    renderSaveSlots();
+
+
+    document
+        .getElementById("saveScreen")
+        .classList.add("open");
+
+}
+
+
+/* =========================================================
+   저장 화면 닫기
+========================================================= */
+
+function hideSaveScreen(){
+
+    document
+        .getElementById("saveScreen")
+        .classList.remove("open");
+
+}
+
+
+/* =========================================================
+   저장 슬롯 출력
+========================================================= */
+
+function renderSaveSlots(){
+
+    const container =
+        document.getElementById(
+            "saveSlots"
+        );
+
+
+    container.innerHTML="";
+
+
+    for(
+        let slot=1;
+        slot<=3;
+        slot++
+    ){
+
+        const raw =
+            localStorage.getItem(
+                getSaveKey(slot)
+            );
+
+
+        const wrapper =
+            document.createElement(
+                "div"
+            );
+
+
+        wrapper.className="saveSlot";
+
+
+        if(!raw){
+
+            wrapper.innerHTML=`
+
+                <div class="saveInfo">
+
+                    <div class="saveName">
+                        슬롯 ${slot}
+                    </div>
+
+                    <div class="saveDetail">
+                        비어 있음
+                    </div>
+
+                </div>
+
+
+                <div class="saveButtons">
+
+                    <button
+                        type="button"
+                        class="saveButton new"
+                        onclick="
+                            startNewGame(${slot})
+                        ">
+
+                        새 게임
+
+                    </button>
+
+                </div>
+
+            `;
+
+        }
+
+        else{
+
+            let data=null;
+
+
+            try{
+
+                data=
+                    JSON.parse(raw);
+
+            }
+
+            catch(error){
+
+                data=null;
+
+            }
+
+
+            if(!data){
+
+                wrapper.innerHTML=`
+
+                    <div class="saveInfo">
+
+                        <div class="saveName">
+                            슬롯 ${slot}
+                        </div>
+
+                        <div class="saveDetail">
+                            저장 데이터 오류
+                        </div>
+
+                    </div>
+
+                    <button
+                        type="button"
+                        class="saveButton delete"
+                        onclick="
+                            deleteSave(${slot})
+                        ">
+
+                        삭제
+
+                    </button>
+
+                `;
+
+            }
+
+            else{
+
+                wrapper.innerHTML=`
+
+                    <div class="saveInfo">
+
+                        <div class="saveName">
+                            슬롯 ${slot}
+                        </div>
+
+                        <div class="saveDetail">
+
+                            ${data.day}일차
+                            ·
+                            ${data.season}
+                            ·
+                            ${getLocationName(data.location)}
+
+                            <br>
+
+                            ₩${data.money}
+                            ·
+                            Lv.${data.stats.level}
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="saveButtons">
+
+                        <button
+                            type="button"
+                            class="saveButton"
+                            onclick="
+                                loadGame(${slot})
+                            ">
+
+                            불러오기
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="saveButton delete"
+                            onclick="
+                                deleteSave(${slot})
+                            ">
+
+                            삭제
+
+                        </button>
+
+                    </div>
+
+                `;
+
+            }
+
+        }
+
+
+        container.appendChild(
+            wrapper
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   새 게임
+========================================================= */
+
+function startNewGame(slot){
+
+    game =
+        createDefaultGame();
+
+
+    game.saveSlot =
+        slot;
+
+
+    selectedCrop=0;
+
+
+    document
+        .getElementById("startScreen")
+        .style.display="none";
+
+
+    document
+        .getElementById("saveScreen")
+        .classList.remove("open");
+
+
+    createFarm();
+
+    updateHUD();
+
+    updatePlayer();
+
+    setLocation(
+        "farm"
+    );
+
+
+    resetInactivityTimer();
+
+
+    showToast(
+        "새로운 하루가 시작되었다."
+    );
+
+}
+
+
+/* =========================================================
+   저장 불러오기
+========================================================= */
+
+function loadGame(slot){
+
+    const raw =
+        localStorage.getItem(
+            getSaveKey(slot)
+        );
+
+
+    if(!raw){
+
+        startNewGame(slot);
+
+        return;
+
+    }
+
+
+    try{
+
+        game =
+            JSON.parse(raw);
+
+
+        /*
+           누락된 데이터 보정
+        */
+
+        if(!game.inventory){
+
+            game.inventory={
+                seed:5,
+                crop:0,
+                wood:0,
+                stone:0
+            };
+
+        }
+
+
+        if(!game.stats){
+
+            game.stats={
+                level:1,
+                exp:0,
+                farming:1,
+                fishing:1,
+                gathering:1,
+                strength:1,
+                luck:1
+            };
+
+        }
+
+
+        if(!game.spirits){
+
+            game.spirits =
+                createDefaultGame().spirits;
+
+        }
+
+
+        if(!game.crops){
+
+            game.crops=[];
+
+        }
+
+
+        while(
+            game.crops.length<20
+        ){
 
             game.crops.push({
 
                 planted:false,
-
                 watered:false,
-
                 grown:false
 
             });
 
         }
 
+
+        game.saveSlot=slot;
+
+
+        document
+            .getElementById("startScreen")
+            .style.display="none";
+
+
+        document
+            .getElementById("saveScreen")
+            .classList.remove("open");
+
+
+        createFarm();
+
+        updateHUD();
+
+        updatePlayer();
+
+        setLocation(
+            game.location
+        );
+
+
+        resetInactivityTimer();
+
+
+        showToast(
+            "슬롯 "+
+            slot+
+            "을 불러왔다."
+        );
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        alert(
+            "저장 데이터를 불러오지 못했습니다."
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   저장
+========================================================= */
+
+function saveGame(){
+
+    if(!game){
+
+        return;
+
     }
 
 
-    for(let i=0;i<20;i++){
+    localStorage.setItem(
+
+        getSaveKey(
+            game.saveSlot
+        ),
+
+        JSON.stringify(game)
+
+    );
+
+}
+
+
+/* =========================================================
+   수동 저장
+========================================================= */
+
+function manualSave(){
+
+    if(!game){
+
+        return;
+
+    }
+
+
+    registerActivity();
+
+    saveGame();
+
+
+    showToast(
+        "슬롯 "+
+        game.saveSlot+
+        "에 저장했다."
+    );
+
+}
+
+
+/* =========================================================
+   저장 삭제
+========================================================= */
+
+function deleteSave(slot){
+
+    if(
+        !confirm(
+            "슬롯 "+
+            slot+
+            "의 저장 데이터를 삭제할까요?"
+        )
+    ){
+
+        return;
+
+    }
+
+
+    localStorage.removeItem(
+        getSaveKey(slot)
+    );
+
+
+    renderSaveSlots();
+
+
+    showToast(
+        "저장 데이터를 삭제했다."
+    );
+
+}
+
+
+/* =========================================================
+   농장 생성
+========================================================= */
+
+function createFarm(){
+
+    const field =
+        document.getElementById(
+            "field"
+        );
+
+
+    field.innerHTML="";
+
+
+    for(
+        let i=0;
+        i<20;
+        i++
+    ){
 
         const tile =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
+
 
         tile.className=
-            "crop-tile empty";
+            "crop";
+
 
         tile.dataset.index=i;
 
-        tile.onclick=()=>{
 
-            game.selectedCrop=i;
+        tile.addEventListener(
+            "click",
+            function(){
 
-            selectCrop(i);
+                selectedCrop=i;
 
-        };
+                game.selectedCrop=i;
 
-        field.appendChild(tile);
+                updateCropInfo();
+
+            }
+        );
+
+
+        field.appendChild(
+            tile
+        );
 
     }
 
+
     updateCrops();
+
+}
+
+
+/* =========================================================
+   작물 화면
+========================================================= */
+
+function updateCrops(){
+
+    const tiles =
+        document.querySelectorAll(
+            ".crop"
+        );
+
+
+    if(!game.crops){
+
+        return;
+
+    }
+
+
+    tiles.forEach(
+        function(tile,index){
+
+            const crop =
+                game.crops[index];
+
+
+            if(!crop){
+
+                return;
+
+            }
+
+
+            tile.className="crop";
+
+
+            if(!crop.planted){
+
+                tile.classList.add(
+                    "empty"
+                );
+
+                tile.textContent="";
+
+                return;
+
+            }
+
+
+            if(crop.grown){
+
+                tile.classList.add(
+                    "ready"
+                );
+
+                tile.textContent="🥕";
+
+            }
+
+            else{
+
+                tile.textContent="🌱";
+
+            }
+
+
+            if(crop.watered){
+
+                tile.classList.add(
+                    "watered"
+                );
+
+            }
+
+        }
+    );
 
 }
 
@@ -2814,6 +3187,13 @@ function createFarm(){
 ========================================================= */
 
 function updateHUD(){
+
+    if(!game){
+
+        return;
+
+    }
+
 
     document
         .getElementById("day")
@@ -2852,73 +3232,62 @@ function updateHUD(){
     document
         .getElementById("locationLabel")
         .textContent=
-        locationName(game.location);
-
-}
-
-
-function locationName(location){
-
-    if(location==="farm")
-        return "농장";
-
-    if(location==="town")
-        return "마을";
-
-    if(location==="forest")
-        return "숲";
-
-    return "";
+        getLocationName(
+            game.location
+        );
 
 }
 
 
 /* =========================================================
-   TIME
+   시간
 ========================================================= */
 
 function formatTime(minutes){
 
-    let h=
-        Math.floor(minutes/60);
+    let h =
+        Math.floor(
+            minutes/60
+        );
 
-    let m=
+
+    let m =
         minutes%60;
 
 
     if(h>23){
 
         h=23;
-
         m=59;
 
     }
 
 
-    return String(h)
-        .padStart(2,"0")
+    return (
+        String(h).padStart(2,"0")
         +
         ":"
         +
-        String(m)
-        .padStart(2,"0");
+        String(m).padStart(2,"0")
+    );
 
 }
 
 
 function addTime(minutes){
 
-    game.time+=minutes;
+    game.time +=
+        minutes;
 
-    if(game.time>=1440){
+
+    if(
+        game.time>=1440
+    ){
 
         game.time=1440;
 
-        showToast(
-            "오늘은 너무 늦었다."
-        );
-
     }
+
 
     updateHUD();
 
@@ -2926,13 +3295,54 @@ function addTime(minutes){
 
 
 /* =========================================================
-   PLAYER
+   위치 이름
+========================================================= */
+
+function getLocationName(location){
+
+    if(location==="farm"){
+
+        return "농장";
+
+    }
+
+
+    if(location==="town"){
+
+        return "마을";
+
+    }
+
+
+    if(location==="forest"){
+
+        return "숲";
+
+    }
+
+
+    return "";
+
+}
+
+
+/* =========================================================
+   플레이어 표시
 ========================================================= */
 
 function updatePlayer(){
 
     const player =
-        document.getElementById("player");
+        document.getElementById(
+            "player"
+        );
+
+
+    if(!player || !game){
+
+        return;
+
+    }
 
 
     player.style.left =
@@ -2947,7 +3357,9 @@ function updatePlayer(){
         game.player.direction==="left"
     ){
 
-        player.classList.add("flip");
+        player.classList.add(
+            "flip"
+        );
 
     }
 
@@ -2955,7 +3367,9 @@ function updatePlayer(){
         game.player.direction==="right"
     ){
 
-        player.classList.remove("flip");
+        player.classList.remove(
+            "flip"
+        );
 
     }
 
@@ -2963,41 +3377,31 @@ function updatePlayer(){
 
 
 /* =========================================================
-   KEY INPUT
+   키보드 입력
 ========================================================= */
-
-const keys={};
-
 
 document.addEventListener(
     "keydown",
-    event=>{
+    function(event){
 
         registerActivity();
 
 
-        const movementKeys=[
-
-            "ArrowUp",
-            "ArrowDown",
-            "ArrowLeft",
-            "ArrowRight",
-
-            "w",
-            "a",
-            "s",
-            "d",
-
-            "W",
-            "A",
-            "S",
-            "D"
-
-        ];
-
-
         if(
-            movementKeys.includes(
+            [
+                "ArrowUp",
+                "ArrowDown",
+                "ArrowLeft",
+                "ArrowRight",
+                "w",
+                "a",
+                "s",
+                "d",
+                "W",
+                "A",
+                "S",
+                "D"
+            ].includes(
                 event.key
             )
         ){
@@ -3009,7 +3413,9 @@ document.addEventListener(
         }
 
 
-        if(event.key==="Escape"){
+        if(
+            event.key==="Escape"
+        ){
 
             closePanel();
 
@@ -3021,7 +3427,7 @@ document.addEventListener(
 
 document.addEventListener(
     "keyup",
-    event=>{
+    function(event){
 
         keys[event.key]=false;
 
@@ -3030,95 +3436,97 @@ document.addEventListener(
 
 
 /* =========================================================
-   MOBILE CONTROL
+   모바일 버튼
 ========================================================= */
 
 document
     .querySelectorAll(".control")
-    .forEach(button=>{
+    .forEach(
+        function(button){
 
-        const key=
-            button.dataset.key;
-
-
-        button.addEventListener(
-            "touchstart",
-            event=>{
-
-                event.preventDefault();
-
-                registerActivity();
-
-                keys[key]=true;
-
-            },
-            {
-                passive:false
-            }
-        );
+            const key =
+                button.dataset.key;
 
 
-        button.addEventListener(
-            "touchend",
-            event=>{
+            button.addEventListener(
+                "touchstart",
+                function(event){
 
-                event.preventDefault();
+                    event.preventDefault();
 
-                keys[key]=false;
+                    registerActivity();
 
-            },
-            {
-                passive:false
-            }
-        );
+                    keys[key]=true;
 
-
-        button.addEventListener(
-            "touchcancel",
-            ()=>{
-
-                keys[key]=false;
-
-            }
-        );
+                },
+                {
+                    passive:false
+                }
+            );
 
 
-        button.addEventListener(
-            "mousedown",
-            ()=>{
+            button.addEventListener(
+                "touchend",
+                function(event){
 
-                registerActivity();
+                    event.preventDefault();
 
-                keys[key]=true;
+                    keys[key]=false;
 
-            }
-        );
-
-
-        button.addEventListener(
-            "mouseup",
-            ()=>{
-
-                keys[key]=false;
-
-            }
-        );
+                },
+                {
+                    passive:false
+                }
+            );
 
 
-        button.addEventListener(
-            "mouseleave",
-            ()=>{
+            button.addEventListener(
+                "touchcancel",
+                function(){
 
-                keys[key]=false;
+                    keys[key]=false;
 
-            }
-        );
+                }
+            );
 
-    });
+
+            button.addEventListener(
+                "mousedown",
+                function(){
+
+                    registerActivity();
+
+                    keys[key]=true;
+
+                }
+            );
+
+
+            button.addEventListener(
+                "mouseup",
+                function(){
+
+                    keys[key]=false;
+
+                }
+            );
+
+
+            button.addEventListener(
+                "mouseleave",
+                function(){
+
+                    keys[key]=false;
+
+                }
+            );
+
+        }
+    );
 
 
 /* =========================================================
-   MOVEMENT LOOP
+   이동 루프
 ========================================================= */
 
 let lastFrame=0;
@@ -3127,7 +3535,7 @@ let lastFrame=0;
 function gameLoop(timestamp){
 
     if(
-        game.started &&
+        game &&
         timestamp-lastFrame>16
     ){
 
@@ -3151,19 +3559,25 @@ requestAnimationFrame(
 
 
 /* =========================================================
-   MOVE PLAYER
+   플레이어 이동
 ========================================================= */
 
 function movePlayer(){
 
-    if(!game.started)
+    if(
+        !game
+    ){
+
         return;
+
+    }
 
 
     if(
         document
             .getElementById("panel")
-            .classList.contains("open")
+            .classList
+            .contains("open")
     ){
 
         return;
@@ -3172,6 +3586,7 @@ function movePlayer(){
 
 
     let dx=0;
+
     let dy=0;
 
 
@@ -3181,7 +3596,7 @@ function movePlayer(){
         keys["A"]
     ){
 
-        dx-=1;
+        dx--;
 
         game.player.direction=
             "left";
@@ -3195,7 +3610,7 @@ function movePlayer(){
         keys["D"]
     ){
 
-        dx+=1;
+        dx++;
 
         game.player.direction=
             "right";
@@ -3209,7 +3624,7 @@ function movePlayer(){
         keys["W"]
     ){
 
-        dy-=1;
+        dy--;
 
         game.player.direction=
             "up";
@@ -3223,7 +3638,7 @@ function movePlayer(){
         keys["S"]
     ){
 
-        dy+=1;
+        dy++;
 
         game.player.direction=
             "down";
@@ -3246,62 +3661,63 @@ function movePlayer(){
         dy!==0
     ){
 
-        dx*=0.707;
+        dx*=.707;
 
-        dy*=0.707;
+        dy*=.707;
 
     }
 
 
     const nextX =
-        game.player.x +
-        dx *
+        game.player.x+
+        dx*
         game.player.speed;
 
 
     const nextY =
-        game.player.y +
-        dy *
+        game.player.y+
+        dy*
         game.player.speed;
 
 
     if(
-        canMoveTo(
+        canMove(
             nextX,
             nextY
         )
     ){
 
-        game.player.x=nextX;
+        game.player.x=
+            nextX;
 
-        game.player.y=nextY;
+        game.player.y=
+            nextY;
 
     }
 
 
     updatePlayer();
 
-
     checkExit();
-
 
 }
 
 
 /* =========================================================
-   COLLISION
+   이동 충돌
 ========================================================= */
 
-function canMoveTo(x,y){
+function canMove(x,y){
 
-    const margin=3;
-
+    /*
+       화면 기본 경계
+    */
 
     if(
-        x<margin ||
-        x>100-margin ||
-        y<margin ||
-        y>100-margin
+        x<3 ||
+        x>97 ||
+        y<5 ||
+        y>95
     ){
 
         return false;
@@ -3309,24 +3725,26 @@ function canMoveTo(x,y){
     }
 
 
-    /*
-       농장 충돌
-    */
+    /* =========================
+       농장
+    ========================= */
 
-    if(game.location==="farm"){
+    if(
+        game.location==="farm"
+    ){
 
         /*
            집
         */
 
         if(
-            rectCollision(
+            inside(
                 x,
                 y,
                 7,
-                8,
-                210,
-                150
+                9,
+                22,
+                28
             )
         ){
 
@@ -3340,13 +3758,13 @@ function canMoveTo(x,y){
         */
 
         if(
-            rectCollision(
+            inside(
                 x,
                 y,
                 34,
-                25,
-                28,
-                27
+                24,
+                29,
+                30
             )
         ){
 
@@ -3360,13 +3778,13 @@ function canMoveTo(x,y){
         */
 
         if(
-            ellipseCollision(
+            ellipse(
                 x,
                 y,
                 91,
-                18,
-                18,
-                13
+                23,
+                8,
+                7
             )
         ){
 
@@ -3377,20 +3795,26 @@ function canMoveTo(x,y){
     }
 
 
-    /*
-       마을 충돌
-    */
+    /* =========================
+       마을
+    ========================= */
 
-    if(game.location==="town"){
+    if(
+        game.location==="town"
+    ){
+
+        /*
+           왼쪽 상점
+        */
 
         if(
-            rectCollision(
+            inside(
                 x,
                 y,
-                10,
+                9,
                 18,
-                23,
-                25
+                25,
+                27
             )
         ){
 
@@ -3399,14 +3823,18 @@ function canMoveTo(x,y){
         }
 
 
+        /*
+           오른쪽 상점
+        */
+
         if(
-            rectCollision(
+            inside(
                 x,
                 y,
-                68,
+                67,
                 18,
-                23,
-                25
+                25,
+                27
             )
         ){
 
@@ -3417,26 +3845,28 @@ function canMoveTo(x,y){
     }
 
 
-    /*
-       숲 충돌
-    */
+    /* =========================
+       숲
+    ========================= */
 
-    if(game.location==="forest"){
+    if(
+        game.location==="forest"
+    ){
+
+        /*
+           정령석
+        */
 
         if(
-            ellipseCollision(
+            ellipse(
                 x,
                 y,
                 50,
                 48,
-                14,
-                14
+                12,
+                12
             )
         ){
-
-            /*
-               정령 중심부는 통과하지 못하게
-            */
 
             return false;
 
@@ -3450,7 +3880,11 @@ function canMoveTo(x,y){
 }
 
 
-function rectCollision(
+/* =========================================================
+   사각형 충돌
+========================================================= */
+
+function inside(
     x,
     y,
     left,
@@ -3459,38 +3893,21 @@ function rectCollision(
     height
 ){
 
-    const px=
-        x;
-
-    const py=
-        y;
-
-
-    const rx=
-        left;
-
-    const ry=
-        top;
-
-
-    const rw=
-        width/3.6;
-
-    const rh=
-        height/3.6;
-
-
     return(
-        px>rx &&
-        px<rx+rw &&
-        py>ry &&
-        py<ry+rh
+        x>left &&
+        x<left+width &&
+        y>top &&
+        y<top+height
     );
 
 }
 
 
-function ellipseCollision(
+/* =========================================================
+   원형 충돌
+========================================================= */
+
+function ellipse(
     x,
     y,
     cx,
@@ -3515,26 +3932,26 @@ function ellipseCollision(
 
 
 /* =========================================================
-   EXIT SYSTEM
+   길 출구
 ========================================================= */
 
 function checkExit(){
 
     /*
-       농장 오른쪽 출구
+       농장 오른쪽
        → 마을
     */
 
     if(
         game.location==="farm" &&
-        game.player.x>96 &&
-        game.player.y>53 &&
-        game.player.y<82
+        game.player.x>=96 &&
+        game.player.y>=54 &&
+        game.player.y<=80
     ){
 
         changeLocation(
             "town",
-            "left"
+            "fromFarm"
         );
 
         return;
@@ -3543,20 +3960,20 @@ function checkExit(){
 
 
     /*
-       마을 왼쪽 출구
+       마을 왼쪽
        → 농장
     */
 
     if(
         game.location==="town" &&
-        game.player.x<4 &&
-        game.player.y>53 &&
-        game.player.y<82
+        game.player.x<=4 &&
+        game.player.y>=54 &&
+        game.player.y<=80
     ){
 
         changeLocation(
             "farm",
-            "right"
+            "fromTown"
         );
 
         return;
@@ -3565,20 +3982,20 @@ function checkExit(){
 
 
     /*
-       마을 위쪽 출구
+       마을 위쪽
        → 숲
     */
 
     if(
         game.location==="town" &&
-        game.player.y<4 &&
-        game.player.x>42 &&
-        game.player.x<58
+        game.player.y<=5 &&
+        game.player.x>=42 &&
+        game.player.x<=58
     ){
 
         changeLocation(
             "forest",
-            "bottom"
+            "fromTown"
         );
 
         return;
@@ -3587,20 +4004,20 @@ function checkExit(){
 
 
     /*
-       숲 아래쪽 출구
+       숲 아래쪽
        → 마을
     */
 
     if(
         game.location==="forest" &&
-        game.player.y>96 &&
-        game.player.x>42 &&
-        game.player.x<58
+        game.player.y>=94 &&
+        game.player.x>=42 &&
+        game.player.x<=58
     ){
 
         changeLocation(
             "town",
-            "top"
+            "fromForest"
         );
 
     }
@@ -3609,7 +4026,7 @@ function checkExit(){
 
 
 /* =========================================================
-   LOCATION CHANGE
+   지역 변경
 ========================================================= */
 
 function changeLocation(
@@ -3622,33 +4039,47 @@ function changeLocation(
 
 
     /*
-       출입구 위치
+       입구 위치
     */
 
-    if(location==="town"){
+    if(
+        location==="town"
+    ){
 
-        if(entrance==="left"){
+        if(
+            entrance==="fromFarm"
+        ){
 
             game.player.x=7;
+
             game.player.y=67;
 
         }
 
-        if(entrance==="top"){
+
+        if(
+            entrance==="fromForest"
+        ){
 
             game.player.x=50;
-            game.player.y=7;
+
+            game.player.y=88;
 
         }
 
     }
 
 
-    if(location==="farm"){
+    if(
+        location==="farm"
+    ){
 
-        if(entrance==="right"){
+        if(
+            entrance==="fromTown"
+        ){
 
-            game.player.x=93;
+            game.player.x=92;
+
             game.player.y=67;
 
         }
@@ -3656,12 +4087,17 @@ function changeLocation(
     }
 
 
-    if(location==="forest"){
+    if(
+        location==="forest"
+    ){
 
-        if(entrance==="bottom"){
+        if(
+            entrance==="fromTown"
+        ){
 
             game.player.x=50;
-            game.player.y=90;
+
+            game.player.y=88;
 
         }
 
@@ -3671,17 +4107,23 @@ function changeLocation(
     document
         .querySelectorAll(".location")
         .forEach(
-            element=>{
-                element.classList.remove(
+            function(el){
+
+                el.classList.remove(
                     "active"
                 );
+
             }
         );
 
 
     document
-        .getElementById(location)
-        .classList.add("active");
+        .getElementById(
+            location
+        )
+        .classList.add(
+            "active"
+        );
 
 
     updatePlayer();
@@ -3690,7 +4132,14 @@ function changeLocation(
 
 
     updateInfo(
-        locationMessage(
+        getLocationMessage(
+            location
+        )
+    );
+
+
+    showToast(
+        getLocationName(
             location
         )
     );
@@ -3698,29 +4147,53 @@ function changeLocation(
 }
 
 
-function locationMessage(location){
+/* =========================================================
+   지역 변경 별칭
+========================================================= */
 
-    if(location==="farm"){
+function setLocation(location){
+
+    changeLocation(
+        location,
+        null
+    );
+
+}
+
+
+/* =========================================================
+   지역 설명
+========================================================= */
+
+function getLocationMessage(location){
+
+    if(
+        location==="farm"
+    ){
 
         return(
             "작은 농장이다.<br>" +
-            "밭을 관리하고 작물을 키워보자."
+            "오른쪽 길을 따라가면 마을로 갈 수 있다."
         );
 
     }
 
 
-    if(location==="town"){
+    if(
+        location==="town"
+    ){
 
         return(
             "작은 마을이다.<br>" +
-            "주민들과 이야기를 나눠보자."
+            "위쪽 길을 따라가면 오래된 숲으로 갈 수 있다."
         );
 
     }
 
 
-    if(location==="forest"){
+    if(
+        location==="forest"
+    ){
 
         return(
             "오래된 숲이다.<br>" +
@@ -3729,64 +4202,99 @@ function locationMessage(location){
 
     }
 
+
     return "";
 
 }
 
 
 /* =========================================================
-   CROP SELECT
+   작물 선택
 ========================================================= */
 
-function selectCrop(index){
+function updateCropInfo(){
 
-    game.selectedCrop=index;
+    const crop =
+        game.crops[
+            selectedCrop
+        ];
 
-    const crop=
-        game.crops[index];
+
+    if(
+        !crop
+    ){
+
+        return;
+
+    }
 
 
-    if(!crop.planted){
+    if(
+        !crop.planted
+    ){
 
         updateInfo(
             "빈 밭이다.<br>" +
             "씨앗을 심을 수 있다."
         );
 
+        return;
+
     }
 
-    else if(crop.grown){
+
+    if(
+        crop.grown
+    ){
 
         updateInfo(
             "작물이 다 자랐다.<br>" +
             "수확할 수 있다."
         );
 
+        return;
+
     }
 
-    else if(crop.watered){
+
+    if(
+        crop.watered
+    ){
 
         updateInfo(
-            "오늘 물을 줬다.<br>" +
+            "물을 준 작물이다.<br>" +
             "잘 자라고 있다."
         );
 
-    }
-
-    else{
-
-        updateInfo(
-            "작물이 말라 있다.<br>" +
-            "물을 줘야 한다."
-        );
+        return;
 
     }
+
+
+    updateInfo(
+        "작물이 자라고 있다.<br>" +
+        "물을 줘야 한다."
+    );
 
 }
 
 
 /* =========================================================
-   PLANT
+   정보창
+========================================================= */
+
+function updateInfo(text){
+
+    document
+        .getElementById("infoText")
+        .innerHTML=
+        text;
+
+}
+
+
+/* =========================================================
+   심기
 ========================================================= */
 
 function plantCrop(){
@@ -3794,10 +4302,12 @@ function plantCrop(){
     registerActivity();
 
 
-    if(game.location!=="farm"){
+    if(
+        game.location!=="farm"
+    ){
 
         showToast(
-            "농장에서만 씨앗을 심을 수 있다."
+            "농장에서만 심을 수 있다."
         );
 
         return;
@@ -3805,16 +4315,18 @@ function plantCrop(){
     }
 
 
-    const crop=
+    const crop =
         game.crops[
-            game.selectedCrop
+            selectedCrop
         ];
 
 
-    if(crop.planted){
+    if(
+        crop.planted
+    ){
 
         showToast(
-            "이미 무언가 심겨 있다."
+            "이미 작물이 있다."
         );
 
         return;
@@ -3822,7 +4334,9 @@ function plantCrop(){
     }
 
 
-    if(game.inventory.seed<=0){
+    if(
+        game.inventory.seed<=0
+    ){
 
         showToast(
             "씨앗이 없다."
@@ -3833,7 +4347,9 @@ function plantCrop(){
     }
 
 
-    if(game.energy<5){
+    if(
+        game.energy<5
+    ){
 
         showToast(
             "체력이 부족하다."
@@ -3862,6 +4378,9 @@ function plantCrop(){
 
     updateCrops();
 
+    updateHUD();
+
+
     showToast(
         "씨앗을 심었다."
     );
@@ -3870,7 +4389,7 @@ function plantCrop(){
 
 
 /* =========================================================
-   WATER
+   물주기
 ========================================================= */
 
 function waterCrop(){
@@ -3878,7 +4397,9 @@ function waterCrop(){
     registerActivity();
 
 
-    if(game.location!=="farm"){
+    if(
+        game.location!=="farm"
+    ){
 
         showToast(
             "농장에서만 물을 줄 수 있다."
@@ -3889,16 +4410,18 @@ function waterCrop(){
     }
 
 
-    const crop=
+    const crop =
         game.crops[
-            game.selectedCrop
+            selectedCrop
         ];
 
 
-    if(!crop.planted){
+    if(
+        !crop.planted
+    ){
 
         showToast(
-            "심어진 작물이 없다."
+            "작물이 없다."
         );
 
         return;
@@ -3906,7 +4429,9 @@ function waterCrop(){
     }
 
 
-    if(crop.grown){
+    if(
+        crop.grown
+    ){
 
         showToast(
             "이미 다 자랐다."
@@ -3917,10 +4442,12 @@ function waterCrop(){
     }
 
 
-    if(crop.watered){
+    if(
+        crop.watered
+    ){
 
         showToast(
-            "오늘은 이미 물을 줬다."
+            "이미 물을 줬다."
         );
 
         return;
@@ -3928,7 +4455,9 @@ function waterCrop(){
     }
 
 
-    if(game.energy<3){
+    if(
+        game.energy<3
+    ){
 
         showToast(
             "체력이 부족하다."
@@ -3945,32 +4474,29 @@ function waterCrop(){
 
 
     /*
-       물의 정령 계약
+       물의 정령 계약 효과
     */
 
     if(
         game.spirits.water.contracted
     ){
 
-        const index=
-            game.selectedCrop;
-
         const nearby=[
-            index-1,
-            index+1,
-            index-5,
-            index+5
+            selectedCrop-1,
+            selectedCrop+1,
+            selectedCrop-5,
+            selectedCrop+5
         ];
 
 
         nearby.forEach(
-            i=>{
+            function(index){
 
                 if(
-                    game.crops[i]
+                    game.crops[index]
                 ){
 
-                    game.crops[i]
+                    game.crops[index]
                         .watered=true;
 
                 }
@@ -3985,6 +4511,9 @@ function waterCrop(){
 
     updateCrops();
 
+    updateHUD();
+
+
     showToast(
         "물을 줬다."
     );
@@ -3993,7 +4522,7 @@ function waterCrop(){
 
 
 /* =========================================================
-   HARVEST
+   수확
 ========================================================= */
 
 function harvestCrop(){
@@ -4001,7 +4530,9 @@ function harvestCrop(){
     registerActivity();
 
 
-    if(game.location!=="farm"){
+    if(
+        game.location!=="farm"
+    ){
 
         showToast(
             "농장에서만 수확할 수 있다."
@@ -4012,13 +4543,15 @@ function harvestCrop(){
     }
 
 
-    const crop=
+    const crop =
         game.crops[
-            game.selectedCrop
+            selectedCrop
         ];
 
 
-    if(!crop.grown){
+    if(
+        !crop.grown
+    ){
 
         showToast(
             "아직 다 자라지 않았다."
@@ -4040,7 +4573,6 @@ function harvestCrop(){
 
     game.money+=80;
 
-
     game.stats.exp+=10;
 
 
@@ -4055,27 +4587,27 @@ function harvestCrop(){
 
 
     showToast(
-        "작물을 수확했다! +₩80"
+        "수확했다! +₩80"
     );
 
 }
 
 
 /* =========================================================
-   LEVEL
+   레벨
 ========================================================= */
 
 function checkLevel(){
 
-    const need=
+    const required =
         game.stats.level*100;
 
 
     if(
-        game.stats.exp>=need
+        game.stats.exp>=required
     ){
 
-        game.stats.exp-=need;
+        game.stats.exp-=required;
 
         game.stats.level++;
 
@@ -4086,7 +4618,8 @@ function checkLevel(){
 
 
         showToast(
-            "레벨 업! Lv."+game.stats.level
+            "레벨 업! Lv."+
+            game.stats.level
         );
 
     }
@@ -4095,7 +4628,7 @@ function checkLevel(){
 
 
 /* =========================================================
-   REST
+   휴식
 ========================================================= */
 
 function rest(){
@@ -4109,7 +4642,7 @@ function rest(){
     ){
 
         showToast(
-            "이미 체력이 충분하다."
+            "체력이 이미 가득하다."
         );
 
         return;
@@ -4135,10 +4668,10 @@ function rest(){
 
 
 /* =========================================================
-   END DAY
+   취침
 ========================================================= */
 
-function endDay(){
+function sleep(){
 
     registerActivity();
 
@@ -4163,7 +4696,7 @@ function endDay(){
 
 
     game.crops.forEach(
-        crop=>{
+        function(crop){
 
             if(
                 crop.planted &&
@@ -4173,6 +4706,7 @@ function endDay(){
                 crop.grown=true;
 
             }
+
 
             crop.watered=false;
 
@@ -4184,7 +4718,7 @@ function endDay(){
 
     updateHUD();
 
-    saveCurrentGame(false);
+    saveGame();
 
 
     showToast(
@@ -4196,147 +4730,7 @@ function endDay(){
 
 
 /* =========================================================
-   CROP DISPLAY
-========================================================= */
-
-function updateCrops(){
-
-    const tiles=
-        document.querySelectorAll(
-            ".crop-tile"
-        );
-
-
-    tiles.forEach(
-        (tile,i)=>{
-
-            const crop=
-                game.crops[i];
-
-
-            tile.className=
-                "crop-tile";
-
-
-            if(!crop.planted){
-
-                tile.classList.add(
-                    "empty"
-                );
-
-                tile.textContent="";
-
-                return;
-
-            }
-
-
-            if(crop.grown){
-
-                tile.classList.add(
-                    "ready"
-                );
-
-                tile.textContent=
-                    "🥕";
-
-            }
-
-            else{
-
-                tile.textContent=
-                    "🌱";
-
-            }
-
-
-            if(crop.watered){
-
-                tile.classList.add(
-                    "watered"
-                );
-
-            }
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   MAP PANEL
-========================================================= */
-
-function openMap(){
-
-    registerActivity();
-
-
-    openPanel(
-        "地图",
-        `
-        <div class="map-container">
-
-            <div class="map-area map-farm">
-                농장
-            </div>
-
-            <div class="map-area map-town">
-                마을
-            </div>
-
-            <div class="map-area map-forest">
-                숲
-            </div>
-
-            <div class="map-road1"></div>
-
-            <div class="map-road2"></div>
-
-            <div
-                class="map-player"
-                style="
-                left:${game.location==="farm" ? "22%" :
-                       game.location==="town" ? "51%" :
-                       "78%"};
-                top:${game.location==="farm" ? "62%" :
-                      game.location==="town" ? "48%" :
-                      "27%"};
-                ">
-            </div>
-
-        </div>
-
-        <div
-            class="card"
-            style="
-            margin-top:10px;
-            ">
-
-            <div class="card-text">
-
-                현재 위치:
-                <strong>
-                    ${locationName(game.location)}
-                </strong>
-
-                <br><br>
-
-                농장 오른쪽 길 → 마을<br>
-                마을 위쪽 길 → 숲
-
-            </div>
-
-        </div>
-        `
-    );
-
-}
-
-
-/* =========================================================
-   CHARACTER PANEL
+   캐릭터 메뉴
 ========================================================= */
 
 function openCharacter(){
@@ -4348,7 +4742,7 @@ function openCharacter(){
         game.stats;
 
 
-    const need=
+    const required=
         s.level*100;
 
 
@@ -4358,63 +4752,66 @@ function openCharacter(){
 
         <div class="card">
 
-            <div
-                class="card-title">
-
+            <div class="cardTitle">
                 👤 농장주
-
             </div>
 
-            <div class="card-text">
+            <div class="cardText">
 
                 레벨 ${s.level}<br>
 
                 경험치
                 ${s.exp}
                 /
-                ${need}
+                ${required}
 
             </div>
 
         </div>
 
 
-        ${createStatRow(
+        ${makeStatRow(
             "농사",
             s.farming
         )}
 
-        ${createStatRow(
+
+        ${makeStatRow(
             "낚시",
             s.fishing
         )}
 
-        ${createStatRow(
+
+        ${makeStatRow(
             "채집",
             s.gathering
         )}
 
-        ${createStatRow(
+
+        ${makeStatRow(
             "힘",
             s.strength
         )}
 
-        ${createStatRow(
+
+        ${makeStatRow(
             "운",
             s.luck
         )}
 
+
         <div class="card">
 
-            <div class="card-title">
-                현재 계약
+            <div class="cardTitle">
+                계약한 정령
             </div>
 
-            <div class="card-text">
+            <div class="cardText">
 
                 ${
                     getContracts()
-                    || "아직 계약한 정령이 없다."
+                    ||
+                    "아직 계약한 정령이 없다."
                 }
 
             </div>
@@ -4427,7 +4824,11 @@ function openCharacter(){
 }
 
 
-function createStatRow(
+/* =========================================================
+   스탯 바
+========================================================= */
+
+function makeStatRow(
     name,
     value
 ){
@@ -4441,16 +4842,16 @@ function createStatRow(
 
     return `
 
-        <div class="stat-row">
+        <div class="statRow">
 
-            <div class="stat-name">
+            <div class="statName">
                 ${name}
             </div>
 
-            <div class="stat-track">
+            <div class="statTrack">
 
                 <div
-                    class="stat-track-fill"
+                    class="statTrackFill"
                     style="
                     width:${width}%;
                     ">
@@ -4458,7 +4859,7 @@ function createStatRow(
 
             </div>
 
-            <div class="stat-number">
+            <div class="statNumber">
                 ${value}
             </div>
 
@@ -4469,40 +4870,110 @@ function createStatRow(
 }
 
 
-function getContracts(){
+/* =========================================================
+   지도
+========================================================= */
 
-    const contracts=[];
+function openMap(){
 
-
-    Object.values(
-        game.spirits
-    )
-    .forEach(
-        spirit=>{
-
-            if(
-                spirit.contracted
-            ){
-
-                contracts.push(
-                    spirit.name
-                );
-
-            }
-
-        }
-    );
+    registerActivity();
 
 
-    return contracts.join(
-        "<br>"
+    let playerLeft="22%";
+
+    let playerTop="62%";
+
+
+    if(
+        game.location==="town"
+    ){
+
+        playerLeft="51%";
+        playerTop="48%";
+
+    }
+
+
+    if(
+        game.location==="forest"
+    ){
+
+        playerLeft="78%";
+        playerTop="27%";
+
+    }
+
+
+    openPanel(
+        "지도",
+        `
+
+        <div class="map">
+
+            <div class="mapArea mapFarm">
+                농장
+            </div>
+
+            <div class="mapArea mapTown">
+                마을
+            </div>
+
+            <div class="mapArea mapForest">
+                숲
+            </div>
+
+            <div class="mapRoadH"></div>
+
+            <div class="mapRoadV"></div>
+
+            <div
+                class="mapPlayer"
+                style="
+                left:${playerLeft};
+                top:${playerTop};
+                ">
+
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="cardText">
+
+                현재 위치:
+                <strong>
+                    ${getLocationName(game.location)}
+                </strong>
+
+                <br><br>
+
+                농장 오른쪽 길
+                → 마을
+
+                <br>
+
+                마을 위쪽 길
+                → 숲
+
+                <br><br>
+
+                지도에서는 이동하지 않고
+                현재 위치만 확인할 수 있다.
+
+            </div>
+
+        </div>
+
+        `
     );
 
 }
 
 
 /* =========================================================
-   INVENTORY
+   인벤토리
 ========================================================= */
 
 function openInventory(){
@@ -4514,47 +4985,59 @@ function openInventory(){
         "인벤토리",
         `
 
-        <div class="inventory-grid">
+        <div class="inventoryGrid">
 
-            <div class="inventory-item">
+            <div class="inventoryItem">
 
                 🌱
 
-                <div class="inventory-count">
-                    씨앗 ×${game.inventory.seed}
+                <div class="inventoryCount">
+
+                    씨앗
+                    ×${game.inventory.seed}
+
                 </div>
 
             </div>
 
 
-            <div class="inventory-item">
+            <div class="inventoryItem">
 
                 🥕
 
-                <div class="inventory-count">
-                    작물 ×${game.inventory.crop}
+                <div class="inventoryCount">
+
+                    작물
+                    ×${game.inventory.crop}
+
                 </div>
 
             </div>
 
 
-            <div class="inventory-item">
+            <div class="inventoryItem">
 
                 🪵
 
-                <div class="inventory-count">
-                    나무 ×0
+                <div class="inventoryCount">
+
+                    나무
+                    ×${game.inventory.wood}
+
                 </div>
 
             </div>
 
 
-            <div class="inventory-item">
+            <div class="inventoryItem">
 
                 🪨
 
-                <div class="inventory-count">
-                    돌 ×0
+                <div class="inventoryCount">
+
+                    돌
+                    ×${game.inventory.stone}
+
                 </div>
 
             </div>
@@ -4568,7 +5051,7 @@ function openInventory(){
 
 
 /* =========================================================
-   SPIRITS
+   정령
 ========================================================= */
 
 function openSpirits(){
@@ -4583,7 +5066,14 @@ function openSpirits(){
         game.spirits
     )
     .forEach(
-        ([id,spirit])=>{
+        function(entry){
+
+            const id=
+                entry[0];
+
+            const spirit=
+                entry[1];
+
 
             let hearts="";
 
@@ -4605,9 +5095,9 @@ function openSpirits(){
 
             html+=`
 
-                <div class="spirit-card">
+                <div class="spiritCard">
 
-                    <div class="spirit-icon">
+                    <div class="spiritIcon">
 
                         ${spirit.icon}
 
@@ -4616,7 +5106,7 @@ function openSpirits(){
 
                     <div>
 
-                        <div class="spirit-name">
+                        <div class="spiritName">
 
                             ${spirit.name}
 
@@ -4631,7 +5121,7 @@ function openSpirits(){
 
 
                         <div
-                            class="card-text"
+                            class="cardText"
                             style="
                             margin-top:5px;
                             ">
@@ -4654,9 +5144,9 @@ function openSpirits(){
 
                             `
                             <div
-                                class="card-text"
+                                class="cardText"
                                 style="
-                                margin-top:5px;
+                                margin-top:6px;
                                 color:#dcbfff;
                                 ">
 
@@ -4671,9 +5161,10 @@ function openSpirits(){
                             `
 
                             <button
-                                class="contract-button"
+                                type="button"
+                                class="contractButton"
                                 onclick="
-                                contractSpirit('${id}')
+                                    contractSpirit('${id}')
                                 "
                                 ${
                                     spirit.affection<3
@@ -4708,7 +5199,7 @@ function openSpirits(){
 
 
 /* =========================================================
-   CONTRACT
+   정령 계약
 ========================================================= */
 
 function contractSpirit(id){
@@ -4744,26 +5235,52 @@ function contractSpirit(id){
         "과 계약했다!"
     );
 
+}
 
-    updateInfo(
 
-        `<b>${spirit.name}</b>과 계약했다.<br><br>`+
-        spirit.power
+/* =========================================================
+   계약 정령 출력
+========================================================= */
 
+function getContracts(){
+
+    const list=[];
+
+
+    Object.values(
+        game.spirits
+    )
+    .forEach(
+        function(spirit){
+
+            if(
+                spirit.contracted
+            ){
+
+                list.push(
+                    spirit.name
+                );
+
+            }
+
+        }
     );
+
+
+    return list.join("<br>");
 
 }
 
 
 /* =========================================================
-   FOREST SPIRIT
+   숲의 정령석
 ========================================================= */
 
 document
-    .getElementById("spiritCenter")
+    .getElementById("spiritStone")
     .addEventListener(
         "click",
-        ()=>{
+        function(){
 
             registerActivity();
 
@@ -4794,9 +5311,7 @@ document
 
 
                 updateInfo(
-
                     "「이 땅을 소중히 다루는구나.」"
-
                 );
 
             }
@@ -4812,7 +5327,7 @@ document
 
 
 /* =========================================================
-   PANEL
+   패널
 ========================================================= */
 
 function openPanel(
@@ -4834,9 +5349,7 @@ function openPanel(
 
     document
         .getElementById("panel")
-        .classList.add(
-            "open"
-        );
+        .classList.add("open");
 
 }
 
@@ -4853,11 +5366,8 @@ function closePanel(){
 
 
 /* =========================================================
-   TOAST
+   토스트
 ========================================================= */
-
-let toastTimer;
-
 
 function showToast(message){
 
@@ -4883,7 +5393,7 @@ function showToast(message){
 
     toastTimer=
         setTimeout(
-            ()=>{
+            function(){
 
                 toast.classList.remove(
                     "show"
@@ -4897,632 +5407,24 @@ function showToast(message){
 
 
 /* =========================================================
-   SAVE SYSTEM
-   3 SLOTS
+   10분 비활성 처리
 ========================================================= */
 
-function saveKey(slot){
-
-    return(
-        "spiritSeasonSave_"+slot
-    );
-
-}
-
-
-function saveCurrentGame(
-    showMessage=true
-){
-
-    if(!game.started)
-        return;
-
-
-    const saveData=
-        JSON.stringify(game);
-
-
-    localStorage.setItem(
-        saveKey(
-            game.saveSlot
-        ),
-        saveData
-    );
-
-
-    if(showMessage){
-
-        showToast(
-            "슬롯 "+
-            game.saveSlot+
-            "에 저장했다."
-        );
-
-    }
-
-}
-
-
-/* =========================================================
-   LOAD SAVE
-========================================================= */
-
-function loadSave(slot){
-
-    const data=
-        localStorage.getItem(
-            saveKey(slot)
-        );
-
-
-    if(!data){
-
-        startNewGame(slot);
-
-        return;
-
-    }
-
-
-    try{
-
-        const parsed=
-            JSON.parse(data);
-
-
-        Object.assign(
-            game,
-            parsed
-        );
-
-
-        game.saveSlot=slot;
-
-        game.started=true;
-
-
-        hideStartScreen();
-
-        createFarm();
-
-        updateHUD();
-
-        updatePlayer();
-
-        changeLocation(
-            game.location,
-            null
-        );
-
-
-        resetInactivityTimer();
-
-
-        showToast(
-            "슬롯 "+
-            slot+
-            "을 불러왔다."
-        );
-
-    }
-
-    catch(error){
-
-        console.error(error);
-
-        showToast(
-            "저장 데이터를 읽을 수 없다."
-        );
-
-    }
-
-}
-
-
-/* =========================================================
-   NEW GAME
-========================================================= */
-
-function startNewGame(slot){
-
-    game.started=true;
-
-    game.saveSlot=slot;
-
-    game.day=1;
-
-    game.season="봄";
-
-    game.time=360;
-
-    game.energy=100;
-
-    game.maxEnergy=100;
-
-    game.money=500;
-
-    game.location="farm";
-
-    game.selectedCrop=0;
-
-
-    game.inventory={
-        seed:5,
-        crop:0
-    };
-
-
-    game.player={
-
-        x:50,
-
-        y:75,
-
-        speed:.75,
-
-        direction:"down"
-
-    };
-
-
-    game.locations={
-
-        farm:{
-            x:50,
-            y:75
-        },
-
-        town:{
-            x:50,
-            y:70
-        },
-
-        forest:{
-            x:50,
-            y:78
-        }
-
-    };
-
-
-    game.stats={
-
-        level:1,
-
-        exp:0,
-
-        farming:1,
-
-        fishing:1,
-
-        gathering:1,
-
-        strength:1,
-
-        luck:1
-
-    };
-
-
-    game.spirits={
-
-        earth:{
-
-            name:"대지의 정령",
-
-            icon:"🌱",
-
-            affection:0,
-
-            contracted:false,
-
-            power:
-                "땅을 빠르게 개간할 수 있다."
-
-        },
-
-        water:{
-
-            name:"물의 정령",
-
-            icon:"💧",
-
-            affection:0,
-
-            contracted:false,
-
-            power:
-                "물을 주면 주변 밭까지 함께 적신다."
-
-        },
-
-        forest:{
-
-            name:"숲의 정령",
-
-            icon:"🌲",
-
-            affection:0,
-
-            contracted:false,
-
-            power:
-                "채집물의 발견 확률이 증가한다."
-
-        }
-
-    };
-
-
-    game.crops=[];
-
-
-    for(let i=0;i<20;i++){
-
-        game.crops.push({
-
-            planted:false,
-
-            watered:false,
-
-            grown:false
-
-        });
-
-    }
-
-
-    hideStartScreen();
-
-    closeSaveSelect();
-
-    createFarm();
-
-    updateHUD();
-
-    updatePlayer();
-
-    changeLocation(
-        "farm",
-        null
-    );
-
-
-    resetInactivityTimer();
-
-
-    showToast(
-        "새로운 하루가 시작되었다."
-    );
-
-}
-
-
-/* =========================================================
-   SAVE SELECT UI
-========================================================= */
-
-function openSaveSelect(){
-
-    renderSaveSlots();
-
-    document
-        .getElementById(
-            "saveSelect"
-        )
-        .classList.add(
-            "open"
-        );
-
-}
-
-
-function closeSaveSelect(){
-
-    document
-        .getElementById(
-            "saveSelect"
-        )
-        .classList.remove(
-            "open"
-        );
-
-}
-
-
-function renderSaveSlots(){
-
-    const container=
-        document.getElementById(
-            "saveSlots"
-        );
-
-
-    container.innerHTML="";
-
-
-    for(
-        let slot=1;
-        slot<=3;
-        slot++
-    ){
-
-        const raw=
-            localStorage.getItem(
-                saveKey(slot)
-            );
-
-
-        let html="";
-
-
-        if(raw){
-
-            try{
-
-                const data=
-                    JSON.parse(raw);
-
-
-                html=`
-
-                    <div class="save-slot">
-
-                        <div class="save-info">
-
-                            <div class="save-name">
-
-                                슬롯 ${slot}
-
-                            </div>
-
-                            <div class="save-detail">
-
-                                ${data.day}일차
-                                ${data.season}
-                                ·
-                                ${locationName(data.location)}
-                                <br>
-
-                                ₩${data.money}
-                                ·
-                                Lv.${data.stats.level}
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="save-buttons">
-
-                            <button
-                                class="save-button"
-                                onclick="
-                                loadSave(${slot})
-                                ">
-
-                                불러오기
-
-                            </button>
-
-
-                            <button
-                                class="save-button delete"
-                                onclick="
-                                deleteSave(${slot})
-                                ">
-
-                                삭제
-
-                            </button>
-
-                        </div>
-
-                    </div>
-
-                `;
-
-            }
-
-            catch(error){
-
-                html=`
-
-                    <div class="save-slot">
-
-                        <div class="save-info">
-
-                            <div class="save-name">
-                                슬롯 ${slot}
-                            </div>
-
-                            <div class="save-detail">
-                                저장 데이터 오류
-                            </div>
-
-                        </div>
-
-                        <button
-                            class="save-button delete"
-                            onclick="
-                            deleteSave(${slot})
-                            ">
-
-                            삭제
-
-                        </button>
-
-                    </div>
-
-                `;
-
-            }
-
-        }
-
-        else{
-
-            html=`
-
-                <div class="save-slot">
-
-                    <div class="save-info">
-
-                        <div class="save-name">
-
-                            슬롯 ${slot}
-
-                        </div>
-
-                        <div class="save-detail">
-
-                            비어 있음
-
-                        </div>
-
-                    </div>
-
-
-                    <button
-                        class="save-button new"
-                        onclick="
-                        startNewGame(${slot})
-                        ">
-
-                        새 게임
-
-                    </button>
-
-                </div>
-
-            `;
-
-        }
-
-
-        container.innerHTML+=html;
-
-    }
-
-}
-
-
-/* =========================================================
-   DELETE SAVE
-========================================================= */
-
-function deleteSave(slot){
-
-    if(
-        !confirm(
-            "슬롯 "+
-            slot+
-            "의 저장 데이터를 삭제할까요?"
-        )
-    ){
-
-        return;
-
-    }
-
-
-    localStorage.removeItem(
-        saveKey(slot)
-    );
-
-
-    renderSaveSlots();
-
-
-    showToast(
-        "저장 데이터를 삭제했다."
-    );
-
-}
-
-
-/* =========================================================
-   SAVE CURRENT SLOT
-========================================================= */
-
-function saveCurrentGameAndRefresh(){
-
-    saveCurrentGame(true);
-
-    renderSaveSlots();
-
-}
-
-
-/* =========================================================
-   START SCREEN
-========================================================= */
-
-function hideStartScreen(){
-
-    document
-        .getElementById(
-            "startScreen"
-        )
-        .style.display=
-            "none";
-
-}
-
-
-function showStartScreen(){
-
-    game.started=false;
-
-
-    Object.keys(keys)
-        .forEach(
-            key=>{
-                keys[key]=false;
-            }
-        );
-
-
-    closePanel();
-
-
-    document
-        .getElementById(
-            "startScreen"
-        )
-        .style.display=
-            "flex";
-
-
-    document
-        .getElementById(
-            "saveSelect"
-        )
-        .classList.remove(
-            "open"
-        );
-
-}
-
-
-/* =========================================================
-   INACTIVITY SYSTEM
-   10 MINUTES
-========================================================= */
-
-const INACTIVE_LIMIT=
+const INACTIVE_TIME =
     10*60*1000;
 
 
-let inactivityTimer;
-
-let warningTimer;
+const WARNING_TIME =
+    9*60*1000;
 
 
 function resetInactivityTimer(){
 
-    if(!game.started)
+    if(!game){
+
         return;
+
+    }
 
 
     clearTimeout(
@@ -5543,13 +5445,9 @@ function resetInactivityTimer(){
         );
 
 
-    /*
-       9분 30초에 경고
-    */
-
     warningTimer=
         setTimeout(
-            ()=>{
+            function(){
 
                 document
                     .getElementById(
@@ -5560,36 +5458,50 @@ function resetInactivityTimer(){
                     );
 
             },
-            9.5*60*1000
+            WARNING_TIME
         );
 
 
-    /*
-       10분 후 시작 화면
-    */
-
     inactivityTimer=
         setTimeout(
-            ()=>{
+            function(){
 
-                showStartScreen();
+                /*
+                   현재 상태 자동 저장
+                */
+
+                saveGame();
+
+
+                /*
+                   게임 시작 화면으로
+                */
+
+                stopGame();
 
 
                 showToast(
-                    "오랫동안 움직임이 없어 게임을 종료했다."
+                    "오랫동안 활동이 없어 게임을 종료했다."
                 );
 
             },
-            INACTIVE_LIMIT
+            INACTIVE_TIME
         );
 
 }
 
 
+/* =========================================================
+   활동 감지
+========================================================= */
+
 function registerActivity(){
 
-    if(!game.started)
+    if(!game){
+
         return;
+
+    }
 
 
     resetInactivityTimer();
@@ -5598,7 +5510,50 @@ function registerActivity(){
 
 
 /* =========================================================
-   GLOBAL ACTIVITY
+   게임 종료
+========================================================= */
+
+function stopGame(){
+
+    clearTimeout(
+        inactivityTimer
+    );
+
+    clearTimeout(
+        warningTimer
+    );
+
+
+    keys={};
+
+
+    closePanel();
+
+
+    document
+        .getElementById(
+            "saveScreen"
+        )
+        .classList.remove(
+            "open"
+        );
+
+
+    document
+        .getElementById(
+            "startScreen"
+        )
+        .style.display=
+        "flex";
+
+
+    game=null;
+
+}
+
+
+/* =========================================================
+   전역 활동 감지
 ========================================================= */
 
 [
@@ -5607,11 +5562,11 @@ function registerActivity(){
     "pointerdown"
 ]
 .forEach(
-    eventName=>{
+    function(eventName){
 
         document.addEventListener(
             eventName,
-            ()=>{
+            function(){
 
                 registerActivity();
 
@@ -5626,7 +5581,7 @@ function registerActivity(){
 
 
 /* =========================================================
-   INITIALIZE
+   초기 상태
 ========================================================= */
 
 createFarm();
@@ -5637,12 +5592,16 @@ updatePlayer();
 
 
 /*
-   처음 웹에 들어오면
-   무조건 시작 화면부터.
+   웹에 처음 들어오면
+   게임 시작 화면만 표시.
 */
 
-showStartScreen();
-
+document
+    .getElementById(
+        "startScreen"
+    )
+    .style.display=
+    "flex";
 
 </script>
 
