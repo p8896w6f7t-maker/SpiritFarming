@@ -204,6 +204,7 @@ wss.on('connection', ws => {
         id: client.id,
         nickname: String(msg.nickname || '플레이어').slice(0, 12),
         outfitColor: String(msg.outfitColor || '#5476a5'),
+        hairStyle: ['short','long','bob','spiky','ponytail','curly'].includes(String(msg.hairStyle)) ? String(msg.hairStyle) : 'short',
         location: String(msg.location || 'farm'),
         x: Number(msg.x) || 50,
         y: Number(msg.y) || 68,
@@ -226,6 +227,7 @@ wss.on('connection', ws => {
         id: client.id,
         nickname: String(msg.nickname || '플레이어').slice(0, 12),
         outfitColor: String(msg.outfitColor || '#5476a5'),
+        hairStyle: ['short','long','bob','spiky','ponytail','curly'].includes(String(msg.hairStyle)) ? String(msg.hairStyle) : 'short',
         location: String(msg.location || 'farm'),
         x: Number(msg.x) || 50,
         y: Number(msg.y) || 68,
@@ -279,6 +281,7 @@ wss.on('connection', ws => {
 
       p.nickname = String(msg.nickname || p.nickname).slice(0, 12);
       p.outfitColor = String(msg.outfitColor || p.outfitColor);
+      p.hairStyle = ['short','long','bob','spiky','ponytail','curly'].includes(String(msg.hairStyle)) ? String(msg.hairStyle) : (p.hairStyle || 'short');
       p.location = String(msg.location || p.location);
       p.x = Number.isFinite(Number(msg.x)) ? Number(msg.x) : p.x;
       p.y = Number.isFinite(Number(msg.y)) ? Number(msg.y) : p.y;
@@ -289,6 +292,7 @@ wss.on('connection', ws => {
           id: p.id,
           nickname: p.nickname,
           outfitColor: p.outfitColor,
+          hairStyle: p.hairStyle || 'short',
           location: p.location,
           x: p.x,
           y: p.y,
