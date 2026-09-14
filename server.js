@@ -115,7 +115,7 @@ function makeRoomCode() {
 }
 
 function publicPlayers(room) {
-  return [...room.players.values()].map(p => ({ ...p }));
+  return [...room.players.values()].map(({ ws, ...p }) => ({ ...p }));
 }
 
 function send(ws, type, data = {}) {
@@ -203,6 +203,7 @@ wss.on('connection', ws => {
       client.player = {
         id: client.id,
         nickname: String(msg.nickname || '플레이어').slice(0, 12),
+        characterId: ['sleepy','captain','poison','fool','violent'].includes(String(msg.characterId)) ? String(msg.characterId) : 'sleepy',
         outfitColor: String(msg.outfitColor || '#5476a5'),
         hairStyle: ['short','long','bob','spiky','ponytail','curly'].includes(String(msg.hairStyle)) ? String(msg.hairStyle) : 'short',
         location: String(msg.location || 'farm'),
@@ -226,6 +227,7 @@ wss.on('connection', ws => {
       client.player = {
         id: client.id,
         nickname: String(msg.nickname || '플레이어').slice(0, 12),
+        characterId: ['sleepy','captain','poison','fool','violent'].includes(String(msg.characterId)) ? String(msg.characterId) : 'sleepy',
         outfitColor: String(msg.outfitColor || '#5476a5'),
         hairStyle: ['short','long','bob','spiky','ponytail','curly'].includes(String(msg.hairStyle)) ? String(msg.hairStyle) : 'short',
         location: String(msg.location || 'farm'),
@@ -280,6 +282,7 @@ wss.on('connection', ws => {
       if (!p) return;
 
       p.nickname = String(msg.nickname || p.nickname).slice(0, 12);
+      p.characterId = ['sleepy','captain','poison','fool','violent'].includes(String(msg.characterId)) ? String(msg.characterId) : (p.characterId || 'sleepy');
       p.outfitColor = String(msg.outfitColor || p.outfitColor);
       p.hairStyle = ['short','long','bob','spiky','ponytail','curly'].includes(String(msg.hairStyle)) ? String(msg.hairStyle) : (p.hairStyle || 'short');
       p.location = String(msg.location || p.location);
@@ -291,6 +294,7 @@ wss.on('connection', ws => {
         player: {
           id: p.id,
           nickname: p.nickname,
+          characterId: p.characterId || 'sleepy',
           outfitColor: p.outfitColor,
           hairStyle: p.hairStyle || 'short',
           location: p.location,

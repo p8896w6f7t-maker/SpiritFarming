@@ -16,8 +16,7 @@
   let lastSent = 0;
 
   const state = {
-    nickname: () => (document.getElementById('nicknameInput')?.value.trim() || window.game?.player?.nickname || '플레이어').slice(0, 12),
-    outfitColor: () => document.querySelector('.outfitColor.active')?.dataset.color || window.game?.player?.outfitColor || '#5476a5'
+    nickname: () => (document.getElementById('nicknameInput')?.value.trim() || window.game?.player?.nickname || '플레이어').slice(0, 12)
   };
 
   function getServerUrl() {
@@ -48,15 +47,11 @@
   function currentGameState() {
     const player = document.getElementById('player');
     const nicknameEl = document.getElementById('playerNickname');
-    const bodyEl = player?.querySelector('.playerBody');
-    const hairEl = player?.querySelector('.playerHair');
     const x = parseFloat(player?.style.left || '50');
     const y = parseFloat(player?.style.top || '68');
     return {
       nickname: (nicknameEl?.textContent || state.nickname()).trim().slice(0, 12) || '플레이어',
-      characterId: window.game?.player?.characterId || 'mina',
-      outfitColor: bodyEl?.style.background || state.outfitColor(),
-      hairStyle: window.game?.player?.hairStyle || hairEl?.className?.replace('playerHair hair-', '') || 'short',
+      characterId: window.game?.player?.characterId || 'sleepy',
       location: currentLocation(),
       x: Number.isFinite(x) ? x : 50,
       y: Number.isFinite(y) ? y : 68,
@@ -172,9 +167,6 @@
       el.innerHTML = `
         <div class="remoteNickname"></div>
         <img class="remoteCharacter" alt="" draggable="false">
-        <div class="remoteBody"></div>
-        <div class="remoteHead"></div>
-        <div class="remoteHair"></div>
       `;
       document.getElementById('screen')?.appendChild(el);
       remotePlayers.set(p.id, el);
@@ -182,12 +174,9 @@
 
     el.dataset.location = p.location || 'farm';
     el.querySelector('.remoteNickname').textContent = p.nickname || '플레이어';
-    const remoteSprite = window.NPC_SPRITES?.[p.characterId];
+    const remoteSprite = window.CHARACTER_SPRITES?.[p.characterId] || window.CHARACTER_SPRITES?.sleepy;
     const remoteImage = el.querySelector('.remoteCharacter');
     if(remoteImage && remoteSprite) remoteImage.src = remoteSprite;
-    el.querySelector('.remoteBody').style.background = p.outfitColor || '#5476a5';
-    const hair = ['short','long','bob','spiky','ponytail','curly'].includes(p.hairStyle) ? p.hairStyle : 'short';
-    el.querySelector('.remoteHair').className = `remoteHair hair-${hair}`;
     el.style.left = `${Number(p.x) || 50}%`;
     el.style.top = `${Number(p.y) || 68}%`;
     el.classList.toggle('hiddenRemote', p.location !== currentLocation());
