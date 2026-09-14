@@ -104,6 +104,12 @@ function makeId() {
   return crypto.randomBytes(6).toString('hex');
 }
 
+
+function normalizeNickname(value) {
+  const nickname = String(value ?? '').trim().slice(0, 12);
+  return nickname || '플레이어';
+}
+
 function makeRoomCode() {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
   let code = '';
@@ -202,7 +208,7 @@ wss.on('connection', ws => {
       client.roomCode = code;
       client.player = {
         id: client.id,
-        nickname: String(msg.nickname || '플레이어').slice(0, 12),
+        nickname: normalizeNickname(msg.nickname),
         characterId: ['sleepy','captain','poison','fool','violent'].includes(String(msg.characterId)) ? String(msg.characterId) : 'sleepy',
         outfitColor: String(msg.outfitColor || '#5476a5'),
         hairStyle: ['short','long','bob','spiky','ponytail','curly'].includes(String(msg.hairStyle)) ? String(msg.hairStyle) : 'short',
@@ -226,7 +232,7 @@ wss.on('connection', ws => {
       client.roomCode = code;
       client.player = {
         id: client.id,
-        nickname: String(msg.nickname || '플레이어').slice(0, 12),
+        nickname: normalizeNickname(msg.nickname),
         characterId: ['sleepy','captain','poison','fool','violent'].includes(String(msg.characterId)) ? String(msg.characterId) : 'sleepy',
         outfitColor: String(msg.outfitColor || '#5476a5'),
         hairStyle: ['short','long','bob','spiky','ponytail','curly'].includes(String(msg.hairStyle)) ? String(msg.hairStyle) : 'short',
@@ -281,7 +287,7 @@ wss.on('connection', ws => {
       const p = room.players.get(client.id);
       if (!p) return;
 
-      p.nickname = String(msg.nickname || p.nickname).slice(0, 12);
+      p.nickname = normalizeNickname(msg.nickname || p.nickname);
       p.characterId = ['sleepy','captain','poison','fool','violent'].includes(String(msg.characterId)) ? String(msg.characterId) : (p.characterId || 'sleepy');
       p.outfitColor = String(msg.outfitColor || p.outfitColor);
       p.hairStyle = ['short','long','bob','spiky','ponytail','curly'].includes(String(msg.hairStyle)) ? String(msg.hairStyle) : (p.hairStyle || 'short');
