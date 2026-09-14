@@ -691,33 +691,32 @@ button{
 
 .npc{
     position:absolute;
-    width:58px;
-    height:72px;
+    width:86px;
+    height:108px;
     transform:translate(-50%,-50%);
     z-index:45;
     text-align:center;
+    cursor:pointer;
+    touch-action:manipulation;
+    -webkit-tap-highlight-color:transparent;
+    pointer-events:auto;
 }
 
-.npcBody{
+/* NPC sprites are supplied as transparent PNGs. Keep the original NPC
+   dialogue/schedule logic intact and only replace the visual layer. */
+.npcSprite{
     position:absolute;
-    left:12px;
-    bottom:0;
-    width:34px;
-    height:43px;
-    border-radius:11px 11px 7px 7px;
-    background:#b16e79;
-    border:3px solid #5d3941;
-}
-
-.npcHead{
-    position:absolute;
-    left:14px;
+    left:50%;
     top:0;
-    width:31px;
-    height:31px;
-    border-radius:50%;
-    background:#efc39e;
-    border:3px solid #67463d;
+    width:82px;
+    height:88px;
+    transform:translateX(-50%);
+    object-fit:contain;
+    object-position:center bottom;
+    pointer-events:none;
+    user-select:none;
+    -webkit-user-drag:none;
+    filter:drop-shadow(0 3px 2px rgba(0,0,0,.22));
 }
 
 .npcName{
@@ -754,6 +753,23 @@ button{
 
 .npc.near .interactMark{
     display:block;
+}
+
+@media(max-width:700px){
+    .npc{
+        width:100px;
+        height:122px;
+    }
+
+    .npcSprite{
+        width:96px;
+        height:102px;
+    }
+
+    .npcName{
+        bottom:-13px;
+        font-size:10px;
+    }
 }
 
 /* =========================
@@ -1969,6 +1985,7 @@ const NPC_DATA = {
         x:25,
         y:65,
         color:"#b16e79",
+        sprite:"assets/npc-potato-1.png",
 
         dialogue:[
             {
@@ -1998,6 +2015,7 @@ const NPC_DATA = {
         x:72,
         y:70,
         color:"#6b85ad",
+        sprite:"assets/npc-potato-2.png",
 
         dialogue:[
             {
@@ -2027,6 +2045,7 @@ const NPC_DATA = {
         x:70,
         y:48,
         color:"#8061a4",
+        sprite:"assets/npc-potato-3.png",
 
         dialogue:[
             {
@@ -2056,6 +2075,7 @@ const NPC_DATA = {
         x:52,
         y:38,
         color:"#777c84",
+        sprite:"assets/npc-potato-1.png",
 
         dialogue:[
             {
@@ -2077,6 +2097,7 @@ const NPC_DATA = {
         x:62,
         y:68,
         color:"#588b99",
+        sprite:"assets/npc-potato-4.png",
 
         dialogue:[
             {
@@ -2098,6 +2119,7 @@ const NPC_DATA = {
         x:50,
         y:56,
         color:"#c99449",
+        sprite:"assets/npc-potato-5.png",
         shop:true,
 
         dialogue:[
@@ -2202,7 +2224,7 @@ function renderNPCInHouse(){
     el.dataset.npc=id;
     el.style.left='50%';
     el.style.top='58%';
-    el.innerHTML='<div class="npcHead"></div><div class="npcBody" style="background:'+npc.color+'"></div><div class="npcName">'+npc.name+'</div>';
+    el.innerHTML='<img class="npcSprite" src="'+(npc.sprite || 'assets/npc-potato-1.png')+'" alt="'+npc.name+'" draggable="false"><div class="npcName">'+npc.name+'</div>';
     screen.appendChild(el);
 }
 
@@ -3432,15 +3454,15 @@ function createNPCs(){
         el.innerHTML = `
 
             <div class="interactMark">
-                E 상호작용
+                터치 / E 상호작용
             </div>
 
-            <div class="npcHead"></div>
-
-            <div
-                class="npcBody"
-                style="background:${npc.color}"
-            ></div>
+            <img
+                class="npcSprite"
+                src="${npc.sprite || "assets/npc-potato-1.png"}"
+                alt="${npc.name}"
+                draggable="false"
+            >
 
             <div class="npcName">
                 ${npc.name}
@@ -3455,6 +3477,27 @@ function createNPCs(){
     updateNearby();
 
 }
+
+
+/* =========================================================
+   NPC TOUCH / CLICK INTERACTION
+========================================================= */
+
+/* 모바일에서는 E 키가 없으므로 NPC를 직접 터치하면
+   기존 openDialogue()를 호출한다. NPC의 대화/선물/상점/호감도 로직은 그대로 유지한다. */
+screen.addEventListener("pointerup", e=>{
+    const npcEl = e.target.closest(".npc");
+    if(!npcEl || !game) return;
+
+    e.preventDefault();
+    e.stopPropagation();
+    registerActivity();
+
+    const id = npcEl.dataset.npc;
+    if(id && NPC_DATA[id]){
+        openDialogue(id);
+    }
+}, {passive:false});
 
 
 /* =========================================================
