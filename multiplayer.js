@@ -54,6 +54,7 @@
     const y = parseFloat(player?.style.top || '68');
     return {
       nickname: (nicknameEl?.textContent || state.nickname()).trim().slice(0, 12) || '플레이어',
+      characterId: window.game?.player?.characterId || 'mina',
       outfitColor: bodyEl?.style.background || state.outfitColor(),
       hairStyle: window.game?.player?.hairStyle || hairEl?.className?.replace('playerHair hair-', '') || 'short',
       location: currentLocation(),
@@ -170,6 +171,7 @@
       el.className = 'remotePlayer';
       el.innerHTML = `
         <div class="remoteNickname"></div>
+        <img class="remoteCharacter" alt="" draggable="false">
         <div class="remoteBody"></div>
         <div class="remoteHead"></div>
         <div class="remoteHair"></div>
@@ -180,6 +182,9 @@
 
     el.dataset.location = p.location || 'farm';
     el.querySelector('.remoteNickname').textContent = p.nickname || '플레이어';
+    const remoteSprite = window.NPC_SPRITES?.[p.characterId];
+    const remoteImage = el.querySelector('.remoteCharacter');
+    if(remoteImage && remoteSprite) remoteImage.src = remoteSprite;
     el.querySelector('.remoteBody').style.background = p.outfitColor || '#5476a5';
     const hair = ['short','long','bob','spiky','ponytail','curly'].includes(p.hairStyle) ? p.hairStyle : 'short';
     el.querySelector('.remoteHair').className = `remoteHair hair-${hair}`;
@@ -213,8 +218,8 @@
       .mpOverlay{position:fixed;inset:0;z-index:5000;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.68);padding:20px}
       .mpPanel{width:min(92vw,430px);padding:24px;border-radius:18px;background:#17212c;color:#fff;border:1px solid rgba(255,255,255,.14);box-shadow:0 20px 60px rgba(0,0,0,.5)}
       .mpPanel h3{margin-bottom:6px}.mpStatus{font-size:12px;color:#aeb8c3;margin-bottom:16px}.mpInput{width:100%;padding:11px;border-radius:9px;border:1px solid #3d4d5e;background:#0e151d;color:#fff;margin-bottom:9px}.mpBtns{display:grid;gap:8px}.mpBtns button{padding:11px;border-radius:9px;background:#e5c36a;color:#292218;font-weight:900}.mpBtns .secondary{background:#35424f;color:#fff}.mpRoom{margin-top:14px;padding:12px;border-radius:10px;background:#0e151d;text-align:center;font-size:18px;font-weight:900;letter-spacing:3px}.mpClose{margin-top:10px;width:100%;padding:9px;background:transparent;color:#aeb8c3}
-      .remotePlayer{position:absolute;width:48px;height:58px;z-index:49;transform:translate(-50%,-50%);pointer-events:none;filter:drop-shadow(0 2px 3px rgba(0,0,0,.3))}
-      .remotePlayer.hiddenRemote{display:none}.remoteBody{position:absolute;left:8px;bottom:0;width:32px;height:39px;border-radius:10px 10px 6px 6px;border:3px solid rgba(39,57,79,.9)}.remoteHead{position:absolute;left:9px;top:0;width:30px;height:30px;border-radius:50%;background:#efc39e;border:3px solid #6a483c}.remoteHair{position:absolute;left:7px;top:-3px;width:34px;height:17px;background:#4c342e;border-radius:18px 18px 7px 7px;z-index:2}.remoteHair.hair-long{left:5px;top:-3px;width:38px;height:29px;border-radius:18px 18px 11px 11px}.remoteHair.hair-bob{left:4px;top:-2px;width:40px;height:24px;border-radius:19px 19px 12px 12px}.remoteHair.hair-spiky{left:6px;top:-6px;width:36px;height:20px;border-radius:4px 14px 7px 7px;clip-path:polygon(0 45%,12% 8%,27% 32%,42% 0,55% 31%,72% 5%,83% 35%,100% 18%,91% 100%,8% 100%)}.remoteHair.hair-ponytail{left:7px;top:-3px;width:34px;height:18px;border-radius:18px 18px 7px 7px}.remoteHair.hair-ponytail::after{content:"";position:absolute;right:-8px;top:7px;width:14px;height:18px;background:#4c342e;border-radius:50% 60% 60% 40%}.remoteHair.hair-curly{left:4px;top:-5px;width:40px;height:21px;border-radius:50%;box-shadow:-4px 7px 0 #4c342e,4px 9px 0 #4c342e,12px 6px 0 #4c342e,20px 8px 0 #4c342e}.remoteNickname{position:absolute;left:50%;bottom:61px;transform:translateX(-50%);white-space:nowrap;color:#fff;font-size:10px;font-weight:900;text-shadow:0 2px 4px #000}
+      .remotePlayer{position:absolute;width:70px;height:82px;z-index:49;transform:translate(-50%,-50%);pointer-events:none;filter:drop-shadow(0 2px 3px rgba(0,0,0,.3))}
+      .remoteCharacter{position:absolute;left:50%;top:0;width:70px;height:82px;transform:translateX(-50%);object-fit:contain;pointer-events:none;user-select:none}.remoteBody,.remoteHead,.remoteHair{display:none}.remotePlayer.hiddenRemote{display:none}.remoteBody{position:absolute;left:8px;bottom:0;width:32px;height:39px;border-radius:10px 10px 6px 6px;border:3px solid rgba(39,57,79,.9)}.remoteHead{position:absolute;left:9px;top:0;width:30px;height:30px;border-radius:50%;background:#efc39e;border:3px solid #6a483c}.remoteHair{position:absolute;left:7px;top:-3px;width:34px;height:17px;background:#4c342e;border-radius:18px 18px 7px 7px;z-index:2}.remoteHair.hair-long{left:5px;top:-3px;width:38px;height:29px;border-radius:18px 18px 11px 11px}.remoteHair.hair-bob{left:4px;top:-2px;width:40px;height:24px;border-radius:19px 19px 12px 12px}.remoteHair.hair-spiky{left:6px;top:-6px;width:36px;height:20px;border-radius:4px 14px 7px 7px;clip-path:polygon(0 45%,12% 8%,27% 32%,42% 0,55% 31%,72% 5%,83% 35%,100% 18%,91% 100%,8% 100%)}.remoteHair.hair-ponytail{left:7px;top:-3px;width:34px;height:18px;border-radius:18px 18px 7px 7px}.remoteHair.hair-ponytail::after{content:"";position:absolute;right:-8px;top:7px;width:14px;height:18px;background:#4c342e;border-radius:50% 60% 60% 40%}.remoteHair.hair-curly{left:4px;top:-5px;width:40px;height:21px;border-radius:50%;box-shadow:-4px 7px 0 #4c342e,4px 9px 0 #4c342e,12px 6px 0 #4c342e,20px 8px 0 #4c342e}.remoteNickname{position:absolute;left:50%;bottom:61px;transform:translateX(-50%);white-space:nowrap;color:#fff;font-size:10px;font-weight:900;text-shadow:0 2px 4px #000}
       .mpHudBtn{padding:8px 11px;border-radius:10px;background:rgba(16,22,29,.82);color:#fff;border:1px solid rgba(255,255,255,.12);pointer-events:auto}
     `;
     document.head.appendChild(style);
