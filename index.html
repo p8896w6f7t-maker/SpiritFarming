@@ -506,6 +506,30 @@ button{
 .ft4{right:30%;bottom:10%;}
 .ft5{left:8%;bottom:12%;}
 
+
+/* Mobile/touch interaction for the forest spirit-contract shrine */
+.shrine{
+    cursor:pointer;
+    pointer-events:auto !important;
+    touch-action:manipulation;
+    -webkit-tap-highlight-color:transparent;
+    user-select:none;
+    z-index:40;
+}
+.shrineTouchHint{
+    position:absolute;
+    left:50%;
+    top:-28px;
+    transform:translateX(-50%);
+    white-space:nowrap;
+    padding:4px 8px;
+    border-radius:7px;
+    background:rgba(16,22,29,.78);
+    color:#fff;
+    font-size:10px;
+    font-weight:800;
+    pointer-events:none;
+}
 .shrine{
     position:absolute;
     left:43%;
@@ -1636,7 +1660,9 @@ button{
                     <div class="forestTree ft4" data-tree-id="forest-ft4">🌲</div>
                     <div class="forestTree ft5" data-tree-id="forest-ft5">🌲</div>
 
-                    <div class="shrine">
+                    <div class="shrine" id="forestShrine" role="button" tabindex="0"
+                         aria-label="정령 계약 제단">
+                        <div class="shrineTouchHint">터치 / E</div>
                         ✨
                     </div>
 
@@ -3760,6 +3786,47 @@ screen.addEventListener("click", e=>{
         id,
         spirit.talk[(game.day-1)%spirit.talk.length]
     );
+});
+
+
+/* =========================================================
+   FOREST SHRINE TOUCH INTERACTION
+   =========================================================
+   숲의 제단 자체를 모바일에서 터치하면 정령 계약 패널을 연다.
+   플레이어가 제단 가까이 가지 않아도 직접 터치할 수 있으며,
+   E 키 상호작용과 같은 openPanel("spirits")를 사용한다.
+*/
+function openForestSpiritShrine(){
+    if(!game || game.location !== "forest") return;
+    registerActivity();
+    openPanel("spirits");
+}
+
+document.addEventListener("pointerup", e=>{
+    const shrine = e.target.closest("#forestShrine");
+    if(!shrine || !game || game.location !== "forest") return;
+
+    e.preventDefault();
+    e.stopPropagation();
+    openForestSpiritShrine();
+},{passive:false});
+
+document.addEventListener("click", e=>{
+    const shrine = e.target.closest("#forestShrine");
+    if(!shrine || !game || game.location !== "forest") return;
+
+    e.preventDefault();
+    e.stopPropagation();
+    openForestSpiritShrine();
+});
+
+document.addEventListener("keydown", e=>{
+    if((e.key === "Enter" || e.key === " ") &&
+       e.target.closest &&
+       e.target.closest("#forestShrine")){
+        e.preventDefault();
+        openForestSpiritShrine();
+    }
 });
 
 function spiritTalk(id){
@@ -6101,3 +6168,7 @@ document.addEventListener(
 
 </body>
 </html>
+<style>
+#forest::after{pointer-events:none !important;}
+#forest .shrine{pointer-events:auto !important;}
+</style>
