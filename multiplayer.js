@@ -44,18 +44,54 @@
     return visible?.id || 'farm';
   }
 
+  function getLocalGamePlayer() {
+    // index.html의 game은 let으로 선언되어 window.game에는 자동으로 올라가지 않는다.
+    // 이전 코드는 이 차이 때문에 멀티플레이에서 항상 sleepy(꾼감자)를 전송했다.
+    try {
+      if (typeof game !== 'undefined' && game?.player) return game.player;
+    } catch (_) {}
+    if (window.game?.player) return window.game.player;
+
+    // 게임 객체를 직접 읽을 수 없는 경우에도 저장된 프로필을 사용한다.
+    try {
+      const prefix = 'spirit_season_save_';
+      for (let slot = 1; slot <= 3; slot++) {
+        const raw = localStorage.getItem(prefix + slot);
+        if (!raw) continue;
+        const saved = JSON.parse(raw);
+        if (saved?.player) return saved.player;
+      }
+    } catch (_) {}
+    return {};
+  }
+
   function currentGameState() {
-    const player = document.getElementById('player');
+    const playerEl = document.getElementById('player');
     const nicknameEl = document.getElementById('playerNickname');
-    const x = parseFloat(player?.style.left || '50');
-    const y = parseFloat(player?.style.top || '68');
+    const localPlayer = getLocalGamePlayer();
+
+    const x = parseFloat(playerEl?.style.left || String(localPlayer.x ?? 50));
+    const y = parseFloat(playerEl?.style.top || String(localPlayer.y ?? 68));
+
+    const nickname =
+      String(localPlayer.nickname || nicknameEl?.textContent || state.nickname() || '플레이어')
+        .trim()
+        .slice(0, 12) || '플레이어';
+
+    const validCharacters = ['sleepy', 'captain', 'poison', 'fool', 'violent'];
+    const characterId = validCharacters.includes(String(localPlayer.characterId))
+      ? String(localPlayer.characterId)
+      : (validCharacters.includes(String(window.selectedCharacterId))
+          ? String(window.selectedCharacterId)
+          : 'sleepy');
+
     return {
-      nickname: (nicknameEl?.textContent || state.nickname()).trim().slice(0, 12) || '플레이어',
-      characterId: window.game?.player?.characterId || 'sleepy',
+      nickname,
+      characterId,
       location: currentLocation(),
       x: Number.isFinite(x) ? x : 50,
       y: Number.isFinite(y) ? y : 68,
-      direction: 'down'
+      direction: localPlayer.direction || 'down'
     };
   }
 
@@ -94,6 +130,8 @@
   function handleMessage(msg) {
     if (msg.type === 'connected') {
       myId = msg.id;
+      // 서버 연결 직후에도 현재 선택한 닉네임/캐릭터를 명시적으로 보낸다.
+      // 이렇게 해야 기존 방에 들어갈 때 기본 캐릭터로 덮어써지는 일을 막을 수 있다.
       return;
     }
 
@@ -104,6 +142,11 @@
       (msg.players || []).forEach(p => {
         if (p.id !== myId) renderRemotePlayer(p);
       });
+
+      // 방에 들어간 직후 현재 프로필을 다시 전송한다.
+      // 기존 서버/방 상태에 기본 캐릭터가 남아 있어도 즉시 선택 캐릭터로 갱신된다.
+      sendState(true);
+
       setStatus(`방 ${roomCode} 접속 중`);
       return;
     }

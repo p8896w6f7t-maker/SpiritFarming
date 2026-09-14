@@ -1043,13 +1043,17 @@ button{
 
 .spiritWorld{
     position:absolute;
-    z-index:6;
+    z-index:20;
     transform:translate(-50%,-50%);
     text-align:center;
-    pointer-events:none;
+    pointer-events:auto;
+    cursor:pointer;
+    touch-action:manipulation;
+    user-select:none;
 }
 .spiritWorldIcon{
     width:46px;height:46px;border-radius:50%;
+    position:relative;
     display:flex;align-items:center;justify-content:center;
     font-size:26px;
     background:rgba(25,32,40,.72);
@@ -1486,7 +1490,7 @@ button{
 .characterChoicePreview{width:48px;height:58px;display:block;background-repeat:no-repeat;background-position:center;background-size:contain;}
 .playerCharacter{position:absolute;left:50%;top:0;width:70px;height:82px;transform:translateX(-50%);object-fit:contain;z-index:2;pointer-events:none;user-select:none;-webkit-user-drag:none;filter:drop-shadow(0 3px 2px rgba(0,0,0,.22));}
 #player>.playerHead,#player>.playerHair,#player>.playerBody{display:none;}
-.npcCssBody{position:absolute;left:27px;bottom:8px;width:32px;height:40px;border-radius:10px 10px 6px 6px;border:3px solid #27394f;}
+.npcCssBody{position:absolute;left:27px;top:36px;width:32px;height:40px;border-radius:10px 10px 6px 6px;border:3px solid #27394f;}
 .npcCssHead{position:absolute;left:28px;top:7px;width:30px;height:30px;border-radius:50%;background:#efc39e;border:3px solid #6a483c;}
 .npcCssHair{position:absolute;left:26px;top:4px;width:34px;height:17px;background:#4c342e;border-radius:18px 18px 7px 7px;z-index:2;}
 .npcCssHair.long{height:29px;border-radius:18px 18px 11px 11px;}
@@ -3712,16 +3716,51 @@ function updateNearbySpirit(){
         el.classList.toggle("near",!!nearby && el.dataset.spirit===nearby.id);
     });
 }
-/* Mobile/touch spirit interaction. Tap the spirit directly to open the in-game dialogue. */
+/* =========================================================
+   SPIRIT TOUCH INTERACTION
+   =========================================================
+   숲의 정령을 직접 터치하면 즉시 게임 내 대화창을 연다.
+   대화창 안의 "계약하기" 버튼도 모바일 터치로 그대로
+   contractSpirit()까지 연결된다.
+*/
 screen.addEventListener("pointerup", e=>{
     const spiritEl=e.target.closest(".spiritWorld");
     if(!spiritEl || !game) return;
+
     e.preventDefault();
     e.stopPropagation();
     registerActivity();
+
     const id=spiritEl.dataset.spirit;
-    if(id && SPIRIT_DATA[id]) showSpiritDialogue(id, SPIRIT_DATA[id].talk[(game.day-1)%SPIRIT_DATA[id].talk.length]);
+    const spirit=SPIRIT_DATA[id];
+
+    if(!spirit) return;
+
+    showSpiritDialogue(
+        id,
+        spirit.talk[(game.day-1)%spirit.talk.length]
+    );
 },{passive:false});
+
+/* 일부 모바일 브라우저에서 pointer 이벤트가 다른 UI 처리와
+   겹치는 경우를 대비해 click도 직접 연결한다. */
+screen.addEventListener("click", e=>{
+    const spiritEl=e.target.closest(".spiritWorld");
+    if(!spiritEl || !game) return;
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    const id=spiritEl.dataset.spirit;
+    const spirit=SPIRIT_DATA[id];
+
+    if(!spirit) return;
+
+    showSpiritDialogue(
+        id,
+        spirit.talk[(game.day-1)%spirit.talk.length]
+    );
+});
 
 function spiritTalk(id){
     const spirit=SPIRIT_DATA[id];
